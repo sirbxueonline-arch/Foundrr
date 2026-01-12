@@ -22,7 +22,7 @@ import { useLanguage } from '@/contexts/LanguageContext'
 
 export default function GeneratePage() {
   const router = useRouter()
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   const [formData, setFormData] = useState({
     prompt: '',
     style: 'minimal' // Default style
@@ -69,7 +69,7 @@ export default function GeneratePage() {
       const res = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({ ...formData, lang })
       })
 
       if (!res.ok) {

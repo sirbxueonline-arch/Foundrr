@@ -7,6 +7,9 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
 
+export const maxDuration = 300 // 5 minutes
+
+
 export async function POST(request: Request) {
   try {
     const cookieStore = await cookies()
@@ -39,7 +42,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json()
-    const { prompt, style = 'minimal' } = body
+    const { prompt, style = 'minimal', lang = 'en' } = body
 
     if (!prompt) {
       return NextResponse.json({ error: 'Missing prompt' }, { status: 400 })
@@ -122,6 +125,11 @@ Your goal is to generate a SINGLE html file containing a complete, production-re
 4.  **Google Fonts**: Import the specific font requested below.
 5.  **Images**: Use \`UNSPLASH_IMG:{specific_keyword}\`.
 
+🌍 OUTPUT LANGUAGE: **${lang === 'az' ? 'AZERBAIJANI (AZƏRBAYCAN DİLİ)' : 'ENGLISH'}**
+- ALL visible text (headings, subheadings, paragraphs, button labels, nav links) MUST be in **${lang === 'az' ? 'Azerbaijani' : 'English'}**.
+- Do NOT output English unless specifically requested in the prompt.
+- For Azerbaijani, ensure correct grammar and natural phrasing.
+
 🎨 SELECTED VISUAL STYLE: **${style.toUpperCase()}**
 You must strictly follow these design tokens:
 ${selectedStyleConfig}
@@ -153,7 +161,7 @@ ${selectedStyleConfig}
 ✍️ COPYWRITING:
 - **Hero**: Value Proposition Formula.
 - **Tone**: Match the '${style}' vibe.
-- **Content**: WRITE REALISTIC MARKETING COPY. DO NOT USE LOREM IPSUM.
+- **Content**: WRITE REALISTIC MARKETING COPY IN ${lang === 'az' ? 'AZERBAIJANI' : 'ENGLISH'}. DO NOT USE LOREM IPSUM.
 
 ✨ ANIMATIONS:
 - Add \`aos\` library via CDN or simple IntersectionObserver script for "fade-up" animations on scroll.
