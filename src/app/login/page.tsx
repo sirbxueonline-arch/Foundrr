@@ -2,23 +2,40 @@
 
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-
+import { Suspense, useEffect } from 'react'
 import { useLanguage } from '@/contexts/LanguageContext'
 
 export default function LoginPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginForm />
+    </Suspense>
+  )
+}
+
+function LoginForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isSignUp, setIsSignUp] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
-  
+
   const { t } = useLanguage()
   const router = useRouter()
+  const searchParams = useSearchParams()
   const supabase = createClient()
+
+  useEffect(() => {
+    const error = searchParams.get('error')
+    const errorDescription = searchParams.get('error_description')
+    if (error || errorDescription) {
+      setMessage(errorDescription || error)
+    }
+  }, [searchParams])
 
   const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -79,29 +96,29 @@ export default function LoginPage() {
             {isSignUp ? t.login.startBuilding : t.login.welcomeBack}
           </p>
         </div>
-        
+
         <div className="mt-8 space-y-6">
           <div className="flex rounded-md shadow-sm">
-             <button
-                type="button"
-                onClick={() => { setIsSignUp(false); setMessage(null); }}
-                className={cn(
-                  "w-1/2 rounded-l-md border py-2 text-sm font-medium focus:z-10 focus:ring-1 focus:ring-ring",
-                  !isSignUp ? "bg-primary text-primary-foreground border-primary" : "bg-muted text-muted-foreground border-input hover:bg-muted/80"
-                )}
-             >
-                 {t.login.signIn}
-             </button>
-             <button
-                type="button"
-                onClick={() => { setIsSignUp(true); setMessage(null); }}
-                className={cn(
-                  "w-1/2 rounded-r-md border py-2 text-sm font-medium focus:z-10 focus:ring-1 focus:ring-ring",
-                  isSignUp ? "bg-primary text-primary-foreground border-primary" : "bg-muted text-muted-foreground border-input hover:bg-muted/80"
-                )}
-             >
-                 {t.login.signUp}
-             </button>
+            <button
+              type="button"
+              onClick={() => { setIsSignUp(false); setMessage(null); }}
+              className={cn(
+                "w-1/2 rounded-l-md border py-2 text-sm font-medium focus:z-10 focus:ring-1 focus:ring-ring",
+                !isSignUp ? "bg-primary text-primary-foreground border-primary" : "bg-muted text-muted-foreground border-input hover:bg-muted/80"
+              )}
+            >
+              {t.login.signIn}
+            </button>
+            <button
+              type="button"
+              onClick={() => { setIsSignUp(true); setMessage(null); }}
+              className={cn(
+                "w-1/2 rounded-r-md border py-2 text-sm font-medium focus:z-10 focus:ring-1 focus:ring-ring",
+                isSignUp ? "bg-primary text-primary-foreground border-primary" : "bg-muted text-muted-foreground border-input hover:bg-muted/80"
+              )}
+            >
+              {t.login.signUp}
+            </button>
           </div>
 
           <form className="space-y-6" onSubmit={handleEmailAuth}>

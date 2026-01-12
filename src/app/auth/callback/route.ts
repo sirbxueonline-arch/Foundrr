@@ -19,7 +19,7 @@ export async function GET(request: Request) {
           setAll(cookiesToSet) {
             try {
               cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options))
-            } catch {}
+            } catch { }
           },
         },
       }
@@ -27,6 +27,9 @@ export async function GET(request: Request) {
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (!error) {
       return NextResponse.redirect(`${origin}${next}`)
+    } else {
+      console.error('Auth Callback Error:', error)
+      return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(error.name)}&error_description=${encodeURIComponent(error.message)}`)
     }
   }
 
