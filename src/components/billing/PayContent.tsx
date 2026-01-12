@@ -14,8 +14,6 @@ export function PayContent({ siteId }: { siteId: string }) {
   const [price, setPrice] = useState<number | null>(null)
   const [paymentIdentifier, setPaymentIdentifier] = useState('')
   const [paymentMethod, setPaymentMethod] = useState<'m10' | 'card'>('m10')
-  const [isQrRevealed, setIsQrRevealed] = useState(false)
-  const [isPending, setIsPending] = useState(false)
   const [isApproved, setIsApproved] = useState(false)
 
   useEffect(() => {
@@ -45,27 +43,7 @@ export function PayContent({ siteId }: { siteId: string }) {
     if (siteId) fetchPrice()
   }, [siteId])
 
-  // Polling for payment status
-  useEffect(() => {
-    let interval: NodeJS.Timeout
-    if (isPending && !isApproved) {
-      interval = setInterval(async () => {
-        try {
-          const res = await fetch(`/api/pricing/${siteId}`)
-          if (res.ok) {
-            const data = await res.json()
-            if (data.payment_status === 'approved' || data.paid === true) {
-              setIsApproved(true)
-              setIsPending(false)
-            }
-          }
-        } catch (e) {
-          console.error("Polling error", e)
-        }
-      }, 5000)
-    }
-    return () => clearInterval(interval)
-  }, [isPending, isApproved, siteId])
+
 
   const handlePaymentComplete = async () => {
     setLoading(true)
@@ -80,7 +58,7 @@ export function PayContent({ siteId }: { siteId: string }) {
         throw new Error('Payment verification failed')
       }
 
-      setIsPending(true)
+      router.push(`/processing?site=${siteId}`)
 
     } catch (error) {
       console.error(error)
@@ -121,91 +99,83 @@ export function PayContent({ siteId }: { siteId: string }) {
     )
   }
 
-  if (isPending) {
-    return (
-      <div className="flex min-h-[calc(100vh-4rem)] w-full items-center justify-center p-4">
-        <div className="max-w-md w-full text-center space-y-6 animate-in fade-in zoom-in duration-300">
-          <div className="h-24 w-24 bg-yellow-100 dark:bg-yellow-900/20 text-yellow-600 rounded-full flex items-center justify-center mx-auto mb-6">
-            <Loader2 className="h-10 w-10 animate-spin" />
-          </div>
-          <h2 className="text-3xl font-bold tracking-tight">{t?.payment?.processing?.title || "Payment Processing"}</h2>
-          <div className="bg-card border p-6 rounded-xl shadow-sm text-left space-y-4">
-            <p className="font-medium">{t?.payment?.processing?.thanks || "Thanks for your payment!"}</p>
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              {t?.payment?.processing?.desc}
-              <br /><br />
-              <strong>{t?.payment?.processing?.wait}</strong>
-              <br />
-              {t?.payment?.processing?.WaitSub}
-            </p>
-          </div>
 
-          <button
-            onClick={() => router.push(`/website/${siteId}`)}
-            className="text-primary hover:underline text-sm font-medium"
-          >
-            {t?.payment?.processing?.return || "Return to Dashboard"}
-          </button>
-        </div>
-      </div>
-    )
-  }
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] w-full items-center justify-center p-4">
-      <div className="w-full max-w-lg rounded-xl border bg-card shadow-lg overflow-hidden transition-all duration-300">
-        <div className="bg-primary px-6 py-8 text-center text-primary-foreground">
-          <h1 className="text-2xl font-bold">{t?.payment?.title || "Unlock your website"}</h1>
-          <p className="mt-2 text-primary-foreground/80 text-sm">
-            {t?.payment?.desc || "One-time price. Lifetime ownership. No subscriptions."}
+    <div className="relative min-h-[calc(100vh-3.5rem)] flex flex-col items-center justify-center p-4 overflow-hidden bg-background">
+      {/* Background Effects */}
+      <div className="absolute inset-0 -z-10 h-full w-full bg-background overflow-hidden">
+        <div className="absolute top-0 z-[0] h-screen w-screen bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.15),rgba(255,255,255,0))]" />
+        <div className="absolute top-1/4 -left-4 w-96 h-96 bg-purple-500/10 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob" />
+        <div className="absolute top-1/4 -right-4 w-96 h-96 bg-blue-500/10 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000" />
+        <div className="absolute -bottom-32 left-1/3 w-96 h-96 bg-pink-500/10 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000" />
+      </div>
+
+      <div className="w-full max-w-lg rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl overflow-hidden transition-all duration-300 relative z-10">
+        <div className="bg-gradient-to-br from-primary/10 to-transparent px-6 py-10 text-center relative border-b border-white/5">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-50" />
+          <h1 className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">{t?.payment?.title || "Unlock This Website"}</h1>
+          <p className="mt-2 text-muted-foreground text-sm max-w-xs mx-auto">
+            {t?.payment?.desc || "Secure lifetime ownership. No monthly fees."}
           </p>
-          <div className="mt-6 text-4xl font-extrabold flex items-center justify-center min-h-[48px]">
-            {priceLoading ? (
-              <Loader2 className="animate-spin h-8 w-8 opacity-50" />
-            ) : (
-              <>{price || '--'}<span className="text-lg font-normal text-primary-foreground/60 ml-1">{t?.payment?.currency || "AZN"}</span></>
-            )}
+          <div className="mt-8 relative inline-block">
+             <div className="absolute -inset-6 bg-primary/20 blur-2xl rounded-full opacity-60 animate-pulse" />
+             <div className="relative flex flex-col items-center">
+                <span className="bg-gradient-to-r from-amber-200 to-yellow-400 text-yellow-900 text-[10px] font-bold px-2 py-0.5 rounded-full mb-2 shadow-sm border border-yellow-200/50 uppercase tracking-wide">
+                  Limited Time Offer
+                </span>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-xl text-muted-foreground/50 line-through decoration-muted-foreground/50 decoration-2">
+                    99.99
+                  </span>
+                  <div className="text-6xl font-extrabold tracking-tighter text-foreground drop-shadow-sm">
+                    {priceLoading ? (
+                      <Loader2 className="animate-spin h-12 w-12 opacity-30 my-2" />
+                    ) : (
+                      <>49.99<span className="text-2xl font-medium text-muted-foreground/80 ml-1">{t?.payment?.currency || "AZN"}</span></>
+                    )}
+                  </div>
+                </div>
+             </div>
           </div>
         </div>
 
-        <div className="p-8 space-y-8">
-
+        <div className="p-6 sm:p-8 space-y-8 bg-gradient-to-b from-white/5 to-transparent">
           {/* Payment Method Toggle */}
-          <div className="grid grid-cols-2 gap-4 p-1 bg-muted/50 rounded-lg">
+          <div className="grid grid-cols-2 gap-2 p-1 bg-black/5 dark:bg-white/5 rounded-xl border border-white/5 relative isolate">
             <button
               onClick={() => setPaymentMethod('m10')}
               className={cn(
-                "flex items-center justify-center gap-2 py-2.5 text-sm font-medium rounded-md transition-all",
+                "relative z-10 flex items-center justify-center gap-2 py-3 text-sm font-semibold rounded-lg transition-all duration-300",
                 paymentMethod === 'm10'
-                  ? "bg-white text-primary shadow-sm ring-1 ring-black/5"
-                  : "text-muted-foreground hover:bg-white/50"
+                  ? "text-primary bg-background shadow-md ring-1 ring-black/5"
+                  : "text-muted-foreground hover:text-foreground hover:bg-white/5"
               )}
             >
               <Smartphone className="w-4 h-4" />
-              {t?.payment?.m10 || "m10"}
+              <span>{t?.payment?.m10 || "m10"}</span>
             </button>
             <button
               onClick={() => setPaymentMethod('card')}
               className={cn(
-                "flex items-center justify-center gap-2 py-2.5 text-sm font-medium rounded-md transition-all",
+                "relative z-10 flex items-center justify-center gap-2 py-3 text-sm font-semibold rounded-lg transition-all duration-300",
                 paymentMethod === 'card'
-                  ? "bg-white text-primary shadow-sm ring-1 ring-black/5"
-                  : "text-muted-foreground hover:bg-white/50"
+                  ? "text-primary bg-background shadow-md ring-1 ring-black/5"
+                  : "text-muted-foreground hover:text-foreground hover:bg-white/5"
               )}
             >
               <CreditCard className="w-4 h-4" />
-              {t?.payment?.card || "Card"}
+              <span>{t?.payment?.card || "Card"}</span>
             </button>
           </div>
 
-          <div className="flex flex-col items-center space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <div className="flex flex-col items-center space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
             {paymentMethod === 'm10' ? (
               <>
-                <div className="relative">
+                <div className="relative group perspective-1000">
                   <div
                     className={cn(
-                      "bg-white p-4 rounded-lg border-2 border-dashed border-gray-300 shadow-sm transition-all duration-500",
-                      !isQrRevealed && "blur-xl scale-95 opacity-50 grayscale"
+                      "bg-white p-4 rounded-2xl border border-white/20 shadow-xl transition-all duration-700 transform-gpu rotate-0 scale-100 opacity-100"
                     )}
                   >
                     <img
@@ -214,72 +184,55 @@ export function PayContent({ siteId }: { siteId: string }) {
                       className="w-48 h-48 object-cover mix-blend-multiply"
                     />
                   </div>
-
-                  {!isQrRevealed && (
-                    <div className="absolute inset-0 flex items-center justify-center z-10">
-                      <button
-                        onClick={() => setIsQrRevealed(true)}
-                        className="bg-primary text-primary-foreground px-6 py-2 rounded-full font-bold text-sm shadow-xl hover:scale-105 active:scale-95 transition-all ring-4 ring-background"
-                      >
-                        {t?.payment?.revealQr || "Reveal QR"}
-                      </button>
-                    </div>
-                  )}
                 </div>
 
-                <p className={cn(
-                  "text-sm text-muted-foreground text-center max-w-[200px] transition-opacity duration-300",
-                  !isQrRevealed ? "opacity-0" : "opacity-100"
-                )}>
-                  {t?.payment?.scanText} <span className="font-semibold text-primary">{t?.payment?.scanApp}</span>
+                <p className="text-sm text-center max-w-[240px] opacity-100 translate-y-0 transition-all duration-500">
+                  <span className="text-muted-foreground">{t?.payment?.scanText} </span>
+                  <span className="font-bold text-foreground bg-secondary/50 px-1.5 py-0.5 rounded text-xs">{t?.payment?.scanApp}</span>
                 </p>
               </>
             ) : (
-              <div className="w-full bg-secondary/30 p-6 rounded-xl border border-border/50 text-center space-y-3">
-                <div className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-2">
+              <div className="w-full bg-secondary/20 p-6 rounded-2xl border border-white/5 space-y-4 relative overflow-hidden group">
+                 <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <CreditCard className="w-24 h-24 -rotate-12" />
+                 </div>
+                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-2 shadow-inner">
                   <CreditCard className="w-6 h-6" />
                 </div>
-                <h4 className="font-semibold">{t?.payment?.bankTransfer}</h4>
-                <p className="text-sm text-muted-foreground">{t?.payment?.sendTo}</p>
-                <div className="bg-white px-4 py-3 rounded-md border font-mono text-sm tracking-wider shadow-sm select-all">
-                  4169 7388 1234 5678
+                <div>
+                    <h4 className="font-semibold text-foreground tracking-tight">{t?.payment?.bankTransfer}</h4>
+                    <p className="text-xs text-muted-foreground">{t?.payment?.sendTo}</p>
                 </div>
-                <p className="text-xs text-muted-foreground/80">{t?.payment?.name}</p>
+                <div className="bg-background/50 backdrop-blur-sm px-4 py-3 rounded-lg border border-white/5 font-mono text-sm tracking-widest shadow-sm select-all cursor-pointer hover:bg-background/80 transition-colors flex justify-between items-center group/copy"
+                     onClick={() => navigator.clipboard.writeText("4169738838982290")}
+                >
+                  <span>4169 7388 3898 2290</span>
+                  <span className="text-[10px] text-primary opacity-0 group-hover/copy:opacity-100 transition-opacity">COPY</span>
+                </div>
+                <p className="text-xs text-muted-foreground/60 font-medium px-1">{t?.payment?.name}</p>
               </div>
             )}
           </div>
 
-          <div className="space-y-4">
-            <h3 className="font-semibold text-lg text-center">{t?.payment?.instructions}</h3>
-            {paymentMethod === 'm10' ? (
-              <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
-                {t?.payment?.m10Steps?.map((step: string, i: number) => (
-                  <li key={i}>{step}</li>
-                ))}
-              </ol>
-            ) : (
-              <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
-                {t?.payment?.cardSteps?.map((step: string, i: number) => (
-                  <li key={i}>{step}</li>
-                ))}
-              </ol>
-            )}
-          </div>
-
-          <div className="pt-4 border-t space-y-4">
-            <div className="space-y-2">
-              <label htmlFor="payment-id" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+          <div className="pt-6 border-t border-white/5 space-y-6">
+            <div className="space-y-2.5">
+              <label htmlFor="payment-id" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground ml-1">
                 {t?.payment?.verificationLabel}
               </label>
-              <input
-                id="payment-id"
-                type="text"
-                placeholder={paymentMethod === 'm10' ? t?.payment?.m10Placeholder : t?.payment?.cardPlaceholder}
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all focus:border-primary"
-                value={paymentIdentifier}
-                onChange={(e) => setPaymentIdentifier(e.target.value)}
-              />
-              <p className="text-[0.8rem] text-muted-foreground">
+              <div className="relative">
+                  <input
+                    id="payment-id"
+                    type="text"
+                    placeholder={paymentMethod === 'm10' ? t?.payment?.m10Placeholder : t?.payment?.cardPlaceholder}
+                    className="flex h-12 w-full rounded-xl border border-input/50 bg-background/50 px-4 py-2 text-base shadow-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 focus:border-primary transition-all"
+                    value={paymentIdentifier}
+                    onChange={(e) => setPaymentIdentifier(e.target.value)}
+                  />
+                  <div className="absolute right-3 top-3.5 text-xs text-muted-foreground/40 pointer-events-none">
+                      ID
+                  </div>
+              </div>
+              <p className="text-[11px] text-muted-foreground/60 px-1">
                 {t?.payment?.verifyHelp}
               </p>
             </div>
@@ -287,23 +240,28 @@ export function PayContent({ siteId }: { siteId: string }) {
             <button
               onClick={handlePaymentComplete}
               disabled={loading || !siteId || !paymentIdentifier.trim()}
-              className="w-full inline-flex h-11 items-center justify-center rounded-md bg-green-600 px-8 text-sm font-bold text-white shadow transition-all hover:bg-green-700 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+              className="group relative w-full inline-flex h-12 items-center justify-center rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 px-8 text-sm font-bold text-white shadow-lg shadow-green-500/25 transition-all hover:shadow-green-500/40 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:shadow-none overflow-hidden"
             >
-              {loading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  {t?.payment?.btnVerify || "Verifying..."}
-                </>
-              ) : (
-                <>
-                  <CheckCircle2 className="mr-2 h-5 w-5" />
-                  {t?.payment?.btnSent || "I've sent the payment"}
-                </>
-              )}
+              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+              <div className="relative flex items-center gap-2">
+                  {loading ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <span>{t?.payment?.btnVerify || "Verifying..."}</span>
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle2 className="h-5 w-5" />
+                      <span>{t?.payment?.btnSent || "Confirm Payment"}</span>
+                    </>
+                  )}
+              </div>
             </button>
-            <p className="mt-4 text-xs text-center text-muted-foreground">
-              {t?.payment?.footerTrust}
-            </p>
+            <div className="flex items-center justify-center gap-2 text-[10px] text-muted-foreground opacity-60">
+               <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-green-500" /> Secure SSL</span>
+               <span>•</span>
+               <span>Official Bank Transfer</span>
+            </div>
           </div>
         </div>
       </div>

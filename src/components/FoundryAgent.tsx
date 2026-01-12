@@ -1,8 +1,7 @@
-
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { Bot, Send, Sparkles, Mic, MicOff } from 'lucide-react'
+import { Send, Terminal, ChevronRight, Minimize2, Maximize2, Loader2, Code2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface FoundryAgentProps {
@@ -16,13 +15,15 @@ interface FoundryAgentProps {
 interface Message {
   role: 'user' | 'assistant'
   content: string
+  timestamp: string
 }
 
 export function FoundryAgent({ siteId, activeFile, onUpdate, onNavigate, className }: FoundryAgentProps) {
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: "Hi! I'm Fondy. I can help edit your website or create new pages. Try saying 'Create an About page'." }
+    { role: 'assistant', content: "Initialising editing environment...", timestamp: new Date().toLocaleTimeString() },
+    { role: 'assistant', content: "Ready for instructions. Type a command to edit the site.", timestamp: new Date().toLocaleTimeString() }
   ])
   const scrollRef = useRef<HTMLDivElement>(null)
 
@@ -37,7 +38,7 @@ export function FoundryAgent({ siteId, activeFile, onUpdate, onNavigate, classNa
     if (!input.trim() || isLoading) return
 
     const userMsg = input.trim()
-    setMessages(prev => [...prev, { role: 'user', content: userMsg }])
+    setMessages(prev => [...prev, { role: 'user', content: userMsg, timestamp: new Date().toLocaleTimeString() }])
     setInput('')
     setIsLoading(true)
 
@@ -66,138 +67,77 @@ export function FoundryAgent({ siteId, activeFile, onUpdate, onNavigate, classNa
 
       // 3. Update Success
       if (data.action === 'create') {
-        setMessages(prev => [...prev, { role: 'assistant', content: `I've created **${data.filename}**. Switching to it now...` }])
+        const time = new Date().toLocaleTimeString()
+        setMessages(prev => [...prev, { role: 'assistant', content: `Creating file: ${data.filename}... OK`, timestamp: time }])
         onUpdate(data.filename) // Switch to new file
       } else {
-        setMessages(prev => [...prev, { role: 'assistant', content: "Done! I've updated the website." }])
+        const time = new Date().toLocaleTimeString()
+        setMessages(prev => [...prev, { role: 'assistant', content: `Patching ${activeFile}... Success`, timestamp: time }])
         onUpdate(data.filename) // Refresh current
       }
 
     } catch (error: any) {
       console.error(error)
-      setMessages(prev => [...prev, { role: 'assistant', content: `Sorry, I ran into an issue: ${error.message}. Please try again.` }])
+      setMessages(prev => [...prev, { role: 'assistant', content: `Error: ${error.message}`, timestamp: new Date().toLocaleTimeString() }])
     } finally {
       setIsLoading(false)
     }
   }
 
-  /* Voice Control Logic */
-  const [isListening, setIsListening] = useState(false)
-  const recognitionRef = useRef<any>(null)
-
-  const toggleListening = () => {
-    if (isListening) {
-      recognitionRef.current?.stop()
-      setIsListening(false)
-      return
-    }
-
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
-    if (!SpeechRecognition) {
-      alert("Browser does not support Speech Recognition")
-      return
-    }
-
-    const recognition = new SpeechRecognition()
-    recognition.continuous = false
-    recognition.interimResults = false
-    recognition.lang = 'en-US'
-
-    recognition.onstart = () => setIsListening(true)
-    recognition.onend = () => setIsListening(false)
-    recognition.onresult = (event: any) => {
-      const transcript = event.results[0][0].transcript
-      setInput(prev => prev + (prev ? ' ' : '') + transcript)
-    }
-
-    recognitionRef.current = recognition
-    recognition.start()
-  }
-
   return (
-    <div className={cn("flex flex-col border-l bg-background shadow-xl z-20 h-full overflow-hidden", className)}>
-      {/* Header */}
-      <div className="flex h-16 shrink-0 items-center justify-between border-b px-6 bg-background">
-        <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
-            <Bot className="h-5 w-5" />
-          </div>
-          <div>
-            <h3 className="font-semibold">Fondy</h3>
-            <p className="text-xs text-muted-foreground">Interactive Editor</p>
-          </div>
+    <div className={cn("flex flex-col bg-[#1e1e1e] text-green-400 font-mono text-xs overflow-hidden h-full border border-white/10 rounded-xl shadow-2xl", className)}>
+      {/* Terminal Header */}
+      <div className="flex shrink-0 items-center justify-between px-4 py-2 bg-[#2d2d2d] border-b border-black/20 select-none">
+        <div className="flex items-center gap-2">
+            <div className="flex gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]" />
+                <div className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
+                <div className="w-2.5 h-2.5 rounded-full bg-[#27c93f]" />
+            </div>
+            <div className="flex items-center gap-1.5 ml-2 text-white/40">
+                <Terminal className="w-3 h-3" />
+                <span>foundry-agent — zsh</span>
+            </div>
         </div>
-        <button
-          onClick={() => {
-            const keywords = prompt("Enter target SEO keywords:");
-            if (keywords) {
-              setInput(`Optimize the page for SEO targeting: ${keywords}. Rewrite meta tags and headers.`);
-            }
-          }}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-yellow-500/10 text-yellow-600 hover:bg-yellow-500/20 text-[10px] font-medium transition-colors"
-          title="Optimize SEO"
-        >
-          <Sparkles className="w-3 h-3" />
-          SEO
-        </button>
       </div>
 
-      {/* Messages */}
-      <div ref={scrollRef} className="flex-1 overflow-y-auto w-full p-6 space-y-6 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+      {/* Terminal Output */}
+      <div ref={scrollRef} className="flex-1 overflow-y-auto w-full p-4 space-y-1 custom-scrollbar scroll-smooth">
         {messages.map((msg, idx) => (
           <div
             key={idx}
             className={cn(
-              "flex flex-col gap-2 rounded-xl px-4 py-3 text-sm shadow-sm max-w-[90%]",
-              msg.role === 'user'
-                ? "ml-auto bg-black text-white"
-                : "bg-white border-2 border-gray-200 text-black"
+               "break-words font-mono",
+               msg.role === 'user' ? "text-white font-bold" : "text-green-400"
             )}
           >
-            <span className="text-[10px] uppercase tracking-wider opacity-70 font-bold mb-1 block">
-              {msg.role === 'user' ? 'You' : 'Fondy'}
-            </span>
-            {msg.content}
+             <span className="opacity-40 mr-2 text-[10px] text-white">[{msg.timestamp}]</span>
+             {msg.role === 'user' && <span className="mr-2 text-blue-400">➜ ~</span>}
+             {msg.role === 'assistant' && <span className="mr-2 text-green-500">{'>'}</span>}
+             {msg.content}
           </div>
         ))}
         {isLoading && (
-          <div className="flex max-w-[85%] items-center gap-3 rounded-xl bg-muted/50 px-4 py-3 text-sm text-foreground border">
-            <Sparkles className="h-4 w-4 animate-spin text-primary" />
-            <span className="font-medium">Writing code...</span>
-          </div>
+            <div className="flex items-center gap-2 text-yellow-400 animate-pulse mt-2">
+                <Loader2 className="w-3 h-3 animate-spin" />
+                <span>Processing instruction...</span>
+            </div>
         )}
+        <div className="animate-pulse text-green-500 font-bold mt-1">_</div>
       </div>
 
-      {/* Input */}
-      <div className="p-4 border-t bg-background shrink-0">
-        <form onSubmit={handleSubmit} className="relative flex items-center">
-
-          <button
-            type="button"
-            onClick={toggleListening}
-            className={cn(
-              "absolute left-2 z-10 p-2 rounded-full transition-all",
-              isListening ? "bg-red-500 text-white animate-pulse" : "text-muted-foreground hover:bg-muted"
-            )}
-            title="Voice Control"
-          >
-            {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
-          </button>
-
+      {/* Input Area */}
+      <div className="p-3 bg-[#1e1e1e] border-t border-white/5 shrink-0">
+        <form onSubmit={handleSubmit} className="relative flex items-center gap-2">
+          <ChevronRight className="w-4 h-4 text-green-500 shrink-0" />
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder={isListening ? "Listening..." : "Describe a change..."}
-            className="w-full rounded-full border bg-muted/50 px-4 py-3 pl-10 pr-12 text-sm outline-none focus:border-primary focus:bg-background transition-colors"
+            placeholder="Describe change (e.g. 'Make the hero title larger')..."
+            className="flex-1 bg-transparent border-none outline-none text-white placeholder-white/30 h-8 font-mono text-xs focus:ring-0"
             disabled={isLoading}
+            autoFocus
           />
-          <button
-            type="submit"
-            disabled={isLoading || !input.trim()}
-            className="absolute right-1.5 inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform hover:scale-105 disabled:opacity-50 disabled:hover:scale-100"
-          >
-            <Send className="h-4 w-4" />
-          </button>
         </form>
       </div>
     </div>

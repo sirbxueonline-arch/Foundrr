@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle2, Terminal, Code2, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { TypewriterText } from "@/components/landing/TypewriterText";
 
 export function Hero({ lang = 'az', t }: { lang?: string, t?: any }) {
   // Default fallbacks if t is missing
@@ -141,10 +142,13 @@ export function Hero({ lang = 'az', t }: { lang?: string, t?: any }) {
                       AI Reasoning
                     </div>
                     <div className="space-y-2 text-sm font-mono text-emerald-400/80 bg-zinc-900/50 p-3 rounded border border-white/5">
-                      <p>{text.reasoning[1]}</p>
-                      <p>{text.reasoning[2]}</p>
-                      <p>{text.reasoning[3]}</p>
-                      <p className="animate-pulse">{text.reasoning[4]}</p>
+                      <TypewriterText text={text.reasoning[1]} delay={0} />
+                      <TypewriterText text={text.reasoning[2]} delay={1500} />
+                      <TypewriterText text={text.reasoning[3]} delay={3000} />
+                      <div className="flex items-center gap-2 text-emerald-400/50">
+                        <span className="w-2 h-4 bg-emerald-500 animate-pulse" />
+                        <span className="text-xs">Processing...</span>
+                      </div>
                     </div>
                   </div>
                 </div>

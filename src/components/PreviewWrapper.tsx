@@ -2,11 +2,10 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { FoundryAgent } from '@/components/FoundryAgent'
-import { Lock, Download, Smartphone, Tablet, Monitor, Palette, Sparkles, Rocket, Globe } from 'lucide-react'
+import { Lock, Download, Smartphone, Tablet, Monitor, Sparkles, Rocket, Globe } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useLanguage } from '@/contexts/LanguageContext'
-import { ThemeEditor } from '@/components/ThemeEditor'
 
 interface PreviewWrapperProps {
   siteId: string
@@ -19,8 +18,6 @@ export default function PreviewWrapper({ siteId, isPaid }: PreviewWrapperProps) 
   const [selectedImage, setSelectedImage] = useState<{ src: string, id: string } | null>(null)
   const [newImageUrl, setNewImageUrl] = useState('')
   const [isEditorOpen, setIsEditorOpen] = useState(false)
-  const [isThemeEditorOpen, setIsThemeEditorOpen] = useState(false)
-  const [isApplyingTheme, setIsApplyingTheme] = useState(false)
   const [isPublishing, setIsPublishing] = useState(false)
   const [publicUrl, setPublicUrl] = useState('')
   const iframeRef = useRef<HTMLIFrameElement>(null)
@@ -128,53 +125,10 @@ export default function PreviewWrapper({ siteId, isPaid }: PreviewWrapperProps) 
     setNewImageUrl('https://placehold.co/1x1/transparent/png')
   }
 
-  const handleThemeApply = async (prompt: string) => {
-    setIsApplyingTheme(true)
-    try {
-      // 1. Fetch current HTML
-      const htmlRes = await fetch(`/api/preview/${siteId}?file=${activeFile}`)
-      const currentHtml = await htmlRes.text()
 
-      // 2. Send to Edit API
-      const res = await fetch('/api/edit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          siteId,
-          prompt,
-          currentHtml
-        })
-      })
-
-      if (!res.ok) throw new Error('Failed to update theme')
-
-      const data = await res.json()
-
-      // 3. Update
-      if (data.action === 'create') {
-        setActiveFile(data.filename)
-      } else {
-        setReloadKey(prev => prev + 1)
-      }
-      setIsThemeEditorOpen(false)
-
-    } catch (error) {
-      console.error(error)
-      alert("Failed to apply theme. Please try again.")
-    } finally {
-      setIsApplyingTheme(false)
-    }
-  }
 
   return (
     <div className="flex h-[calc(100vh-3.5rem)] flex-col relative bg-muted/20">
-
-      <ThemeEditor
-        isOpen={isThemeEditorOpen}
-        onClose={() => setIsThemeEditorOpen(false)}
-        onApply={handleThemeApply}
-        isApplying={isApplyingTheme}
-      />
 
       {/* Background Pattern */}
       <div className="absolute inset-0 z-0 opacity-20 bg-[radial-gradient(#000000_1px,transparent_1px)] dark:bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]" />
@@ -289,6 +243,7 @@ export default function PreviewWrapper({ siteId, isPaid }: PreviewWrapperProps) 
           )}
         </div>
 
+          
         <div className="pointer-events-auto flex items-center gap-3">
           {/* Responsive Toggle */}
           <div className="flex items-center gap-1 bg-background/80 backdrop-blur-md border border-border/40 rounded-full p-1 shadow-sm mr-2">
@@ -315,58 +270,6 @@ export default function PreviewWrapper({ siteId, isPaid }: PreviewWrapperProps) 
             </button>
           </div>
 
-          <button
-            onClick={() => setIsThemeEditorOpen(true)}
-            className={`p-2 rounded-full bg-background/80 backdrop-blur-md border border-border/40 shadow-sm transition-all hover:bg-muted mr-3 ${isThemeEditorOpen ? 'ring-2 ring-primary' : ''}`}
-            title="Theme Editor"
-          >
-            <Palette className="h-4 w-4 text-pink-500" />
-          </button>
-
-          <button
-            onClick={async () => {
-              if (publicUrl) {
-                window.open(publicUrl, '_blank');
-                return;
-              }
-
-              // Custom Slug Prompt
-              const slug = window.prompt("Choose a unique name for your site (e.g. my-startup):");
-              if (!slug) return;
-
-              setIsPublishing(true);
-              try {
-                const res = await fetch('/api/publish', {
-                  method: 'POST',
-                  body: JSON.stringify({ siteId, publish: true, slug })
-                });
-
-                if (res.status === 409) {
-                  alert("That name is already taken. Please try another.");
-                  return;
-                }
-
-                if (res.ok) {
-                  const url = `${window.location.origin}/site/${slug}`;
-                  setPublicUrl(url);
-                  alert(`🚀 Published! URL: ${url}`);
-                } else {
-                  throw new Error("Failed");
-                }
-              } catch (e) {
-                alert("Failed to publish. Name might be taken or invalid.");
-              } finally {
-                setIsPublishing(false);
-              }
-            }}
-            className={`p-2 rounded-full bg-background/80 backdrop-blur-md border border-border/40 shadow-sm transition-all hover:bg-muted mr-3 ${publicUrl ? 'ring-2 ring-emerald-500 bg-emerald-100' : ''}`}
-            title={publicUrl ? "View Live Site" : "One-Click Publish"}
-          >
-            {isPublishing ? <span className="text-xs animate-pulse">...</span> :
-              publicUrl ? <Globe className="h-4 w-4 text-emerald-600" /> : <Rocket className="h-4 w-4 text-indigo-600" />
-            }
-          </button>
-
           {!isPaid ? (
             <>
               <div className="flex items-center gap-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 px-4 py-2 text-xs font-semibold text-amber-600 dark:text-amber-400 backdrop-blur-md">
@@ -388,6 +291,51 @@ export default function PreviewWrapper({ siteId, isPaid }: PreviewWrapperProps) 
               <span className="hidden sm:inline-flex text-xs text-emerald-600 font-medium items-center px-3">
                 {t?.preview?.paid || "Unlocked"}
               </span>
+
+              <button
+                onClick={async () => {
+                  if (publicUrl) {
+                    window.open(publicUrl, '_blank');
+                    return;
+                  }
+
+                  // Custom Slug Prompt
+                  const slug = window.prompt("Choose a unique name for your site (e.g. my-startup):");
+                  if (!slug) return;
+
+                  setIsPublishing(true);
+                  try {
+                    const res = await fetch('/api/publish', {
+                      method: 'POST',
+                      body: JSON.stringify({ siteId, publish: true, slug })
+                    });
+
+                    if (res.status === 409) {
+                      alert("That name is already taken. Please try another.");
+                      return;
+                    }
+
+                    if (res.ok) {
+                      const url = `${window.location.origin}/site/${slug}`;
+                      setPublicUrl(url);
+                      alert(`🚀 Published! URL: ${url}`);
+                    } else {
+                      throw new Error("Failed");
+                    }
+                  } catch (e) {
+                    alert("Failed to publish. Name might be taken or invalid.");
+                  } finally {
+                    setIsPublishing(false);
+                  }
+                }}
+                className={`p-2 rounded-full bg-background border border-border/40 shadow-sm transition-all hover:bg-muted ${publicUrl ? 'ring-2 ring-emerald-500 bg-emerald-100' : ''}`}
+                title={publicUrl ? "View Live Site" : "One-Click Publish"}
+              >
+                {isPublishing ? <span className="text-xs animate-pulse">...</span> :
+                  publicUrl ? <Globe className="h-4 w-4 text-emerald-600" /> : <Rocket className="h-4 w-4 text-indigo-600" />
+                }
+              </button>
+
               <a
                 href={`/api/download/${siteId}`}
                 className="inline-flex h-8 items-center justify-center rounded-full bg-primary px-4 text-xs font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
@@ -401,36 +349,48 @@ export default function PreviewWrapper({ siteId, isPaid }: PreviewWrapperProps) 
       </div>
 
       {/* Canvas Layout */}
-      <div className="flex flex-1 overflow-hidden px-4 pb-4 gap-4 relative z-10">
+      <div className="flex flex-1 overflow-hidden px-6 pb-6 gap-6 relative z-10">
 
-        {/* Iframe Container - Floating Card */}
-        <div className="flex-1 flex items-center justify-center overflow-auto bg-transparent">
-          <div
-            className={`relative bg-background rounded-2xl shadow-2xl border border-border/40 overflow-hidden ring-1 ring-black/5 dark:ring-white/5 transition-all duration-500 ease-in-out ${previewMode === 'mobile' ? 'w-[375px] h-[812px]' :
-              previewMode === 'tablet' ? 'w-[768px] h-[1024px] scale-[0.8] origin-center' :
-                'w-full h-full'
-              }`}
-          >
-            <iframe
-              ref={iframeRef}
-              key={`${reloadKey}-${activeFile}`}
-              src={`/api/preview/${siteId}?t=${reloadKey}&file=${activeFile}`}
-              className={`border-0 bg-white origin-top-left transition-all duration-300 ${previewMode === 'desktop' ? 'w-[133.33%] h-[133.33%] scale-[0.75]' : 'w-full h-full'
-                }`}
-              title="Website Preview"
-              sandbox="allow-same-origin allow-scripts allow-modals"
-            />
-          </div>
+        {/* Iframe Container - Main Canvas */}
+        <div className="flex-1 flex flex-col relative min-w-0">
+             <div className="absolute -top-12 left-0 flex items-center gap-2">
+                 <div className="bg-black/80 backdrop-blur text-white text-[10px] px-3 py-1 rounded-full font-bold border border-white/10 flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                    LIVE PREVIEW
+                 </div>
+             </div>
+
+             <div className="flex-1 bg-zinc-900/5 backdrop-blur-sm rounded-2xl border border-white/10 shadow-2xl overflow-hidden relative">
+                 <div
+                    className={`bg-white h-full w-full transition-all duration-500 ease-in-out mx-auto ${
+                      previewMode === 'mobile' ? 'max-w-[375px] border-x border-black/10' :
+                      previewMode === 'tablet' ? 'max-w-[768px] border-x border-black/10' :
+                        'w-full'
+                      }`}
+                  >
+                    <iframe
+                      ref={iframeRef}
+                      key={`${reloadKey}-${activeFile}`}
+                      src={`/api/preview/${siteId}?t=${reloadKey}&file=${activeFile}`}
+                      className="w-full h-full border-0 bg-white"
+                      title="Website Preview"
+                      sandbox="allow-same-origin allow-scripts allow-modals"
+                    />
+                 </div>
+             </div>
         </div>
 
-        {/* AI Sidebar - Integrated Panel */}
-        <div className="w-[350px] shrink-0 bg-background/95 backdrop-blur-xl rounded-2xl border border-border/40 shadow-xl overflow-hidden flex flex-col">
-          <FoundryAgent
-            siteId={siteId}
-            activeFile={activeFile}
-            onUpdate={handleUpdate}
-            className="h-full border-0"
-          />
+        {/* Terminal / Assistant Panel */}
+        <div className="w-[400px] shrink-0 flex flex-col gap-4">
+           {/* We can put file explorer or other tools here later */}
+           <div className="flex-1 rounded-xl overflow-hidden shadow-2xl border border-white/10 bg-[#1e1e1e]">
+              <FoundryAgent
+                siteId={siteId}
+                activeFile={activeFile}
+                onUpdate={handleUpdate}
+                className="h-full border-0 rounded-none shadow-none"
+              />
+           </div>
         </div>
       </div>
     </div>

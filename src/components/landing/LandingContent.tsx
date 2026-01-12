@@ -15,7 +15,7 @@ export default function LandingContent({ user }: { user: any }) {
   const { t, lang, toggleLanguage } = useLanguage()
 
   return (
-    <div className="flex flex-col items-center overflow-x-hidden w-full">
+    <div className="flex flex-col items-center overflow-x-hidden w-full animate-in fade-in duration-700">
       {/* Client Header */}
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-14 max-w-screen-xl mx-auto items-center justify-between px-4 sm:px-8">

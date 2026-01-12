@@ -137,7 +137,7 @@ export const translations = {
       scanApp: "m10 tətbiqi",
       bankTransfer: "Bank Köçürməsi",
       sendTo: "Aşağıdakı karta göndərin:",
-      name: "Ad: Foundrr Inc.",
+      name: "Ad: Ay*** Qul*****",
       instructions: "Təlimatlar",
       m10Steps: [
         "m10 tətbiqini açın",
@@ -306,7 +306,7 @@ export const translations = {
       scanApp: "m10 app",
       bankTransfer: "Bank Transfer",
       sendTo: "Send to the following card:",
-      name: "Name: Foundrr Inc.",
+      name: "Name: Ay*** Qul*****",
       instructions: "Instructions",
       m10Steps: [
         "Open your m10 app",

@@ -96,96 +96,113 @@ export default function AdminPage() {
     }
 
     return (
-        <div className="min-h-screen space-y-8 pb-20">
+        <div className="relative min-h-screen pb-20 overflow-hidden bg-background">
+            {/* Background Effects */}
+            <div className="absolute inset-0 -z-10 h-full w-full bg-background overflow-hidden pointer-events-none">
+                <div className="absolute top-0 z-[0] h-screen w-screen bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.15),rgba(255,255,255,0))]" />
+                <div className="absolute top-10 left-10 w-96 h-96 bg-purple-500/10 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob" />
+                <div className="absolute top-10 right-10 w-96 h-96 bg-blue-500/10 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000" />
+                <div className="absolute -bottom-32 left-1/3 w-96 h-96 bg-pink-500/10 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000" />
+            </div>
+
             {/* Header Section */}
-            <div className="relative bg-gradient-to-b from-primary/5 to-transparent pb-12 pt-16 -mx-6 px-6 md:-mx-12 md:px-12 border-b border-primary/5">
-                <div className="container mx-auto max-w-5xl">
-                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                        <div className="space-y-2">
+            <div className="relative pb-12 pt-16 border-b border-white/5 bg-white/5 backdrop-blur-md z-10">
+                <div className="container mx-auto max-w-5xl px-6">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                        <div className="space-y-1">
                             <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent">
-                                Admin Control
+                                Secure Admin Grid
                             </h1>
-                            <p className="text-lg text-muted-foreground">
+                            <p className="text-lg text-muted-foreground flex items-center gap-2">
+                                <ShieldAlert className="h-4 w-4" />
                                 Verify and process incoming wire transfers.
                             </p>
                         </div>
-                        <div className="flex items-center gap-4 rounded-xl bg-background/50 backdrop-blur-sm border px-4 py-3 shadow-sm">
+                        <div className="flex items-center gap-4 rounded-xl bg-background/50 backdrop-blur-xl border border-white/10 px-4 py-3 shadow-sm ring-1 ring-white/5">
                             <div className="flex items-center gap-2">
-                                <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-                                <span className="text-sm font-medium text-muted-foreground">System Online</span>
+                                <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse ring-4 ring-emerald-500/20" />
+                                <span className="text-sm font-bold text-foreground/80">System Online</span>
                             </div>
-                            <div className="h-4 w-px bg-border" />
+                            <div className="h-4 w-px bg-white/10" />
                             <div className="text-sm font-medium">
-                                <span className="text-foreground font-bold">{sites.length}</span> Pending
+                                <span className="text-primary font-bold">{sites.length}</span> Pending Requests
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className="container mx-auto max-w-5xl px-4 md:px-0">
+            <div className="container mx-auto max-w-5xl px-4 md:px-6 py-12 relative z-10">
                 <div className="grid gap-6">
                     {sites.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-primary/20 bg-primary/5 p-16 text-center animate-in fade-in zoom-in-95 duration-500">
-                            <div className="h-16 w-16 bg-background rounded-2xl shadow-sm flex items-center justify-center mb-6 border rotate-3 transition-transform hover:rotate-6">
-                                <Layers className="h-8 w-8 text-primary/60" />
+                        <div className="flex flex-col items-center justify-center rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-20 text-center animate-in fade-in zoom-in-95 duration-700 shadow-2xl">
+                            <div className="relative mb-6">
+                                <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full" />
+                                <div className="relative h-20 w-20 bg-background/80 backdrop-blur-md rounded-2xl shadow-inner border border-white/10 flex items-center justify-center rotate-3 transition-transform hover:rotate-6">
+                                    <Layers className="h-10 w-10 text-primary" />
+                                </div>
                             </div>
-                            <h3 className="font-bold text-2xl tracking-tight mb-2">Queue Empty</h3>
-                            <p className="text-muted-foreground max-w-xs mx-auto">
-                                All payments have been processed. New requests will appear here automatically.
+                            <h3 className="font-bold text-3xl tracking-tight mb-3 bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/60">Queue Empty</h3>
+                            <p className="text-muted-foreground max-w-md mx-auto text-lg leading-relaxed">
+                                All visible payments have been processed successfully. <br/> Listening for new transactions...
                             </p>
                         </div>
                     ) : (
                         sites.map((site) => (
                             <div
                                 key={site.id}
-                                className="group relative flex flex-col md:flex-row items-start md:items-center justify-between gap-6 rounded-2xl border bg-card p-6 shadow-sm transition-all hover:shadow-md hover:border-primary/20 hover:-translate-y-0.5"
+                                className="group relative flex flex-col md:flex-row items-start md:items-center justify-between gap-6 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 shadow-lg transition-all hover:bg-white/10 hover:shadow-2xl hover:-translate-y-1 hover:border-primary/20"
                             >
-                                <div className="space-y-3 flex-1">
-                                    <div className="flex items-start justify-between md:justify-start md:items-center gap-3">
-                                        <h3 className="font-bold text-xl tracking-tight group-hover:text-primary transition-colors">
+                                <div className="space-y-4 flex-1">
+                                    <div className="flex items-start justify-between md:justify-start md:items-center gap-4">
+                                        <h3 className="font-bold text-2xl tracking-tight text-foreground group-hover:text-primary transition-colors">
                                             {site.name || 'Untitled Project'}
                                         </h3>
-                                        <span className="inline-flex items-center rounded-full bg-amber-500/10 px-3 py-1 text-xs font-medium text-amber-600 border border-amber-500/20 shadow-sm animate-pulse">
+                                        <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 px-3 py-1 text-xs font-bold text-amber-500 border border-amber-500/20 shadow-[0_0_10px_rgba(245,158,11,0.2)] animate-pulse">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-amber-500" />
                                             Action Required
                                         </span>
                                     </div>
 
-                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-sm">
                                         <div className="space-y-1">
-                                            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Created</p>
-                                            <p className="font-mono text-foreground/80">{format(new Date(site.created_at), 'MMM d, HH:mm')}</p>
+                                            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">Created At</p>
+                                            <p className="font-mono text-foreground/90 font-medium">{format(new Date(site.created_at), 'MMM d, HH:mm')}</p>
                                         </div>
                                         <div className="space-y-1">
-                                            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Method</p>
-                                            <div className="flex items-center gap-1.5">
-                                                {site.payment_method === 'm10' ? <Smartphone className="h-3.5 w-3.5" /> : <CreditCard className="h-3.5 w-3.5" />}
-                                                <span className="capitalize">{site.payment_method || 'Wire'}</span>
+                                            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">Method</p>
+                                            <div className="flex items-center gap-2">
+                                                <div className={`p-1.5 rounded-md ${site.payment_method === 'm10' ? 'bg-indigo-500/10 text-indigo-400' : 'bg-pink-500/10 text-pink-400'}`}>
+                                                    {site.payment_method === 'm10' ? <Smartphone className="h-3.5 w-3.5" /> : <CreditCard className="h-3.5 w-3.5" />}
+                                                </div>
+                                                <span className="font-medium capitalize">{site.payment_method || 'Wire'}</span>
                                             </div>
                                         </div>
                                         <div className="space-y-1">
-                                            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Amount</p>
-                                            <p className="font-bold text-green-600 dark:text-green-400">{site.price?.toFixed(2) || '49.99'} ₼</p>
+                                            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">Amount</p>
+                                            <p className="font-bold text-xl text-emerald-500 drop-shadow-sm">49.99 ₼</p>
                                         </div>
                                         <div className="space-y-1">
-                                            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Ref ID</p>
-                                            <p className="font-mono text-xs bg-muted/50 px-1.5 py-0.5 rounded border fit-content w-fit">{site.payment_identifier || 'N/A'}</p>
+                                            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">Reference ID</p>
+                                            <div className="flex items-center gap-2 font-mono text-xs bg-black/20 px-2 py-1 rounded-md border border-white/5 w-fit select-all hover:bg-black/30 cursor-copy">
+                                                {site.payment_identifier || 'N/A'}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-3 w-full md:w-auto pt-4 md:pt-0 border-t md:border-t-0 mt-2 md:mt-0">
+                                <div className="flex items-center gap-3 w-full md:w-auto pt-4 md:pt-0 border-t border-white/5 md:border-t-0 mt-2 md:mt-0">
                                     <button
                                         onClick={() => handleAction(site.id, 'reject')}
                                         disabled={!!processingId}
-                                        className="flex-1 md:flex-none h-10 px-4 inline-flex items-center justify-center whitespace-nowrap rounded-lg border border-input bg-transparent text-sm font-medium transition-colors hover:bg-destructive/10 hover:text-destructive hover:border-destructive/20 disabled:pointer-events-none disabled:opacity-50"
+                                        className="flex-1 md:flex-none h-11 px-5 inline-flex items-center justify-center whitespace-nowrap rounded-xl border border-white/10 bg-white/5 text-sm font-bold transition-all hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/20 disabled:pointer-events-none disabled:opacity-50"
                                     >
                                         {processingId === site.id ? <Loader2 className="h-4 w-4 animate-spin" /> : "Reject"}
                                     </button>
                                     <button
                                         onClick={() => handleAction(site.id, 'approve')}
                                         disabled={!!processingId}
-                                        className="relative flex-1 md:flex-none h-10 px-6 inline-flex items-center justify-center whitespace-nowrap rounded-lg bg-primary text-sm font-medium text-primary-foreground shadow transition-all hover:bg-primary/90 hover:shadow-md disabled:pointer-events-none disabled:opacity-50"
+                                        className="relative flex-1 md:flex-none h-11 px-8 inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-sm font-bold text-white shadow-lg shadow-emerald-500/20 transition-all hover:scale-[1.02] hover:shadow-emerald-500/40 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50"
                                     >
                                         {processingId === site.id ? (
                                             <Loader2 className="h-4 w-4 animate-spin" />
