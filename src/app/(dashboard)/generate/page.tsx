@@ -96,9 +96,14 @@ export default function GeneratePage() {
           }
 
           // Simple log simulator
-          if (chunk.includes('<nav')) setLogs(prev => [...prev, '> Generating Navigation Structure...'])
-          if (chunk.includes('<section')) setLogs(prev => [...prev, '> Building Section Layout...'])
+          if (chunk.includes('<nav')) setLogs(prev => [...prev, '> Architecting Navigation System...'])
+          if (chunk.includes('<header') || chunk.includes('id="hero"')) setLogs(prev => [...prev, '> Designing Hero Section...'])
+          if (chunk.includes('class="grid')) setLogs(prev => [...prev, '> Structuring Grid Layouts...'])
+          if (chunk.includes('<img')) setLogs(prev => [...prev, '> Selecting Premium Assets...'])
+          if (chunk.includes('<section')) setLogs(prev => [...prev, '> Building Content Section...'])
+          if (chunk.includes('<form')) setLogs(prev => [...prev, '> Integrating Contact Forms...'])
           if (chunk.includes('<footer')) setLogs(prev => [...prev, '> Finalizing Footer Components...'])
+          if (chunk.includes('<script')) setLogs(prev => [...prev, '> Injecting Interactivity...'])
 
           // Check for redirection
           if (buffer.includes('<!-- SITE_ID:')) {
@@ -324,7 +329,7 @@ export default function GeneratePage() {
                     ref={logContainerRef}
                   >
                      <pre className="whitespace-pre-wrap break-all font-mono">
-                        {streamData || logs.join('\n')}
+                        {logs.join('\n')}
                         <span className="animate-pulse inline-block w-2 h-4 bg-green-500 ml-1 align-middle">_</span>
                      </pre>
                   </div>

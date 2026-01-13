@@ -23,6 +23,37 @@ export default function PreviewWrapper({ siteId, isPaid }: PreviewWrapperProps) 
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const [previewMode, setPreviewMode] = useState<'desktop' | 'tablet' | 'mobile'>('desktop')
   const [isTextEditing, setIsTextEditing] = useState(false)
+  const [isPublishModalOpen, setIsPublishModalOpen] = useState(false)
+  const [publishSlug, setPublishSlug] = useState('')
+
+  const handlePublishSubmit = async () => {
+    if (!publishSlug.trim()) return;
+
+    setIsPublishing(true);
+    try {
+      const res = await fetch('/api/publish', {
+        method: 'POST',
+        body: JSON.stringify({ siteId, publish: true, slug: publishSlug })
+      });
+
+      if (res.status === 409) {
+        alert("That name is already taken. Please try another.");
+        return;
+      }
+
+      if (res.ok) {
+        setPublicUrl(publishSlug); // Store SLUG only, we construct URL dynamically
+        setIsPublishModalOpen(false);
+        // alert(`🚀 Published!`); // Optional, maybe just show the green button state
+      } else {
+        throw new Error("Failed");
+      }
+    } catch (e) {
+      alert("Failed to publish. Name might be taken or invalid.");
+    } finally {
+      setIsPublishing(false);
+    }
+  }
 
   // Toggle Editor
   useEffect(() => {
@@ -360,49 +391,32 @@ export default function PreviewWrapper({ siteId, isPaid }: PreviewWrapperProps) 
                 {t?.preview?.paid || "Unlocked"}
               </span>
 
-              <button
-                onClick={async () => {
-                  if (publicUrl) {
-                    window.open(publicUrl, '_blank');
-                    return;
-                  }
-
-                  // Custom Slug Prompt
-                  const slug = window.prompt("Choose a unique name for your site (e.g. my-startup):");
-                  if (!slug) return;
-
-                  setIsPublishing(true);
-                  try {
-                    const res = await fetch('/api/publish', {
-                      method: 'POST',
-                      body: JSON.stringify({ siteId, publish: true, slug })
-                    });
-
-                    if (res.status === 409) {
-                      alert("That name is already taken. Please try another.");
-                      return;
-                    }
-
-                    if (res.ok) {
-                      const url = `${window.location.origin}/site/${slug}`;
-                      setPublicUrl(url);
-                      alert(`🚀 Published! URL: ${url}`);
-                    } else {
-                      throw new Error("Failed");
-                    }
-                  } catch (e) {
-                    alert("Failed to publish. Name might be taken or invalid.");
-                  } finally {
-                    setIsPublishing(false);
-                  }
-                }}
-                className={`p-2 rounded-full bg-background border border-border/40 shadow-sm transition-all hover:bg-muted ${publicUrl ? 'ring-2 ring-emerald-500 bg-emerald-100' : ''}`}
-                title={publicUrl ? "View Live Site" : "One-Click Publish"}
-              >
-                {isPublishing ? <span className="text-xs animate-pulse">...</span> :
-                  publicUrl ? <Globe className="h-4 w-4 text-emerald-600" /> : <Rocket className="h-4 w-4 text-indigo-600" />
-                }
-              </button>
+              {!publicUrl ? (
+                <button
+                  onClick={() => setIsPublishModalOpen(true)}
+                  className="p-2 rounded-full bg-background border border-border/40 shadow-sm transition-all hover:bg-muted"
+                  title="One-Click Publish"
+                >
+                  <Rocket className="h-4 w-4 text-indigo-600" />
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                     // Check if we are in production or local
+                     // For correct subdomain behavior: http://slug.domain.com
+                     const rootDomain = window.location.host.replace('www.', '');
+                     // If localhost, subdomains might not work without /etc/hosts, 
+                     // but we try to construct it anyway as requested.
+                     const protocol = window.location.protocol;
+                     const targetUrl = `${protocol}//${publicUrl}.${rootDomain}`;
+                     window.open(targetUrl, '_blank');
+                  }}
+                   className="p-2 rounded-full bg-emerald-100 ring-2 ring-emerald-500 shadow-sm transition-all hover:bg-emerald-200"
+                   title={`View Live: ${publicUrl}.${typeof window !== 'undefined' ? window.location.host : ''}`}
+                >
+                    <Globe className="h-4 w-4 text-emerald-600" />
+                </button>
+              )}
 
               <a
                 href={`/api/download/${siteId}`}
@@ -413,6 +427,62 @@ export default function PreviewWrapper({ siteId, isPaid }: PreviewWrapperProps) 
               </a>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Publish Modal */}
+      {isPublishModalOpen && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="w-full max-w-md bg-background/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-border/50 p-8 space-y-6">
+             <div className="text-center">
+                <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                   <Rocket className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+                </div>
+                <h3 className="text-xl font-bold tracking-tight">Publish to the World</h3>
+                <p className="text-sm text-muted-foreground mt-2">
+                   Choose a unique subdomain for your site. It will be live instantly.
+                </p>
+             </div>
+
+             <div className="space-y-4">
+                <div>
+                   <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Subdomain</label>
+                   <div className="flex items-center mt-1.5">
+                      <input 
+                         className="flex-1 bg-secondary/50 border-0 rounded-l-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 transition-all font-mono text-right"
+                         placeholder="my-startup"
+                         value={publishSlug}
+                         onChange={(e) => setPublishSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
+                         autoFocus
+                      />
+                      <div className="bg-muted border border-l-0 border-input rounded-r-xl px-4 py-3 text-sm text-muted-foreground font-mono">
+                         .{typeof window !== 'undefined' ? window.location.host.replace('www.', '') : 'site.com'}
+                      </div>
+                   </div>
+                   <p className="text-[10px] text-muted-foreground mt-2 ml-1">
+                      Only lowercase letters, numbers, and dashes.
+                   </p>
+                </div>
+             </div>
+
+             <div className="flex gap-3 pt-2">
+                <button
+                  onClick={() => setIsPublishModalOpen(false)}
+                  className="flex-1 px-4 py-2.5 rounded-xl bg-muted text-muted-foreground hover:bg-muted/80 font-medium text-sm transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handlePublishSubmit}
+                  disabled={isPublishing || !publishSlug.trim()}
+                  className="flex-1 px-4 py-2.5 rounded-xl bg-indigo-600 text-white font-semibold text-sm hover:bg-indigo-700 hover:shadow-lg hover:shadow-indigo-500/20 transition-all active:scale-95 flex items-center justify-center"
+                >
+                  {isPublishing ? <Loader2 className="w-4 h-4 animate-spin" /> : "Publish Now"}
+                </button>
+             </div>
+          </div>
+        </div>
+      )}
         </div>
       </div>
 
