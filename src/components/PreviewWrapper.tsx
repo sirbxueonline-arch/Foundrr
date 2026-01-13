@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { FoundryAgent } from '@/components/FoundryAgent'
-import { Lock, Download, Smartphone, Tablet, Monitor, Sparkles, Rocket, Globe, Pencil, CheckCircle2 } from 'lucide-react'
+import { Lock, Download, Smartphone, Tablet, Monitor, Sparkles, Rocket, Globe, Pencil, CheckCircle2, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useLanguage } from '@/contexts/LanguageContext'
