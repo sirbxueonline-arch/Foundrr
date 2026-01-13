@@ -140,6 +140,12 @@ export async function middleware(request: NextRequest) {
       // Current path: request.nextUrl.pathname
       
       const path = request.nextUrl.pathname;
+
+      // EXCLUDE API REQUESTS from rewrite
+      // We want sub.domain.com/api/... to go to the main api handler, NOT /site/sub/api/...
+      if (path.startsWith('/api')) {
+         return response;
+      }
       
       // Rewrite
       return NextResponse.rewrite(new URL(`/site/${subdomain}${path}`, request.url));
