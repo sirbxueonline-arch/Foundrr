@@ -12,7 +12,7 @@ export function Footer() {
             &copy; {new Date().getFullYear()} foundrr. {t.footer.copyright}
           </p>
           <p className="text-center text-xs text-muted-foreground/60">
-            Made by Foundrr Group
+            Made by <a href="https://foundrr.online" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Foundrr Group</a>
           </p>
         </div>
         <div className="flex items-center gap-6 text-sm text-muted-foreground">
