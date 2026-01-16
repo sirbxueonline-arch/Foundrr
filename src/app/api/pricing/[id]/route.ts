@@ -20,16 +20,16 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
     if (error || !site) {
         // Fallback for missing sites or errors
         return NextResponse.json({
-            price: 64.99,
-            currency: 'AZN',
+            price: 49.99,
+            currency: 'USD',
             payment_status: 'pending',
             paid: false
         })
     }
 
     return NextResponse.json({
-        price: site.price || 64.99,
-        currency: 'AZN',
+        price: site.price || 49.99,
+        currency: 'USD',
         payment_status: site.payment_status || 'pending',
         paid: site.paid || false
     })

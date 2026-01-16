@@ -132,17 +132,14 @@ export function PayContent({ siteId }: { siteId: string }) {
           <div className="space-y-3 mb-2 max-w-sm mx-auto bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/5 shadow-inner">
             <div className="flex justify-between text-sm text-muted-foreground">
               <span>{t?.payment?.breakdown?.website || "Static Website Price"}</span>
-              <span className="font-mono">49.99 {t?.payment?.currency || "AZN"}</span>
+              <span className="font-mono">49.99 {t?.payment?.currency || "USD"}</span>
             </div>
-            <div className="flex justify-between text-sm text-muted-foreground">
-              <span>{t?.payment?.breakdown?.fee || "Foundrr Service Fee"}</span>
-              <span className="font-mono">15.00 {t?.payment?.currency || "AZN"}</span>
-            </div>
+            {/* Service fee removed/included */}
             <div className="h-px w-full bg-border/50 my-2" />
             <div className="flex justify-between text-base font-bold text-foreground">
               <span>{t?.payment?.breakdown?.total || "Total Payable"}</span>
               <div className="flex items-center gap-1">
-                {priceLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <span className="font-mono text-primary text-xl">64.99 {t?.payment?.currency || "AZN"}</span>}
+                {priceLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <span className="font-mono text-primary text-xl">49.99 {t?.payment?.currency || "USD"}</span>}
               </div>
             </div>
           </div>

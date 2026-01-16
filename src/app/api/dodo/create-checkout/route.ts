@@ -56,9 +56,9 @@ export async function POST(request: Request) {
             },
             product_cart: [
                 {
-                    product_id: 'prod_website_unlock', // You might need to create this product in Dodo or pass ad-hoc
+                    product_id: process.env.DODO_PAYMENTS_PRODUCT_ID || 'prod_website_unlock',
                     quantity: 1,
-                    amount: 6500
+                    // amount is optional if defined in product
                 }
             ],
             return_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/website/${siteId}?payment=success`,

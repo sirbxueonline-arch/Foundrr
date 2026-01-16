@@ -144,7 +144,7 @@ export default function AdminPage() {
                             </div>
                             <h3 className="font-bold text-3xl tracking-tight mb-3 bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/60">Queue Empty</h3>
                             <p className="text-muted-foreground max-w-md mx-auto text-lg leading-relaxed">
-                                All visible payments have been processed successfully. <br/> Listening for new transactions...
+                                All visible payments have been processed successfully. <br /> Listening for new transactions...
                             </p>
                         </div>
                     ) : (
@@ -180,7 +180,7 @@ export default function AdminPage() {
                                         </div>
                                         <div className="space-y-1">
                                             <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">Amount</p>
-                                            <p className="font-bold text-xl text-emerald-500 drop-shadow-sm">49.99 ₼</p>
+                                            <p className="font-bold text-xl text-emerald-500 drop-shadow-sm">$49.99</p>
                                         </div>
                                         <div className="space-y-1">
                                             <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">Reference ID</p>
