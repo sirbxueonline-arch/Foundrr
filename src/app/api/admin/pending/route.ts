@@ -46,7 +46,7 @@ export async function GET(request: Request) {
         const { data: pendingSites, error } = await supabaseAdmin
             .from('websites')
             .select('*')
-            .eq('payment_status', 'pending')
+            // .eq('payment_status', 'pending') // Fetch ALL to allow client-side filtering & stats
             .order('created_at', { ascending: false })
 
         if (error) throw error

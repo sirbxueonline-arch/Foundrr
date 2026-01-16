@@ -88,8 +88,12 @@ export default function AdminPage() {
     }, [sites, searchTerm, statusFilter])
 
     // Stats
-    const totalPotentialRevenue = sites.length * 49.99
-    const totalRequests = sites.length
+    const pendingSites = sites.filter(s => s.payment_status === 'pending')
+    const paidSites = sites.filter(s => s.payment_status === 'paid' || s.payment_status === 'succeeded')
+
+    // Calculate revenues
+    const pendingRevenue = pendingSites.reduce((acc, site) => acc + (site.price || 49.99), 0)
+    const totalRevenue = paidSites.reduce((acc, site) => acc + (site.price || 49.99), 0)
 
     // Fallback UI for loading/error
     if (loading && sites.length === 0) return <LoadingState />
@@ -123,16 +127,22 @@ export default function AdminPage() {
 
             <main className="container mx-auto px-6 py-8">
                 {/* Stats Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <StatCard
+                        title="Total Revenue"
+                        value={`$${totalRevenue.toFixed(2)}`}
+                        icon={<DollarSign className="text-emerald-500" />}
+                        subtitle="Liftime earnings"
+                    />
                     <StatCard
                         title="Pending Revenue"
-                        value={`$${totalPotentialRevenue.toFixed(2)}`}
-                        icon={<DollarSign className="text-emerald-500" />}
-                        subtitle={`${sites.length} transactions waiting`}
+                        value={`$${pendingRevenue.toFixed(2)}`}
+                        icon={<DollarSign className="text-amber-500" />}
+                        subtitle={`${pendingSites.length} transactions waiting`}
                     />
                     <StatCard
                         title="Active Requests"
-                        value={totalRequests.toString()}
+                        value={pendingSites.length.toString()}
                         icon={<Users className="text-blue-500" />}
                         subtitle="Requiring attention"
                     />
@@ -262,8 +272,8 @@ function FilterButton({ active, onClick, label }: { active: boolean, onClick: ()
         <button
             onClick={onClick}
             className={`px-4 py-2 rounded-xl text-sm font-bold transition-all whitespace-nowrap ${active
-                    ? 'bg-slate-900 text-white shadow-md'
-                    : 'bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-slate-900'
+                ? 'bg-slate-900 text-white shadow-md'
+                : 'bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-slate-900'
                 }`}
         >
             {label}

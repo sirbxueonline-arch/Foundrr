@@ -11,7 +11,7 @@ export function ProjectsView({ projects }: { projects: any[] }) {
 
   // Stats Calculation
   const totalProjects = projects.length
-  const totalViews = projects.reduce((acc, curr) => acc + (curr.views || Math.floor(Math.random() * 1000)), 0) // Mock views if null
+  const totalViews = projects.reduce((acc, curr) => acc + (curr.views || 0), 0) // Real views
   const avgHealth = projects.length > 0 ? 98 : 0 // Optimize for "WOW" feeling
 
   return (
