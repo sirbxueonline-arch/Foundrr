@@ -7,7 +7,7 @@ import OpenAI from 'openai'
 // Initialize lazily to avoid build-time errors if env var is missing
 export async function POST(request: Request) {
   const openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY,
+    apiKey: process.env.OPENAI_API_KEY,
   })
   try {
     const cookieStore = await cookies()
@@ -18,9 +18,9 @@ export async function POST(request: Request) {
         cookies: {
           getAll() { return cookieStore.getAll() },
           setAll(cookiesToSet) {
-             try {
-                cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options))
-             } catch {}
+            try {
+              cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options))
+            } catch { }
           },
         },
       }
@@ -60,7 +60,7 @@ Rules:
 3.  **Return ONLY the raw HTML.** No markdown, no comments, no explanations.
 4.  **No JavaScript** allowed (keep it CSS-only).
 5.  **Use Premium Assets**:
-    - If adding images, use Unsplash with gradients: \`https://source.unsplash.com/1680x900/?keyword\`.
+    - If adding images, use local proxy: \`/api/images/proxy?query=keyword\`.
     - If adding text, match the existing Google Fonts (Outfit/Playfair).
 6.  **Fix "Ugly" on sight**: If you see stretched images, broken spacing, or default fonts, FIX THEM automatically.
     - Images: \`object-fit: cover; width: 100%; height: 100%;\`
@@ -70,7 +70,7 @@ User Request: "${prompt}"
 `
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o", // Strong model for editing
+      model: "gpt-4o-mini", // Fast and efficient model
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: currentHtml }
@@ -83,7 +83,7 @@ User Request: "${prompt}"
 
     console.log(`[Edit Debug] Old Length: ${currentHtml.length}, New Length: ${newHtml.length}`)
     if (currentHtml === newHtml) {
-        console.warn('[Edit Debug] AI returned identical HTML')
+      console.warn('[Edit Debug] AI returned identical HTML')
     }
 
     // 3. Update Storage
@@ -94,7 +94,7 @@ User Request: "${prompt}"
       {
         cookies: {
           getAll() { return [] },
-          setAll() {}
+          setAll() { }
         }
       }
     )
@@ -111,7 +111,13 @@ User Request: "${prompt}"
       throw new Error(`Failed to update website file: ${uploadError.message}`)
     }
 
-    return NextResponse.json({ html: newHtml })
+    const filename = site.html_path.split('/').pop() || 'index.html'
+
+    return NextResponse.json({
+      html: newHtml,
+      action: 'update',
+      filename: filename
+    })
 
   } catch (err: any) {
     console.error('Edit Error:', err)
