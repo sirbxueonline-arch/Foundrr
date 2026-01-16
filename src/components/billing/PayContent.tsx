@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Loader2, CheckCircle2, CreditCard, Smartphone, Check, Building2 } from 'lucide-react'
+import { Loader2, CheckCircle2, CreditCard, Smartphone, Check, Building2, ShieldCheck, Lock, Eye } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLanguage } from '@/contexts/LanguageContext'
 
@@ -14,6 +14,7 @@ export function PayContent({ siteId }: { siteId: string }) {
   const [paymentIdentifier, setPaymentIdentifier] = useState('')
   const [paymentMethod, setPaymentMethod] = useState<'dodo' | 'm10' | 'bank'>('dodo')
   const [isApproved, setIsApproved] = useState(false)
+  const [showQR, setShowQR] = useState(false)
 
   useEffect(() => {
     const fetchPrice = async () => {
@@ -21,8 +22,6 @@ export function PayContent({ siteId }: { siteId: string }) {
         const res = await fetch(`/api/pricing/${siteId}`)
         if (res.ok) {
           const data = await res.json()
-          // price removed
-          // If already paid, redirect or show success immediately
           if (data.paid || data.payment_status === 'approved') {
             setIsApproved(true)
           }
@@ -39,7 +38,6 @@ export function PayContent({ siteId }: { siteId: string }) {
     if (siteId) fetchPrice()
   }, [siteId])
 
-
   const handlePaymentComplete = async () => {
     setLoading(true)
     try {
@@ -52,7 +50,6 @@ export function PayContent({ siteId }: { siteId: string }) {
         const data = await res.json()
         if (data.paymentLink) {
           window.location.href = data.paymentLink
-          // Loading state will persist until redirect
           return
         } else {
           throw new Error(data.error || 'Failed to create checkout')
@@ -134,7 +131,6 @@ export function PayContent({ siteId }: { siteId: string }) {
               <span>{t?.payment?.breakdown?.website || "Static Website Price"}</span>
               <span className="font-mono">49.99 {t?.payment?.currency || "USD"}</span>
             </div>
-            {/* Service fee removed/included */}
             <div className="h-px w-full bg-border/50 my-2" />
             <div className="flex justify-between text-base font-bold text-foreground">
               <span>{t?.payment?.breakdown?.total || "Total Payable"}</span>
@@ -143,7 +139,8 @@ export function PayContent({ siteId }: { siteId: string }) {
               </div>
             </div>
           </div>
-          <p className="mt-4 text-xs text-muted-foreground/60 max-w-xs mx-auto">
+          <p className="mt-4 text-xs text-muted-foreground/60 max-w-xs mx-auto flex items-center justify-center gap-1.5">
+            <ShieldCheck className="w-3 h-3 text-emerald-500" />
             {t?.payment?.desc || "Secure lifetime ownership. No monthly fees."}
           </p>
         </div>
@@ -152,7 +149,7 @@ export function PayContent({ siteId }: { siteId: string }) {
           {/* Payment Method Toggle */}
           <div className="grid grid-cols-3 gap-2 p-1 bg-black/5 dark:bg-white/5 rounded-xl border border-white/5 relative isolate">
             <button
-              onClick={() => setPaymentMethod('dodo')}
+              onClick={() => { setPaymentMethod('dodo'); setShowQR(false); }}
               className={cn(
                 "relative z-10 flex items-center justify-center gap-2 py-3 text-sm font-semibold rounded-lg transition-all duration-300",
                 paymentMethod === 'dodo'
@@ -164,7 +161,7 @@ export function PayContent({ siteId }: { siteId: string }) {
               <span>Card</span>
             </button>
             <button
-              onClick={() => setPaymentMethod('m10')}
+              onClick={() => { setPaymentMethod('m10'); setShowQR(false); }}
               className={cn(
                 "relative z-10 flex items-center justify-center gap-2 py-3 text-sm font-semibold rounded-lg transition-all duration-300",
                 paymentMethod === 'm10'
@@ -176,7 +173,7 @@ export function PayContent({ siteId }: { siteId: string }) {
               <span>m10</span>
             </button>
             <button
-              onClick={() => setPaymentMethod('bank')}
+              onClick={() => { setPaymentMethod('bank'); setShowQR(false); }}
               className={cn(
                 "relative z-10 flex items-center justify-center gap-2 py-3 text-sm font-semibold rounded-lg transition-all duration-300",
                 paymentMethod === 'bank'
@@ -207,11 +204,35 @@ export function PayContent({ siteId }: { siteId: string }) {
             {paymentMethod === 'm10' && (
               <>
                 <div className="relative group perspective-1000">
-                  <div className="bg-white p-4 rounded-2xl border border-white/20 shadow-xl transition-all duration-700 transform-gpu rotate-0 scale-100 opacity-100">
-                    <img src="/qr-code.png" alt="Payment QR Code" className="w-48 h-48 object-cover mix-blend-multiply" />
+                  <div className={cn(
+                    "bg-white p-4 rounded-2xl border border-white/20 shadow-xl transition-all duration-700 relative overflow-hidden",
+                    showQR ? "opacity-100" : "opacity-90 grayscale-[20%]"
+                  )}>
+                    {showQR ? (
+                      <img src="/qr-code.png" alt="Payment QR Code" className="w-48 h-48 object-cover mix-blend-multiply animate-in fade-in zoom-in duration-300" />
+                    ) : (
+                      <div className="w-48 h-48 bg-gray-100 flex items-center justify-center relative">
+                        <div className="absolute inset-0 bg-white/60 backdrop-blur-sm z-10 flex flex-col items-center justify-center gap-3">
+                          <div className="p-3 bg-white rounded-full shadow-lg">
+                            <Smartphone className="w-6 h-6 text-foreground/80" />
+                          </div>
+                          <button
+                            onClick={() => setShowQR(true)}
+                            className="bg-primary text-primary-foreground text-xs font-bold px-4 py-2 rounded-full shadow hover:bg-primary/90 transition-colors flex items-center gap-1.5"
+                          >
+                            <Eye className="w-3 h-3" />
+                            Reveal QR
+                          </button>
+                        </div>
+                        {/* Blurred fake QR for effect */}
+                        <div className="w-full h-full grid grid-cols-4 grid-rows-4 gap-1 opacity-20 filter blur-sm">
+                          {[...Array(16)].map((_, i) => <div key={i} className={`bg-black ${Math.random() > 0.5 ? 'opacity-100' : 'opacity-0'}`} />)}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
-                <p className="text-sm text-center max-w-[240px] opacity-100 translate-y-0 transition-all duration-500">
+                <p className="text-sm text-center max-w-[240px]">
                   <span className="text-muted-foreground">{t?.payment?.scanText} </span>
                   <span className="font-bold text-foreground bg-secondary/50 px-1.5 py-0.5 rounded text-xs">{t?.payment?.scanApp}</span>
                 </p>
@@ -231,7 +252,10 @@ export function PayContent({ siteId }: { siteId: string }) {
                   <p className="text-xs text-muted-foreground">{t?.payment?.sendTo}</p>
                 </div>
                 <div className="bg-background/50 backdrop-blur-sm px-4 py-3 rounded-lg border border-white/5 font-mono text-sm tracking-widest shadow-sm select-all cursor-pointer hover:bg-background/80 transition-colors flex justify-between items-center group/copy"
-                  onClick={() => navigator.clipboard.writeText("4169738838982290")}
+                  onClick={() => {
+                    navigator.clipboard.writeText("4169738838982290")
+                    alert("Copied to clipboard!")
+                  }}
                 >
                   <span>4169 7388 3898 2290</span>
                   <span className="text-[10px] text-primary opacity-0 group-hover/copy:opacity-100 transition-opacity">COPY</span>
@@ -286,8 +310,21 @@ export function PayContent({ siteId }: { siteId: string }) {
                 )}
               </div>
             </button>
+
+            {/* Trust Badges */}
+            <div className="grid grid-cols-2 gap-4 pt-2">
+              <div className="flex items-center justify-center gap-2 text-[10px] text-muted-foreground bg-white/5 rounded-lg py-2 border border-white/5">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+                <span>256-Bit SSL Secured</span>
+              </div>
+              <div className="flex items-center justify-center gap-2 text-[10px] text-muted-foreground bg-white/5 rounded-lg py-2 border border-white/5">
+                <Lock className="w-3.5 h-3.5 text-blue-500" />
+                <span>Payment Protection</span>
+              </div>
+            </div>
+
             <div className="flex items-center justify-center gap-2 text-[10px] text-muted-foreground opacity-60">
-              <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-green-500" /> Secure SSL</span>
+              <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-green-500" /> System Online</span>
               <span>•</span>
               <span>{paymentMethod === 'dodo' ? 'Encrypted Payment' : 'Official Bank Transfer'}</span>
             </div>

@@ -50,7 +50,7 @@ export default function AdminPage() {
     }
 
     const handleAction = async (siteId: string, action: 'approve' | 'reject') => {
-        if (!confirm(`Are you sure you want to ${action} this request?`)) return
+        // No confirmation dialog per user request
 
         setProcessingId(siteId)
         try {
@@ -61,7 +61,16 @@ export default function AdminPage() {
             })
 
             if (res.ok) {
-                setSites(prev => prev.filter(s => s.id !== siteId))
+                // Update local state to reflect change immediately (Live Update)
+                setSites(prev => prev.map(s => {
+                    if (s.id === siteId) {
+                        return {
+                            ...s,
+                            payment_status: action === 'approve' ? 'approved' : 'rejected'
+                        }
+                    }
+                    return s
+                }))
             } else {
                 alert('Failed to process request')
             }
@@ -89,7 +98,7 @@ export default function AdminPage() {
 
     // Stats
     const pendingSites = sites.filter(s => s.payment_status === 'pending')
-    const paidSites = sites.filter(s => s.payment_status === 'paid' || s.payment_status === 'succeeded')
+    const paidSites = sites.filter(s => ['paid', 'succeeded', 'approved'].includes(s.payment_status))
 
     // Calculate revenues
     const pendingRevenue = pendingSites.reduce((acc, site) => acc + (site.price || 49.99), 0)
