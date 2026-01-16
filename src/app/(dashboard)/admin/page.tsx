@@ -24,7 +24,7 @@ export default function AdminPage() {
     const [sites, setSites] = useState<PendingSite[]>([])
     const [processingId, setProcessingId] = useState<string | null>(null)
     const [searchTerm, setSearchTerm] = useState('')
-    const [statusFilter, setStatusFilter] = useState<'all' | 'pending' | 'paid'>('all')
+    const [statusFilter, setStatusFilter] = useState<'all' | 'pending' | 'paid'>('pending')
 
     useEffect(() => {
         fetchPending()
