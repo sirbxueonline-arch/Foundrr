@@ -338,9 +338,18 @@ export default function GeneratePage() {
 
                 {/* LIVE PREVIEW IFRAME */}
                 <div className="flex-1 bg-white rounded-xl border border-white/10 shadow-2xl overflow-hidden relative group">
-                  <div className="absolute top-3 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-md text-white text-[10px] px-3 py-1.5 rounded-full z-50 font-medium border border-white/10 flex items-center gap-2 shadow-lg">
-                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-[pulse_1.5s_infinite]" />
-                    LIVE PREVIEW
+                  <div className="absolute top-3 left-1/2 -translate-x-1/2 flex items-center gap-2 z-50">
+                    <div className="bg-black/80 backdrop-blur-md text-white text-[10px] px-3 py-1.5 rounded-full font-medium border border-white/10 flex items-center gap-2 shadow-lg">
+                      <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-[pulse_1.5s_infinite]" />
+                      LIVE PREVIEW
+                    </div>
+                    <button
+                      onClick={() => alert('Magic Rewrite: AI is analyzing text... (Demo)')}
+                      className="bg-white/90 hover:bg-white text-black text-[10px] px-3 py-1.5 rounded-full font-bold border border-white/10 flex items-center gap-1.5 shadow-lg transition-transform hover:scale-105 active:scale-95"
+                    >
+                      <Wand2 className="w-3 h-3 text-purple-600" />
+                      Magic Rewrite
+                    </button>
                   </div>
 
                   {/* Iframe Container */}

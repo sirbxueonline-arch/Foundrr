@@ -267,6 +267,29 @@ export const TEMPLATES = {
             </div>
         </div>
     </section>
+    </section>
+  `,
+
+    HERO_LUXURY: `
+    <section id="home" class="page-section relative pt-32 pb-20 bg-black text-white min-h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,215,0,0.15)_0%,rgba(0,0,0,0)_70%)]"></div>
+        <div class="container mx-auto px-6 relative z-10 text-center">
+             <div class="w-px h-24 bg-gradient-to-b from-transparent to-yellow-600 mx-auto mb-8" data-aos="fade-down"></div>
+             <h2 class="text-sm font-serif tracking-[0.3em] text-yellow-500 uppercase mb-6" data-aos="fade-up">Est. 2024</h2>
+             <h1 class="text-6xl md:text-8xl font-serif font-thin text-white mb-8 leading-tight tracking-wide" data-aos="fade-up" data-aos-delay="100">
+                ELEGANCE <br/>
+                <span class="italic font-light text-white/80">REDEFINED</span>
+             </h1>
+             <p class="text-lg md:text-xl text-zinc-400 max-w-xl mx-auto mb-12 font-serif leading-relaxed italic" data-aos="fade-up" data-aos-delay="200">
+                "Simplicity is the ultimate sophistication." <br/> — Leonardo da Vinci
+             </p>
+             <div class="flex flex-col items-center gap-6" data-aos="fade-up" data-aos-delay="300">
+                <button onclick="navigateTo('work')" class="px-12 py-4 border border-yellow-600/50 text-yellow-500 font-serif hover:bg-yellow-600/10 transition-colors uppercase tracking-widest text-sm">
+                    Discover Collection
+                </button>
+             </div>
+        </div>
+    </section>
   `,
 
     BENTO_GRID: `
@@ -720,7 +743,6 @@ export const TEMPLATES = {
                     <ul class="space-y-2 text-sm text-gray-500">
                         <li><button onclick="navigateTo('features')" class="hover:text-black">Features</button></li>
                         <li><button onclick="navigateTo('pricing')" class="hover:text-black">Pricing</button></li>
-                        <li><button onclick="alert('API Docs coming soon!')" class="hover:text-black">API</button></li>
                     </ul>
                 </div>
                 <div>

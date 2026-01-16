@@ -51,20 +51,32 @@ export async function POST(request: Request) {
     const systemPrompt = `
     You are an expert Frontend Architect and UI/UX Designer.
     
-    GOAL: Build a high-performance, PREMIUM Single Page Application (SPA) using Tailwind CSS.
+    GOAL: Build a high-performance, WORLD-CLASS Single Page Application (SPA) using Tailwind CSS.
     
     STRICT RULES:
     1.  **Output**: Return ONLY the raw HTML code. Do not wrap in markdown \`\`\`.
     2.  **Tech Stack**: HTML5, Tailwind CSS (CDN), FontAwesome (CDN), Google Fonts, AOS (Animate On Scroll).
     3.  **Language**: All visible text MUST be in ${lang === 'az' ? 'Azerbaijani' : 'English'}.
-    4.  **Images**: Use \`/api/images/proxy?query=KEYWORD\` for ALL images. Choose highly relevant keywords.
+    4.  **SEO (CRITICAL)**: You MUST include the following in the <head>:
+        - <title>Catchy Title | Brand</title>
+        - <meta name="description" content="Engaging 160 char description...">
+        - <meta name="keywords" content="relevant, keywords, here">
+        - <meta property="og:image" content="/api/images/proxy?query=hero keyword">
+        - <meta property="og:title" content="...">
+        - <meta property="og:type" content="website">
+    5.  **Images**: Use \`/api/images/proxy?query=KEYWORD\` for ALL images. Choose highly relevant, specific keywords (not generic).
     5.  **Design**: MUST be premium, modern, and "WOW".
-        - Use gradients, glassmorphism, and smooth transitions.
-        - Use rounded-xl or rounded-2xl for cards.
-        - Use generous whitespace (py-24, px-8).
-        - NEVER use default Tailwind colors (e.g. bg-blue-500). ALWAYS use specific shades (e.g. bg-indigo-600, text-slate-800) or gradients.
-        - **Neo-Brutalism**: If style is 'neobrutal', use strict black borders (border-2 border-black), heavy shadowing (shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]), and vibrant colors (pink, yellow, blue) with standard sans-serif fonts.
-        - **Retro**: If style is 'retro', use 'Courier New' or monospace fonts, high contrast colors (blue background, gray windows), and pixelated effects.
+        - **Visuals**: Use glassmorphism (bg-white/10 backdrop-blur-md), smooth gradients, and subtle shadows (shadow-2xl).
+        - **Typography**: Use large, bold headings (text-6xl+) with tight tracking (tracking-tighter) and generous line height.
+        - **Spacing**: Use generous whitespace (py-32, gap-12, px-8). NEVER create cramped layouts.
+        - **Colors**: NEVER use default Tailwind colors like 'bg-blue-500'. Use specific, sophisticated shades (e.g., 'bg-indigo-950', 'text-slate-800', 'bg-emerald-50') or custom hex codes.
+        - **Radii**: Use \`rounded-2xl\` or \`rounded-3xl\` for all cards and buttons.
+        - **Animations**: heavily utilize AOS attributes (data-aos="fade-up") on EVERY section and major element.
+        - **Styles**: 
+           - **Neo-Brutalism**: Strict black borders (border-2 border-black), heavy shadowing, vibrant neopop colors.
+           - **Luxury**: Serif fonts (Cinzel/Playfair), black/gold scale, minimal layout.
+           - **Tech/SaaS**: Deep blues/purples, gradients, glowing effects, Inter font.
+           - **Retro**: Monospace fonts, high contrast, pixelated effects.
     
     COMPONENT SELECTION:
     Analyze the user's prompt "${prompt}" and choose the best sections.
@@ -83,6 +95,8 @@ export async function POST(request: Request) {
          ${TEMPLATES.HERO_NEOBRUTAL}
        - If style is 'retro' -> Use HERO_RETRO
          ${TEMPLATES.HERO_RETRO}
+       - If style is 'luxury' -> Use HERO_LUXURY
+         ${TEMPLATES.HERO_LUXURY}
        - Else -> Use HERO_MODERN
          ${TEMPLATES.HERO_MODERN}
     
