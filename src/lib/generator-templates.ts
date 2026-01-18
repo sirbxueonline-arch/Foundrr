@@ -1,106 +1,112 @@
-
+﻿
 export const TEMPLATES = {
     NAVBAR: `
-    <nav class="fixed top-0 w-full z-50 glass transition-all duration-300" id="navbar">
+    <nav class="fixed top-0 w-full z-50 transition-all duration-300 border-b border-transparent" id="navbar">
+      <div class="absolute inset-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md -z-10"></div>
       <div class="container mx-auto px-6 h-20 flex items-center justify-between">
-        <div class="flex items-center gap-2 cursor-pointer" onclick="navigateTo('home')">
-           <div class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-violet-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-500/30"><i class="fas fa-layer-group"></i></div>
-           <span class="text-xl font-bold tracking-tight text-slate-900">BRAND_NAME</span>
+        <div class="flex items-center gap-3 cursor-pointer group" onclick="navigateTo('home')">
+           <div class="w-10 h-10 bg-slate-900 dark:bg-white rounded-xl flex items-center justify-center text-white dark:text-slate-900 shadow-xl group-hover:scale-105 transition-transform duration-300">
+               <i class="fas fa-cube text-lg"></i>
+           </div>
+           <span class="text-xl font-bold tracking-tight text-slate-900 dark:text-white group-hover:opacity-80 transition-opacity">BRAND_NAME</span>
         </div>
         
         <!-- Desktop Menu -->
-        <div class="hidden md:flex gap-8 text-sm font-semibold text-slate-600">
-          <button onclick="navigateTo('home')" class="hover:text-indigo-600 transition-colors">Home</button>
-          <button onclick="navigateTo('features')" class="hover:text-indigo-600 transition-colors">Features</button>
-          <button onclick="navigateTo('about')" class="hover:text-indigo-600 transition-colors">About</button>
-          <button onclick="navigateTo('pricing')" class="hover:text-indigo-600 transition-colors">Pricing</button>
-          <button onclick="navigateTo('contact')" class="hover:text-indigo-600 transition-colors">Contact</button>
+        <div class="hidden md:flex items-center gap-1 p-1 rounded-full bg-slate-100/50 dark:bg-slate-800/50 border border-slate-200/50 dark:border-slate-700/50 backdrop-blur-sm">
+          <button onclick="navigateTo('home')" class="px-5 py-2 rounded-full text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white hover:shadow-sm transition-all">Home</button>
+          <button onclick="navigateTo('features')" class="px-5 py-2 rounded-full text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white hover:shadow-sm transition-all">Features</button>
+          <button onclick="navigateTo('pricing')" class="px-5 py-2 rounded-full text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white hover:shadow-sm transition-all">Pricing</button>
+          <button onclick="navigateTo('about')" class="px-5 py-2 rounded-full text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white hover:shadow-sm transition-all">About</button>
         </div>
         
         <div class="flex items-center gap-4">
-            <button onclick="navigateTo('login')" class="hidden md:block text-sm font-semibold text-slate-900 hover:text-indigo-600 transition-colors">Log in</button>
-            <button onclick="navigateTo('signup')" class="px-6 py-2.5 rounded-full bg-slate-900 text-white text-sm font-bold hover:bg-slate-800 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 text-white">Get Started</button>
+            <button onclick="navigateTo('login')" class="hidden md:block text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">Log in</button>
+            <button onclick="navigateTo('signup')" class="px-6 py-2.5 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-bold hover:opacity-90 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0">Get Started</button>
             
             <!-- Mobile Menu Button -->
-            <button class="md:hidden text-2xl text-slate-900 focus:outline-none" onclick="toggleMobileMenu()">
+            <button class="md:hidden text-2xl text-slate-900 dark:text-white focus:outline-none" onclick="toggleMobileMenu()">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
       </div>
       
       <!-- Mobile Menu Overlay -->
-      <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-white/95 backdrop-blur-xl border-b border-gray-100 p-6 flex flex-col gap-4 shadow-2xl md:hidden transition-all duration-300 origin-top transform">
-          <button onclick="navigateTo('home'); toggleMobileMenu()" class="text-left font-semibold py-3 px-4 rounded-lg hover:bg-gray-50 text-slate-600">Home</button>
-          <button onclick="navigateTo('features'); toggleMobileMenu()" class="text-left font-semibold py-3 px-4 rounded-lg hover:bg-gray-50 text-slate-600">Features</button>
-          <button onclick="navigateTo('about'); toggleMobileMenu()" class="text-left font-semibold py-3 px-4 rounded-lg hover:bg-gray-50 text-slate-600">About</button>
-          <button onclick="navigateTo('pricing'); toggleMobileMenu()" class="text-left font-semibold py-3 px-4 rounded-lg hover:bg-gray-50 text-slate-600">Pricing</button>
-          <button onclick="navigateTo('contact'); toggleMobileMenu()" class="text-left font-semibold py-3 px-4 rounded-lg hover:bg-gray-50 text-slate-600">Contact</button>
-          <div class="h-px bg-gray-100 my-2"></div>
-          <button onclick="navigateTo('login'); toggleMobileMenu()" class="text-left font-semibold py-3 px-4 rounded-lg hover:bg-gray-50 text-slate-600">Log in</button>
-          <button onclick="navigateTo('signup'); toggleMobileMenu()" class="text-center font-bold py-3 px-4 rounded-lg bg-slate-900 text-white shadow-md">Get Started</button>
+      <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-white dark:bg-slate-950 border-b border-gray-100 dark:border-slate-800 p-6 flex flex-col gap-4 shadow-2xl md:hidden transition-all duration-300 origin-top transform animate-fade-in-down">
+          <button onclick="navigateTo('home'); toggleMobileMenu()" class="text-left font-semibold py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">Home</button>
+          <button onclick="navigateTo('features'); toggleMobileMenu()" class="text-left font-semibold py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">Features</button>
+          <button onclick="navigateTo('pricing'); toggleMobileMenu()" class="text-left font-semibold py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">Pricing</button>
+          <button onclick="navigateTo('about'); toggleMobileMenu()" class="text-left font-semibold py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">About</button>
+          <div class="h-px bg-gray-100 dark:bg-slate-800 my-2"></div>
+          <button onclick="navigateTo('login'); toggleMobileMenu()" class="text-left font-semibold py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">Log in</button>
+          <button onclick="navigateTo('signup'); toggleMobileMenu()" class="text-center font-bold py-3 px-4 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-md">Get Started</button>
       </div>
     </nav>
   `,
 
-    // ... (Keep HERO sections as is or assume they are picked up from previous context if not replacing full file) ...
-    // Note: I am replacing chunks, but this tool call assumes I replace the WHOLE file if I don't check offsets.
-    // The previous view_file allowed me to see lines. I'll use multi_replace or specific ranges if I can.
-    // But here I'm replacing lines 3-40 (Navbar) and 472-534 (Login/Signup) and 580-630 (Router).
-    // The tool `replace_file_content` says "SINGLE CONTIGUOUS block". I should use `multi_replace_file_content`.
-
-    // Wait, I will use multi_replace_file_content to do it all at once.
-
-
     HERO_MODERN: `
-    <section id="home" class="page-section relative pt-32 pb-20 overflow-hidden bg-white min-h-screen flex flex-col justify-center">
-      <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-      <div class="container mx-auto px-6 relative z-10">
-        <div class="max-w-4xl mx-auto text-center mb-16" data-aos="fade-up">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-100 border border-gray-200 text-xs font-semibold uppercase tracking-wide text-gray-600 mb-8 hover:bg-gray-200 transition-colors cursor-pointer">
-            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-            New Version 2.0 Released
-          </div>
-          <h1 class="text-6xl md:text-8xl font-bold tracking-tighter text-gray-900 mb-8 leading-[1.1]">
-            Build faster with <br/>
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-violet-600 to-indigo-600 animate-gradient">Intelligence.</span>
-          </h1>
-          <p class="text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed" data-aos="fade-up" data-aos-delay="100">
-            The platform that empowers teams to ship cleaner code in record time. 
-            Automated workflows, AI-driven insights, and seamless deployment.
-          </p>
-          <div class="flex flex-col sm:flex-row items-center justify-center gap-4" data-aos="fade-up" data-aos-delay="200">
-             <button onclick="navigateTo('signup')" class="group w-full sm:w-auto px-8 py-4 rounded-xl bg-black text-white font-semibold text-lg hover:scale-105 transition-all shadow-xl hover:shadow-2xl hover:shadow-blue-500/20">
-                Start Building Free 
-                <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
-             </button>
-             <button onclick="window.open('https://github.com', '_blank')" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-white border border-gray-200 text-gray-900 font-semibold text-lg hover:bg-gray-50 transition-colors flex items-center justify-center gap-2">
-                <i class="fab fa-github"></i> Star on GitHub
-             </button>
-          </div>
-        </div>
-        
-        <div class="relative max-w-6xl mx-auto rounded-2xl border border-gray-200 bg-white shadow-2xl overflow-hidden group perspective-1000" data-aos="fade-up" data-aos-delay="300">
-           <div class="absolute top-0 w-full h-11 bg-gray-50/80 backdrop-blur border-b border-gray-200 flex items-center px-4 gap-2 z-20">
-              <div class="w-3 h-3 rounded-full bg-red-400"></div>
-              <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
-              <div class="w-3 h-3 rounded-full bg-green-400"></div>
-           </div>
-           <img src="/api/images/proxy?query=dashboard app ui analytics" alt="App Dashboard" class="w-full h-auto mt-11 transform transition-transform duration-700 group-hover:scale-[1.01]" />
-           
-           <!-- Floating Elements -->
-           <div class="absolute -right-12 top-1/3 p-4 bg-white rounded-xl shadow-xl border border-gray-100 animate-float hidden md:block">
-              <div class="flex items-center gap-3">
-                 <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600"><i class="fas fa-arrow-up"></i></div>
-                 <div>
-                    <div class="text-xs text-gray-500">Revenue</div>
-                    <div class="font-bold text-gray-900">+124%</div>
+    <section id="home" class="page-section relative pt-32 pb-24 lg:pt-48 lg:pb-32 overflow-hidden bg-white dark:bg-slate-950 transition-colors duration-500">
+       <!-- Dynamic Background -->
+       <div class="absolute inset-0 w-full h-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
+       
+       <div class="container mx-auto px-6 relative z-10 text-center">
+         
+         <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 mb-8 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shadow-sm" data-aos="fade-down">
+            <span class="flex h-2 w-2 relative">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+            </span>
+            <span class="text-sm font-semibold text-slate-600 dark:text-slate-300">v2.0 is now available</span>
+         </div>
+
+         <h1 class="text-6xl md:text-8xl lg:text-[7rem] font-bold tracking-tighter text-slate-900 dark:text-white mb-8 leading-[0.9]" data-aos="fade-up" data-aos-delay="100">
+           Build <br class="hidden md:block" />
+           <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 animate-gradient bg-300%">Something Great.</span>
+         </h1>
+
+         <p class="text-xl md:text-2xl text-slate-600 dark:text-slate-400 mb-12 max-w-2xl mx-auto leading-relaxed font-light" data-aos="fade-up" data-aos-delay="200">
+           The all-in-one platform for modern teams. Design, prototype, and ship your next masterpiece with unparalleled speed.
+         </p>
+
+         <div class="flex flex-col sm:flex-row items-center justify-center gap-5" data-aos="fade-up" data-aos-delay="300">
+            <button onclick="navigateTo('signup')" class="w-full sm:w-auto px-10 py-5 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-lg hover:scale-105 transition-all shadow-2xl hover:shadow-indigo-500/20 active:scale-95">
+               Get Started Free
+            </button>
+            <button onclick="navigateTo('features')" class="w-full sm:w-auto px-10 py-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white font-bold text-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-all shadow-sm hover:shadow-md active:scale-95 flex items-center justify-center gap-2">
+               See How It Works
+            </button>
+         </div>
+         
+         <!-- Hero Image/Dashboard Preview -->
+         <div class="mt-20 relative max-w-6xl mx-auto rounded-xl bg-slate-900/5 dark:bg-white/5 p-2 ring-1 ring-inset ring-slate-900/10 dark:ring-white/10 lg:rounded-2xl lg:p-4" data-aos="fade-up" data-aos-delay="400">
+             <div class="rounded-lg overflow-hidden shadow-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 relative group">
+                <div class="absolute top-0 w-full h-10 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800 flex items-center px-4 gap-2 z-20">
+                    <div class="w-3 h-3 rounded-full bg-red-400/80"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-400/80"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-400/80"></div>
+                </div>
+                <!-- Pseudo-UI for clearer preview if image fails -->
+                <div class="aspect-[16/9] w-full bg-slate-50 dark:bg-slate-950 flex items-center justify-center overflow-hidden">
+                    <img src="/api/images/proxy?query=software dashboard minimalist white ui&width=1600&height=900" alt="App UI" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]" />
+                </div>
+             </div>
+             
+             <!-- Floating Badge 1 -->
+             <div class="absolute -left-4 top-1/4 bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700 animate-float hidden lg:block">
+                 <div class="flex items-center gap-3">
+                     <span class="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+                        <i class="fas fa-arrow-trend-up"></i>
+                     </span>
+                     <div>
+                         <p class="text-xs font-medium text-slate-500 dark:text-slate-400">Growth</p>
+                         <p class="text-lg font-bold text-slate-900 dark:text-white">+245%</p>
+                     </div>
                  </div>
-              </div>
-           </div>
-        </div>
-      </div>
+             </div>
+         </div>
+       </div>
     </section>
   `,
+
 
     HERO_DARK: `
     <section id="home" class="page-section relative pt-32 pb-20 overflow-hidden bg-zinc-950 text-white min-h-screen flex flex-col justify-center">
@@ -177,7 +183,7 @@ export const TEMPLATES = {
                 <span class="font-bold">Welcome.exe</span>
                 <div class="flex gap-1">
                     <button class="w-4 h-4 bg-[#C0C0C0] border border-white border-b-black border-r-black text-[10px] flex items-center justify-center text-black leading-none">_</button>
-                    <button class="w-4 h-4 bg-[#C0C0C0] border border-white border-b-black border-r-black text-[10px] flex items-center justify-center text-black leading-none">□</button>
+                    <button class="w-4 h-4 bg-[#C0C0C0] border border-white border-b-black border-r-black text-[10px] flex items-center justify-center text-black leading-none">в–Ў</button>
                     <button class="w-4 h-4 bg-[#C0C0C0] border border-white border-b-black border-r-black text-[10px] flex items-center justify-center text-black leading-none">x</button>
                 </div>
             </div>
@@ -225,48 +231,79 @@ export const TEMPLATES = {
   `,
 
     HERO_SAAS: `
-    <section id="home" class="page-section py-32 bg-white min-h-screen flex items-center">
+    <section id="home" class="page-section pt-32 pb-24 bg-white dark:bg-slate-950 min-h-screen flex items-center overflow-hidden">
         <div class="container mx-auto px-6">
-            <div class="flex flex-col md:flex-row items-center gap-20">
-                <div class="flex-1 space-y-8" data-aos="fade-right">
-                    <h1 class="text-6xl font-bold text-slate-900 leading-tight">
-                        Turn your traffic into <br/>
-                        <span class="text-blue-600 underline decoration-blue-200 underline-offset-8">Revenue</span> instantly.
+            <div class="flex flex-col lg:flex-row items-center gap-20">
+                <div class="flex-1 space-y-10" data-aos="fade-right">
+                    
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-sm font-bold tracking-wide uppercase">
+                        <i class="fas fa-star text-xs"></i> #1 Product of the Week
+                    </div>
+
+                    <h1 class="text-6xl md:text-7xl font-bold text-slate-900 dark:text-white leading-[1.05] tracking-tight">
+                        Power your <br/>
+                        <span class="text-blue-600 relative whitespace-nowrap">
+                            Business
+                            <svg class="absolute w-full h-3 -bottom-1 left-0 text-blue-200 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0 5 Q 50 10 100 5 L 100 0 Q 50 5 0 0 Z" fill="currentColor"/></svg>
+                        </span>
+                        <span>scale.</span>
                     </h1>
-                    <p class="text-xl text-slate-600 leading-relaxed">
-                        The #1 platform for marketers who want to ship landing pages without waiting for engineering. Built for speed, optimized for conversion.
+                    
+                    <p class="text-xl text-slate-600 dark:text-slate-400 leading-relaxed max-w-lg">
+                        Accelerate your team's productivity with our all-in-one suite. 
+                        Join 10,000+ companies already shipping faster.
                     </p>
                     
-                    <form class="flex gap-4 max-w-md p-2 bg-white border border-slate-200 rounded-xl shadow-lg focus-within:ring-2 focus-within:ring-blue-100 transition-all" onsubmit="event.preventDefault(); navigateTo('signup')">
-                        <input type="email" placeholder="Enter your work email" class="flex-1 px-4 py-3 rounded-lg outline-none text-slate-900 placeholder:text-slate-400" />
-                        <button class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-md">Start Trial</button>
-                    </form>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <form class="flex-1 flex gap-2" onsubmit="event.preventDefault(); navigateTo('signup')">
+                            <input type="email" placeholder="Enter work email" class="w-full px-5 py-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all dark:text-white" />
+                            <button class="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-500/25 transition-all hover:scale-105 whitespace-nowrap">
+                                Get Started
+                            </button>
+                        </form>
+                    </div>
                     
-                    <div class="flex items-center gap-6 text-sm text-slate-500 font-medium">
-                        <span class="flex items-center gap-2"><div class="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center text-green-600"><i class="fas fa-check text-xs"></i></div> No credit card</span>
-                        <span class="flex items-center gap-2"><div class="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center text-green-600"><i class="fas fa-check text-xs"></i></div> 14-day free trial</span>
+                    <div class="flex items-center gap-8 pt-4 border-t border-slate-100 dark:border-slate-800">
+                        <div class="space-y-1">
+                            <div class="flex text-yellow-500 text-sm">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                            <p class="text-sm font-semibold text-slate-900 dark:text-white">4.9/5 Rating</p>
+                        </div>
+                        <div class="space-y-1">
+                            <h4 class="font-bold text-slate-900 dark:text-white">2M+</h4>
+                            <p class="text-sm text-slate-500">Active Users</p>
+                        </div>
+                        <div class="space-y-1">
+                            <h4 class="font-bold text-slate-900 dark:text-white">99.9%</h4>
+                            <p class="text-sm text-slate-500">Uptime</p>
+                        </div>
                     </div>
                 </div>
-                <div class="flex-1 relative" data-aos="fade-left">
-                    <div class="absolute top-10 -right-10 w-96 h-96 bg-blue-100 rounded-full blur-3xl opacity-50 mix-blend-multiply"></div>
-                    <div class="absolute -bottom-10 -left-10 w-96 h-96 bg-purple-100 rounded-full blur-3xl opacity-50 mix-blend-multiply"></div>
-                    <div class="relative bg-white border border-slate-100 rounded-2xl shadow-2xl p-2 rotate-1 hover:rotate-0 transition-transform duration-500">
-                        <img src="/api/images/proxy?query=saas dashboard analytics white" class="rounded-xl w-full border border-slate-50" />
+                
+                <div class="flex-1 relative w-full" data-aos="fade-left">
+                    <!-- Decorative blobs -->
+                    <div class="absolute -top-20 -right-20 w-[30rem] h-[30rem] bg-blue-400/20 rounded-full blur-3xl mix-blend-multiply animate-pulse-slow"></div>
+                    <div class="absolute -bottom-20 -left-20 w-[30rem] h-[30rem] bg-purple-400/20 rounded-full blur-3xl mix-blend-multiply animate-pulse-slow" style="animation-delay: 2s"></div>
+                    
+                    <div class="relative bg-white dark:bg-slate-900 rounded-2xl shadow-2xl shadow-blue-900/10 border border-slate-200/60 dark:border-slate-800 p-2 overflow-hidden">
+                        <img src="/api/images/proxy?query=saas platform interface white" class="w-full h-auto rounded-xl" />
                         
-                         <!-- Floating Badge -->
-                        <div class="absolute -left-6 bottom-12 bg-white p-4 rounded-xl shadow-lg border border-slate-100 flex items-center gap-4 animate-bounce-slow">
-                            <div class="flex -space-x-3">
-                                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=user1" class="w-8 h-8 rounded-full border-2 border-white"/>
-                                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=user2" class="w-8 h-8 rounded-full border-2 border-white"/>
-                                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=user3" class="w-8 h-8 rounded-full border-2 border-white"/>
+                        <!-- Floating Card -->
+                        <div class="absolute bottom-8 left-8 bg-white dark:bg-slate-800 p-4 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 flex items-center gap-4 animate-float">
+                            <div class="h-12 w-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                                <i class="fas fa-bell text-xl"></i>
                             </div>
-                            <div class="text-sm font-bold text-slate-700">1k+ Signups</div>
+                            <div>
+                                <p class="font-bold text-slate-900 dark:text-white">New Sale!</p>
+                                <p class="text-xs text-slate-500">Just now</p>
+                            </div>
+                            <div class="text-green-500 font-bold ml-2">+$49.00</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
     </section>
   `,
 
@@ -281,7 +318,7 @@ export const TEMPLATES = {
                 <span class="italic font-light text-white/80">REDEFINED</span>
              </h1>
              <p class="text-lg md:text-xl text-zinc-400 max-w-xl mx-auto mb-12 font-serif leading-relaxed italic" data-aos="fade-up" data-aos-delay="200">
-                "Simplicity is the ultimate sophistication." <br/> — Leonardo da Vinci
+                "Simplicity is the ultimate sophistication." <br/> вЂ” Leonardo da Vinci
              </p>
              <div class="flex flex-col items-center gap-6" data-aos="fade-up" data-aos-delay="300">
                 <button onclick="navigateTo('work')" class="px-12 py-4 border border-yellow-600/50 text-yellow-500 font-serif hover:bg-yellow-600/10 transition-colors uppercase tracking-widest text-sm">
@@ -293,61 +330,86 @@ export const TEMPLATES = {
   `,
 
     BENTO_GRID: `
-    <section id="features" class="page-section py-24 bg-gray-50">
+    <section id="features" class="page-section py-32 bg-slate-50 dark:bg-slate-900/50">
        <div class="container mx-auto px-6">
-           <div class="text-center max-w-2xl mx-auto mb-16" data-aos="fade-up">
-               <h2 class="text-4xl font-bold tracking-tight text-gray-900 mb-4">Everything you need to scale</h2>
-               <p class="text-gray-600 text-lg">Powerful features wrapped in a beautiful interface. Designed for speed and built for performance.</p>
+           <div class="text-center max-w-3xl mx-auto mb-20" data-aos="fade-up">
+               <div class="text-indigo-600 font-bold tracking-wider uppercase text-sm mb-4">Features</div>
+               <h2 class="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 dark:text-white mb-6">Everything you need, nothing you don't.</h2>
+               <p class="text-slate-600 dark:text-slate-400 text-xl leading-relaxed">Powerful features wrapped in a beautiful interface. Designed for speed, built for scale.</p>
            </div>
            
-           <div class="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-6 h-auto md:h-[600px]">
-               <!-- Large Card -->
-               <div class="col-span-1 md:col-span-2 row-span-2 bg-white rounded-3xl p-8 border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden relative cursor-default" data-aos="fade-up" data-aos-delay="100">
-                   <div class="relative z-10">
-                       <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                           <i class="fas fa-chart-line text-blue-600 text-2xl"></i>
+           <div class="grid grid-cols-1 md:grid-cols-4 grid-rows-3 gap-6 h-auto md:h-[900px]">
+               
+               <!-- Major Feature -->
+               <div class="col-span-1 md:col-span-2 row-span-2 bg-white dark:bg-slate-950 rounded-[2rem] p-10 border border-slate-200 dark:border-slate-800 shadow-xl hover:shadow-2xl transition-all duration-500 group overflow-hidden relative" data-aos="fade-up">
+                   <div class="relative z-10 h-full flex flex-col">
+                       <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform duration-500">
+                           <i class="fas fa-chart-pie text-white text-2xl"></i>
                        </div>
-                       <h3 class="text-2xl font-bold text-gray-900 mb-3">Real-time Analytics</h3>
-                       <p class="text-gray-600 leading-relaxed mb-6">Monitor your performance metrics in real-time with our advanced dashboard. Identify trends before they happen.</p>
-                       <button onclick="navigateTo('features')" class="text-blue-600 font-semibold hover:text-blue-700 inline-flex items-center">Learn more <i class="fas fa-arrow-right ml-2 text-xs"></i></button>
+                       <h3 class="text-3xl font-bold text-slate-900 dark:text-white mb-4">Advanced Analytics</h3>
+                       <p class="text-slate-600 dark:text-slate-400 text-lg leading-relaxed mb-8 max-w-sm">Deep dive into your data with our real-time dashboard. Track every metric that matters to your business.</p>
+                       <div class="mt-auto">
+                           <button class="text-blue-600 font-bold group-hover:translate-x-2 transition-transform inline-flex items-center">Explore Dashboard <i class="fas fa-arrow-right ml-2"></i></button>
+                       </div>
                    </div>
-                   <img src="/api/images/proxy?query=analytics graph chart" class="absolute bottom-0 right-0 w-3/4 translate-y-10 translate-x-10 group-hover:translate-x-5 transition-transform opacity-80" />
+                   <div class="absolute right-0 bottom-0 w-3/5 h-4/5 translate-x-12 translate-y-12 rounded-tl-[2rem] overflow-hidden border-t border-l border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 shadow-2xl transition-transform duration-700 group-hover:translate-x-8 group-hover:translate-y-8">
+                        <img src="/api/images/proxy?query=analytics graph chart white" class="w-full h-full object-cover" />
+                   </div>
                </div>
 
-               <!-- Tall Card -->
-               <div class="col-span-1 md:col-span-1 row-span-2 bg-zinc-900 rounded-3xl p-8 shadow-lg flex flex-col justify-between overflow-hidden relative group" data-aos="fade-up" data-aos-delay="200">
+               <!-- Tall Dark Feature -->
+               <div class="col-span-1 md:col-span-1 row-span-2 bg-slate-900 dark:bg-black rounded-[2rem] p-8 shadow-xl flex flex-col relative group overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+                   <div class="absolute inset-0 bg-gradient-to-br from-indigo-600/20 to-purple-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                    <div class="relative z-10">
-                       <h3 class="text-xl font-bold text-white mb-2">Dark Mode</h3>
-                       <p class="text-zinc-400 text-sm">Easy on the eyes, perfect for night owls.</p>
+                       <i class="fas fa-moon text-white text-3xl mb-6"></i>
+                       <h3 class="text-2xl font-bold text-white mb-3">Dark Mode</h3>
+                       <p class="text-slate-400 leading-relaxed">Easy on the eyes, perfect for night owls. Automatically syncs with system.</p>
                    </div>
-                   <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent"></div>
-                   <img src="/api/images/proxy?query=abstract dark neon" class="absolute inset-0 w-full h-full object-cover -z-10 group-hover:scale-110 transition-transform duration-700 opacity-60" />
+                   <img src="/api/images/proxy?query=abstract dark neon texture" class="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-overlay transition-transform duration-1000 group-hover:scale-110" />
+               </div>
+
+               <!-- Compact Feature 1 -->
+               <div class="col-span-1 md:col-span-1 row-span-1 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-[2rem] p-8 text-white shadow-lg relative overflow-hidden group" data-aos="fade-up" data-aos-delay="200">
+                   <div class="absolute top-0 right-0 p-4 opacity-10 text-9xl leading-none font-black select-none pointer-events-none group-hover:scale-110 transition-transform">вљЎ</div>
                    <div class="relative z-10">
-                        <div class="w-full bg-white/10 backdrop-blur border border-white/10 rounded-lg p-3">
-                            <div class="flex items-center gap-2 mb-2">
-                                <div class="w-2 h-2 rounded-full bg-green-500"></div>
-                                <div class="h-2 w-16 bg-white/20 rounded-full"></div>
+                       <i class="fas fa-bolt text-3xl mb-4 text-yellow-300"></i>
+                       <h3 class="font-bold text-xl mb-2">Lightning Fast</h3>
+                       <p class="text-indigo-100 text-sm">Global CDN serving content in < 50ms.</p>
+                   </div>
+               </div>
+               
+               <!-- Compact Feature 2 -->
+               <div class="col-span-1 md:col-span-1 row-span-1 bg-white dark:bg-slate-950 rounded-[2rem] p-8 border border-slate-200 dark:border-slate-800 shadow-lg hover:shadow-xl transition-all" data-aos="fade-up" data-aos-delay="300">
+                   <i class="fas fa-shield-alt text-3xl text-emerald-500 mb-4"></i>
+                   <h3 class="font-bold text-xl text-slate-900 dark:text-white mb-2">Secure</h3>
+                   <p class="text-slate-500 text-sm">Enterprise-grade encryption for all your data.</p>
+               </div>
+
+               <!-- Wide Bottom Feature -->
+               <div class="col-span-1 md:col-span-4 row-span-1 bg-white dark:bg-slate-950 rounded-[2rem] p-10 border border-slate-200 dark:border-slate-800 shadow-xl flex flex-col md:flex-row items-center gap-10 overflow-hidden group" data-aos="fade-up" data-aos-delay="100">
+                   <div class="flex-1">
+                       <h3 class="text-3xl font-bold text-slate-900 dark:text-white mb-4">Integration Ready</h3>
+                       <p class="text-slate-600 dark:text-slate-400 text-lg mb-8">Connect with your favorite tools in one click. Slack, Discord, Linear, and more.</p>
+                       <div class="flex gap-4">
+                           <div class="w-12 h-12 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-2xl grayscale group-hover:grayscale-0 transition-all cursor-pointer hover:scale-110"><i class="fab fa-slack text-[#E01E5A]"></i></div>
+                           <div class="w-12 h-12 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-2xl grayscale group-hover:grayscale-0 transition-all cursor-pointer hover:scale-110"><i class="fab fa-discord text-[#5865F2]"></i></div>
+                           <div class="w-12 h-12 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-2xl grayscale group-hover:grayscale-0 transition-all cursor-pointer hover:scale-110"><i class="fab fa-github text-[#333]"></i></div>
+                       </div>
+                   </div>
+                   <div class="flex-1 w-full relative">
+                        <!-- Code snippet mock -->
+                        <div class="bg-slate-900 rounded-xl p-4 shadow-2xl transform rotate-2 group-hover:rotate-0 transition-transform duration-500 border border-slate-800 font-mono text-xs text-slate-300">
+                            <div class="flex gap-2 mb-4">
+                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
                             </div>
-                            <div class="space-y-1">
-                                <div class="h-1 w-full bg-white/10 rounded-full"></div>
-                                <div class="h-1 w-2/3 bg-white/10 rounded-full"></div>
-                            </div>
+                            <p><span class="text-purple-400">const</span> app = initialize({</p>
+                            <p class="pl-4">apiKey: <span class="text-green-400">'sk_live_...'</span>,</p>
+                            <p class="pl-4">webhooks: <span class="text-blue-400">true</span></p>
+                            <p>});</p>
                         </div>
                    </div>
-               </div>
-
-               <!-- Wide Small Card -->
-               <div class="col-span-1 md:col-span-1 bg-white rounded-3xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition-shadow" data-aos="fade-up" data-aos-delay="300">
-                   <i class="fas fa-shield-alt text-3xl text-violet-600 mb-4"></i>
-                   <h3 class="font-bold text-gray-900 text-lg mb-2">Bank-grade Security</h3>
-                   <p class="text-sm text-gray-500">AES-256 encryption standard.</p>
-               </div>
-
-               <!-- Wide Small Card -->
-               <div class="col-span-1 md:col-span-1 bg-gradient-to-br from-violet-500 to-purple-600 rounded-3xl p-6 text-white shadow-lg shadow-purple-200 hover:shadow-purple-300 transition-shadow" data-aos="fade-up" data-aos-delay="400">
-                   <i class="fas fa-bolt text-3xl mb-4 text-yellow-300"></i>
-                   <h3 class="font-bold text-lg mb-2">Lightning Fast</h3>
-                    <p class="text-sm text-purple-100">Global CDN deployment.</p>
                </div>
            </div>
        </div>
@@ -630,8 +692,6 @@ export const TEMPLATES = {
     </section>
   `,
 
-    // --- NEW PAGES (Hidden by default, shown via JS Router) ---
-
     PAGE_ABOUT: `
     <section id="about" class="page-section hidden pt-32 pb-20 bg-white min-h-screen">
        <div class="container mx-auto px-6 max-w-4xl text-center">
@@ -686,7 +746,7 @@ export const TEMPLATES = {
                  </div>
                  <div class="space-y-2">
                     <label class="text-sm font-bold text-slate-700 ml-1">Password</label>
-                    <input type="password" class="w-full px-5 py-4 rounded-xl border border-gray-200 focus:ring-4 focus:ring-slate-100 focus:border-slate-400 outline-none transition-all bg-gray-50/50 focus:bg-white" placeholder="••••••••" />
+                    <input type="password" class="w-full px-5 py-4 rounded-xl border border-gray-200 focus:ring-4 focus:ring-slate-100 focus:border-slate-400 outline-none transition-all bg-gray-50/50 focus:bg-white" placeholder="вЂўвЂўвЂўвЂўвЂўвЂўвЂўвЂў" />
                  </div>
                  <button class="w-full py-4 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition-all shadow-lg hover:shadow-slate-900/30 hover:-translate-y-1 active:translate-y-0" onclick="alert('Demo Login Successful!')">Sign in</button>
                  <p class="text-center text-sm text-slate-500 font-medium">
@@ -719,7 +779,7 @@ export const TEMPLATES = {
                  </div>
                  <div class="space-y-2">
                     <label class="text-sm font-bold text-slate-700 ml-1">Password</label>
-                    <input type="password" class="w-full px-5 py-4 rounded-xl border border-gray-200 focus:ring-4 focus:ring-slate-100 focus:border-slate-400 outline-none transition-all bg-gray-50/50 focus:bg-white" placeholder="••••••••" />
+                    <input type="password" class="w-full px-5 py-4 rounded-xl border border-gray-200 focus:ring-4 focus:ring-slate-100 focus:border-slate-400 outline-none transition-all bg-gray-50/50 focus:bg-white" placeholder="вЂўвЂўвЂўвЂўвЂўвЂўвЂўвЂў" />
                  </div>
                  <button class="w-full py-4 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition-all shadow-lg hover:shadow-slate-900/30 hover:-translate-y-1 active:translate-y-0" onclick="alert('Demo Signup Successful!')">Create Account</button>
                  <p class="text-center text-sm text-slate-500 font-medium">
