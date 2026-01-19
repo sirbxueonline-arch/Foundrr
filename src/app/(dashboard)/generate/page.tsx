@@ -251,9 +251,10 @@ export default function GeneratePage() {
                   </button>
                 </div>
 
-                <div className="group relative rounded-2xl p-[1px] overflow-hidden transition-all hover:shadow-[0_0_20px_rgba(124,58,237,0.3)]">
-                  <div className="absolute inset-[-100%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#0000_0%,#0000_50%,var(--color-primary)_100%)] opacity-0 group-focus-within:opacity-100 transition-opacity duration-500" />
-                  <div className="relative rounded-2xl bg-background/80 backdrop-blur-xl border border-white/10">
+                <div className="group relative rounded-2xl p-[2px] overflow-hidden transition-all hover:shadow-[0_0_40px_rgba(124,58,237,0.3)]">
+                  <div className="absolute inset-[-100%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#0000_0%,#0000_50%,var(--color-primary)_100%)] opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute inset-[-100%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#0000_0%,#0000_50%,var(--color-primary)_100%)] opacity-0 group-focus-within:opacity-50 blur-xl transition-opacity duration-500" />
+                  <div className="relative rounded-[14px] bg-background/90 backdrop-blur-xl border border-white/10 group-focus-within:bg-background/95 transition-colors">
                     <textarea
                       id="prompt"
                       name="prompt"
@@ -346,8 +347,8 @@ export default function GeneratePage() {
                           setFormData(prev => ({ ...prev, pages: newPages }));
                         }}
                         className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${(formData.pages || []).includes(page)
-                            ? 'bg-foreground text-background border-foreground shadow-sm'
-                            : 'bg-background/50 border-border/50 hover:bg-muted text-muted-foreground'
+                          ? 'bg-foreground text-background border-foreground shadow-sm'
+                          : 'bg-background/50 border-border/50 hover:bg-muted text-muted-foreground'
                           }`}
                       >
                         {(formData.pages || []).includes(page) && <CheckCircle2 className="w-3 h-3 inline mr-1.5 mb-0.5" />}
@@ -376,9 +377,9 @@ export default function GeneratePage() {
                 <button
                   type="submit"
                   disabled={loading || !formData.prompt.trim()}
-                  className="flex-1 group relative inline-flex h-12 items-center justify-center rounded-full bg-foreground px-8 text-base font-bold text-background shadow-lg shadow-foreground/20 transition-all hover:scale-[1.02] hover:bg-foreground/90 disabled:opacity-50 disabled:pointer-events-none overflow-hidden"
+                  className="flex-1 group relative inline-flex h-12 items-center justify-center rounded-full bg-foreground px-8 text-base font-bold text-background shadow-[0_0_20px_rgba(255,255,255,0.15)] transition-all hover:scale-[1.02] hover:bg-foreground hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] disabled:opacity-50 disabled:pointer-events-none overflow-hidden"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out" />
                   {loading ? (
                     <Loader2 className="h-5 w-5 animate-spin" />
                   ) : (
@@ -426,17 +427,22 @@ export default function GeneratePage() {
               >
                 {/* TERMINAL UI */}
                 <div className="w-full lg:w-[400px] shrink-0 bg-[#0d1117] rounded-xl border border-white/10 shadow-2xl overflow-hidden flex flex-col h-[300px] lg:h-full font-mono">
-                  <div className="bg-[#161b22] px-4 py-3 flex items-center justify-between border-b border-white/5">
+                  <div className="bg-[#161b22] px-4 py-3 flex items-center justify-between border-b border-white/5 relative z-20">
                     <div className="flex gap-2">
-                      <Terminal className="w-4 h-4 text-white/40" />
-                      <span className="text-xs font-bold text-white/60">Architect Build Log</span>
+                      <Terminal className="w-4 h-4 text-emerald-500/80" />
+                      <span className="text-xs font-bold text-emerald-500/60 tracking-widest uppercase">Architect OS v2.4</span>
                     </div>
                     <div className="flex gap-1.5">
-                      <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
-                      <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
-                      <div className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-red-500/80 shadow-[0_0_10px_rgba(239,68,68,0.5)]" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80 shadow-[0_0_10px_rgba(234,179,8,0.5)]" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-green-500/80 shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
                     </div>
                   </div>
+
+                  {/* CRT Effects */}
+                  <div className="absolute inset-0 pointer-events-none z-10 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] opacity-20" />
+                  <div className="absolute inset-0 pointer-events-none z-10 animate-scanline bg-gradient-to-b from-transparent via-emerald-500/10 to-transparent h-[20%] w-full opacity-30" />
+                  <div className="absolute inset-0 pointer-events-none z-10 shadow-[inset_0_0_100px_rgba(0,0,0,0.9)]" />
                   <div
                     className="p-4 overflow-y-auto custom-scrollbar flex-1 space-y-2"
                     ref={logContainerRef}
@@ -445,9 +451,9 @@ export default function GeneratePage() {
                       <div key={i} className="flex gap-3 text-[11px] leading-tight animate-fade-in-up">
                         <span className="text-white/20 select-none">{(i + 1).toString().padStart(2, '0')}</span>
                         <span className={`${log.type === 'error' ? 'text-red-400' :
-                            log.type === 'success' ? 'text-emerald-400' :
-                              log.type === 'warning' ? 'text-amber-400' :
-                                'text-blue-300'
+                          log.type === 'success' ? 'text-emerald-400' :
+                            log.type === 'warning' ? 'text-amber-400' :
+                              'text-blue-300'
                           }`}>
                           {log.text}
                         </span>
