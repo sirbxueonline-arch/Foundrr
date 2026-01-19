@@ -1,373 +1,625 @@
 export const INSPIRATION_PROMPTS = [
-    // Creative & Portfolio
-    {
-        prompt: "A cozy portfolio for a landscape photographer based in Seattle. Use earth tones and a gallery grid layout.",
-        style: "minimal"
-    },
-    {
-        prompt: "A minimalist architect portfolio with oversized typography and plenty of whitespace. Black and white aesthetic.",
-        style: "minimal"
-    },
-    {
-        prompt: "An energetic digital art showcase using neon colors and glitch effects. Dark mode background.",
-        style: "dark"
-    },
-    {
-        prompt: "A sophisticated writer's blog with serif fonts and a paper-texture background. Focus on readability.",
-        style: "minimal"
-    },
-    {
-        prompt: "A dreamy wedding photographer landing page with soft pastel pinks and script fonts. Full-screen hero image.",
-        style: "minimal"
-    },
-    {
-        prompt: "A brutalist graphic design portfolio. Stark contrast, courier fonts, and bold borders.",
-        style: "corporate"
-    },
-    {
-        prompt: "A playful illustrator portfolio with floating elements and a vibrant yellow background.",
-        style: "vibrant"
-    },
-    {
-        prompt: "A cinematic videographer reel site. Dark background, full-width video headers, and sleek sans-serif text.",
-        style: "dark"
-    },
-    {
-        prompt: "A calming yoga instructor profile with sage green tones and organic shapes.",
-        style: "minimal"
-    },
-    {
-        prompt: "A bold fashion stylist portfolio using editorial layout techniques and high-contrast imagery.",
-        style: "vibrant"
-    },
-    {
-        prompt: "A retro-themed graphic designer site using 80s synthwave colors and pixel fonts.",
-        style: "vibrant"
-    },
-    {
-        prompt: "A clean interior design showcase with masonry grid layouts and beige/taupe color palette.",
-        style: "minimal"
-    },
-    {
-        prompt: "A dark academia themed book review blog. deep browns, serif fonts, and vintage textures.",
-        style: "corporate"
-    },
-    {
-        prompt: "A futuristic 3D artist portfolio. Holographic gradients and dark glassmorphism effects.",
-        style: "dark"
-    },
-    {
-        prompt: "A simple, single-page resume site with a clean timeline and skill bars. Blue and gray professional tones.",
-        style: "corporate"
-    },
+    // Minimalist (Batch 1/2)
+    { prompt: "A minimalist portfolio for a Scandinavian architect. Clean lines, plenty of whitespace, and san-serif typography.", style: "minimal" },
+    { prompt: "A quiet personal blog for a writer. Monochrome color scheme, focus on readability, and subtle dividers.", style: "minimal" },
+    { prompt: "A simple landing page for a meditation app. Soft grey tones, breathing animations, and centered text.", style: "minimal" },
+    { prompt: "A clean online store for handmade ceramics. Grid layout, white background, and large product images.", style: "minimal" },
+    { prompt: "A sleek resume site for a UX designer. Timeline layout, neutral colors, and clear hierarchy.", style: "minimal" },
+    { prompt: "A minimalist photography showcase. Horizontal scroll, full-height images, and tiny navigation.", style: "minimal" },
+    { prompt: "A bare-bones documentation site for a new API. Sidebar navigation, code blocks, and high contrast code.", style: "minimal" },
+    { prompt: "A serene yoga studio schedule. Pale tones, simple table layout, and calming font choices.", style: "minimal" },
+    { prompt: "A modern art gallery preview. White walls concept, ample negative space, and small captions.", style: "minimal" },
+    { prompt: "A single-product page for a smart watch. Hero image focus, feature list, and buy button.", style: "minimal" },
+    { prompt: "A digital newsletter archive. List view, date tamps, and clean typography.", style: "minimal" },
+    { prompt: "A minimalist recipe collection. Ingredients list, method steps, and high-quality food photos.", style: "minimal" },
+    { prompt: "A personal contact card website. Centered profile, social links, and email button.", style: "minimal" },
+    { prompt: "A clean interior design portfolio. Masonry grid, beige and white palette, and light overlays.", style: "minimal" },
+    { prompt: "A sustainable clothing brand lookbook. Earthy neutrals, organic shapes, and simple navigation.", style: "minimal" },
+    { prompt: "A minimalist typography showcase. Large letterforms, black and white only, and font details.", style: "minimal" },
+    { prompt: "A simple agency landing page. Hero statement, client logos, and contact form.", style: "minimal" },
+    { prompt: "A clean music release page. Album art, streaming links, and tour dates.", style: "minimal" },
+    { prompt: "A minimalist book launch site. Cover image, synopsis, and author bio.", style: "minimal" },
+    { prompt: "A simple countdown page for a product launch. Large timer, email signup, and white background.", style: "minimal" },
+    { prompt: "A minimalist cafe menu. Text-based, price list, and subtle divider lines.", style: "minimal" },
+    { prompt: "A clean podcast landing page. Episode list, play buttons, and subscribe links.", style: "minimal" },
+    { prompt: "A simple charity donation page. Impact statement, progress bar, and donation form.", style: "minimal" },
+    { prompt: "A minimalist weather app interface. Current temp, location, and 7-day forecast.", style: "minimal" },
+    { prompt: "A clean login page. Email, password, and sign in button with ample spacing.", style: "minimal" },
+    { prompt: "A minimalist 404 error page. Simple message, search bar, and home link.", style: "minimal" },
+    { prompt: "A simple faq page. Accordion style questions, clean text, and search top.", style: "minimal" },
+    { prompt: "A minimalist team page. Grid of faces, names, and job titles.", style: "minimal" },
+    { prompt: "A clean pricing table. Three columns, checkmarks, and sign up buttons.", style: "minimal" },
+    { prompt: "A minimalist testimonials slider. Quote text, author name, and simple dots nav.", style: "minimal" },
+    { prompt: "A simple newsletter signup form. Email input, submit button, and privacy text.", style: "minimal" },
+    { prompt: "A minimalist footer section. Copyright, social icons, and sitemap links.", style: "minimal" },
+    { prompt: "A clean header navigation. Logo left, links right, and mobile hamburger menu.", style: "minimal" },
+    { prompt: "A simple search results page. List of items, pagination, and filter sidebar.", style: "minimal" },
+    { prompt: "A minimalist user profile. Avatar, bio, and activity feed.", style: "minimal" },
+    { prompt: "A clean settings dashboard. Sidebar nav, form fields, and save button.", style: "minimal" },
+    { prompt: "A simple file upload interface. clear instructions, progress bar, and drop zone.", style: "minimal" },
+    { prompt: "A minimalist map view. Custom markers, info windows, and zoom controls.", style: "minimal" },
+    { prompt: "A clean video player custom skin. Play, pause, volume, and timeline.", style: "minimal" },
+    { prompt: "A simple audio player. Waveform visualization, track info, and controls.", style: "minimal" },
+    { prompt: "A minimalist calendar view. Month grid, event dots, and date navigation.", style: "minimal" },
+    { prompt: "A clean chat interface. Message bubbles, input field, and user list.", style: "minimal" },
+    { prompt: "A simple notification toast. Icon, message text, and close button.", style: "minimal" },
+    { prompt: "A minimalist modal dialog. Title, content, and action buttons.", style: "minimal" },
+    { prompt: "A clean tooltip style. Dark background, white text, and arrow pointer.", style: "minimal" },
+    { prompt: "A simple breadcrumb navigation. Home link, separator, and current page.", style: "minimal" },
+    { prompt: "A minimalist pagination component. Prev, next, and page numbers.", style: "minimal" },
+    { prompt: "A clean tab interface. Active state underlining, content area, and smooth transition.", style: "minimal" },
+    { prompt: "A simple accordion menu. Expandable sections, chevron icons, and clean text.", style: "minimal" },
+    { prompt: "A minimalist stepper component. Circle indicators, connecting lines, and step labels.", style: "minimal" },
 
-    // Tech & Startups
-    {
-        prompt: "A high-energy landing page for a new crypto wallet app called 'VaultX'. Needs to look futuristic with neon accents.",
-        style: "dark"
-    },
-    {
-        prompt: "A clean SaaS landing page for a project management tool. White background, blue primary buttons, and feature grid.",
-        style: "corporate"
-    },
-    {
-        prompt: "A developer documentation hub with dark mode code blocks and a sidebar navigation.",
-        style: "corporate"
-    },
-    {
-        prompt: "A mobile app showcase for a fitness tracker. Dynamic screenshots and pulse animations on scroll.",
-        style: "vibrant"
-    },
-    {
-        prompt: "A cybersecurity firm homepage. Matrix-green accents on black background with shield iconography.",
-        style: "dark"
-    },
-    {
-        prompt: "A modern fintech bank dashboard preview. Clean, trustworthy visuals with deep navy and gold accents.",
-        style: "corporate"
-    },
-    {
-        prompt: "A gaming community landing page. Discord-inspired dark theme with vibrant purple buttons.",
-        style: "dark"
-    },
-    {
-        prompt: "A cloud hosting provider site. Airy, light blue gradients and isometric server illustrations.",
-        style: "minimal"
-    },
-    {
-        prompt: "A drone delivery startup page. Full-screen video background of drones and modern technical fonts.",
-        style: "corporate"
-    },
-    {
-        prompt: "An AI copywriting tool landing page. Minimalist typing animations and focus on text.",
-        style: "minimal"
-    },
-    {
-        prompt: "A VR headset product page. Immersive dark theme with glowing edges and 3D product rotation feeling.",
-        style: "dark"
-    },
-    {
-        prompt: "A coding boot camp course page. Code-editor aesthetic with syntax highlighting colors.",
-        style: "dark"
-    },
-    {
-        prompt: "A smart home device marketing page. Clean, modern, friendly visuals with rounded corners.",
-        style: "minimal"
-    },
-    {
-        prompt: "A blockchain explorer interface. Data-heavy tables with a sleek dark UI and monospace fonts.",
-        style: "dark"
-    },
-    {
-        prompt: "A ride-sharing app driver sign-up page. Bold, clear typography and high-contrast call to actions.",
-        style: "vibrant"
-    },
+    // Vibrant (Batch 1/2)
+    { prompt: "A vibrant festival landing page. Bold colors, confetti animations, and large typography.", style: "vibrant" },
+    { prompt: "A colorful candy shop website. Bright pinks and blues, floating sweets, and playful fonts.", style: "vibrant" },
+    { prompt: "An energetic fitness class schedule. High contrast neon, action photos, and dynamic layout.", style: "vibrant" },
+    { prompt: "A creative digital agency portfolio. Gradient backgrounds, scroll interactions, and bold statements.", style: "vibrant" },
+    { prompt: "A playful children's book site. Illustrated characters, primary colors, and bouncy animations.", style: "vibrant" },
+    { prompt: "A vibrant street food vendor page. Graffiti elements, distressed textures, and warm colors.", style: "vibrant" },
+    { prompt: "A modern pop star fan club. Glitch effects, bright purple and cyan, and video backgrounds.", style: "vibrant" },
+    { prompt: "A colorful sneaker drop site. bold geometric shapes, vivid accents, and countdown timer.", style: "vibrant" },
+    { prompt: "An energetic startup launch page. Rocket motifs, bright orange branding, and skewed sections.", style: "vibrant" },
+    { prompt: "A playful pet adoption center. Paw prints, sunny yellow background, and cute photography.", style: "vibrant" },
+    { prompt: "A vibrant travel blog. Gradient overlays on photos, map pins, and adventurous fonts.", style: "vibrant" },
+    { prompt: "A colorful juice bar menu. Fruit patterns, liquid animations, and fresh green tones.", style: "vibrant" },
+    { prompt: "An energetic esports team site. Sharp angles, neon red and black, and player stats.", style: "vibrant" },
+    { prompt: "A playful mobile game landing page. App store badges, character art, and bright buttons.", style: "vibrant" },
+    { prompt: "A vibrant music festival lineup. Psychedelic swirls, bold names, and ticket links.", style: "vibrant" },
+    { prompt: "A colorful learning platform for kids. Gamified progress, badge icons, and friendly mascot.", style: "vibrant" },
+    { prompt: "An energetic dance studio site. Motion blur photos, rhythm-inspired layout, and loud colors.", style: "vibrant" },
+    { prompt: "A playful party planner portfolio. Balloon graphics, confetti pops, and pastel palette.", style: "vibrant" },
+    { prompt: "A vibrant craft brewery list. Hops illustrations, bold label art, and warm amber tones.", style: "vibrant" },
+    { prompt: "A colorful florist shop. Bloom patterns, bright pinks and greens, and elegant script.", style: "vibrant" },
+    { prompt: "An energetic skate shop. Grunge textures, sticker bomb aesthetic, and vibrant accents.", style: "vibrant" },
+    { prompt: "A playful ice cream truck tracker. Dripping toppings, sprinkles, and map integration.", style: "vibrant" },
+    { prompt: "A vibrant retro arcade info page. 8-bit graphics, neon borders, and pixel fonts.", style: "vibrant" },
+    { prompt: "A colorful makeup artist portfolio. Brush strokes, glitter effects, and beauty shots.", style: "vibrant" },
+    { prompt: "An energetic personal trainer site. Bold motivational quotes, sweat textures, and red accents.", style: "vibrant" },
+    { prompt: "A playful toy store catalog. Lego block borders, primary colors, and fun hover states.", style: "vibrant" },
+    { prompt: "A vibrant cocktail bar menu. Neon sign headers, dark background with bright text.", style: "vibrant" },
+    { prompt: "A colorful graphic design blog. Abstract shapes, color theory posts, and bold headers.", style: "vibrant" },
+    { prompt: "An energetic cycling club. Speed lines, jersey colors, and route maps.", style: "vibrant" },
+    { prompt: "A playful daycare center. Hand-drawn icons, soft rainbow colors, and safety info.", style: "vibrant" },
+    { prompt: "A vibrant taco truck menu. Mexican patterns, hot sauce red, and corn yellow.", style: "vibrant" },
+    { prompt: "A colorful comic book store. Halftone patterns, speech bubbles, and superhero art.", style: "vibrant" },
+    { prompt: "An energetic karaoke bar. Microphone icons, disco ball effects, and song list.", style: "vibrant" },
+    { prompt: "A playful mini golf course. Green turf textures, golf ball animations, and scorecards.", style: "vibrant" },
+    { prompt: "A vibrant surf school. Wave graphics, ocean blue and sun yellow, and board rentals.", style: "vibrant" },
+    { prompt: "A colorful nail salon. Polish drip effects, glitter backgrounds, and booking form.", style: "vibrant" },
+    { prompt: "An energetic spin class booking. Wheel motifs, high contrast, and instructor profiles.", style: "vibrant" },
+    { prompt: "A playful dog walker service. Leash graphics, grass green, and walking paths.", style: "vibrant" },
+    { prompt: "A vibrant smoothie bowl shop. Fruit arrangements, acai purple, and granola textures.", style: "vibrant" },
+    { prompt: "A colorful stationery store. Paper textures, washi tape graphics, and pen tests.", style: "vibrant" },
+    { prompt: "An energetic boxing gym. Grit textures, red and black, and punch animations.", style: "vibrant" },
+    { prompt: "A playful ceramic workshop. Clay textures, pastel glazes, and class schedule.", style: "vibrant" },
+    { prompt: "A vibrant neon sign shop. Glowing text effects, brick wall background, and custom orders.", style: "vibrant" },
+    { prompt: "A colorful tie-dye clothing brand. Swirl patterns, rainbow palette, and shop grid.", style: "vibrant" },
+    { prompt: "An energetic parkour gym. Urban concrete, graffiti tagging, and jump spots.", style: "vibrant" },
+    { prompt: "A playful bubble tea cafe. Boba shapes, milk tea colors, and straw graphics.", style: "vibrant" },
+    { prompt: "A vibrant hot sauce brand. Fire icons, spicy meter, and bottle lineup.", style: "vibrant" },
+    { prompt: "A colorful kite festival. Cloud backgrounds, kite tails, and wind animations.", style: "vibrant" },
+    { prompt: "An energetic trampoline park. Bounce effects, safety orange, and waiver forms.", style: "vibrant" },
+    { prompt: "A playful escape room. Puzzle pieces, mystery purple, and countdown clocks.", style: "vibrant" },
 
-    // Business & Professional
-    {
-        prompt: "A professional corporate site for a legal consultancy firm. Trustworthy blue colors, heavy on typography.",
-        style: "corporate"
-    },
-    {
-        prompt: "A modern dentist clinic website. Clean white and cyan colors, reassuring and bright imagery.",
-        style: "minimal"
-    },
-    {
-        prompt: "A luxury real estate agency page. Gold borders, black background, and high-end property photos.",
-        style: "corporate"
-    },
-    {
-        prompt: "A construction company portfolio. Bold yellow and black safety colors with industrial fonts.",
-        style: "corporate"
-    },
-    {
-        prompt: "A digital marketing agency site. Creative, colorful abstract shapes and bold statements.",
-        style: "vibrant"
-    },
-    {
-        prompt: "A vintage barbershop website. Black and white photos, retro fonts, and wood texture details.",
-        style: "dark"
-    },
-    {
-        prompt: "A logistics and shipping company site. Clean lines, map visualizations, and tracking aesthetic.",
-        style: "corporate"
-    },
-    {
-        prompt: "A boutique law firm. minimalist, serif typography, cream background, very high-end feel.",
-        style: "minimal"
-    },
-    {
-        prompt: "A coworking space booking page. Vibrant community photos and bright, welcoming colors.",
-        style: "vibrant"
-    },
-    {
-        prompt: "A financial advisor profile. Deep green and gold color scheme, conveying wealth and stability.",
-        style: "corporate"
-    },
-    {
-        prompt: "A sustainable energy consultant site. Green gradients, nature imagery, and clean modern layout.",
-        style: "minimal"
-    },
-    {
-        prompt: "A recruitment agency portal. Friendly, people-focused photography and clean search bars.",
-        style: "minimal"
-    },
-    {
-        prompt: "A car detailing service page. Sleek automotive dark mode with shiny metallic accents.",
-        style: "dark"
-    },
-    {
-        prompt: "A pet grooming salon. Fun, playful colors like paw-print orange and sky blue.",
-        style: "vibrant"
-    },
-    {
-        prompt: "A local plumbing service. clear phone numbers, trustworthy blue and red colors.",
-        style: "corporate"
-    },
+    // Corporate (Batch 1/2)
+    { prompt: "A professional law firm website. Navy blue, serif fonts, and pillar imagery.", style: "corporate" },
+    { prompt: "A corporate financial consultancy. Trustworthy grey, gold accents, and chart graphics.", style: "corporate" },
+    { prompt: "A clean medical clinic portal. Sterile white, calming blue, and doctor profiles.", style: "corporate" },
+    { prompt: "A robust logistics company site. Trucking photos, tracking bar, and map background.", style: "corporate" },
+    { prompt: "A corporate real estate agency. Skyscraper hero, search filters, and property grid.", style: "corporate" },
+    { prompt: "A professional accounting firm. Calculator icons, tax info, and team grid.", style: "corporate" },
+    { prompt: "A clean dental practice site. Smile photography, teal accents, and appointment form.", style: "corporate" },
+    { prompt: "A corporate insurance provider. Shield icons, family photos, and policy list.", style: "corporate" },
+    { prompt: "A professional recruitment agency. Handshake photos, job search, and resume upload.", style: "corporate" },
+    { prompt: "A clean IT consulting firm. Server rack images, blue circuit lines, and services list.", style: "corporate" },
+    { prompt: "A corporate construction group. Hard hat yellow, blueprint backgrounds, and project gallery.", style: "corporate" },
+    { prompt: "A professional architecture firm. Building renders, sleek lines, and project timeline.", style: "corporate" },
+    { prompt: "A clean marketing agency. Graph growth icons, strategy text, and client logos.", style: "corporate" },
+    { prompt: "A corporate energy provider. Wind turbine photos, green tech, and plan comparisons.", style: "corporate" },
+    { prompt: "A professional education institute. Campus photos, course catalog, and enrollment button.", style: "corporate" },
+    { prompt: "A clean manufacturing company element. Factory floor video, machinery specs, and contact info.", style: "corporate" },
+    { prompt: "A corporate security service. Lock icons, dark blue, and monitoring center photos.", style: "corporate" },
+    { prompt: "A professional event management. detailed schedule, speaker list, and registration.", style: "corporate" },
+    { prompt: "A clean non-profit organization. Impact stats, donation buttons, and mission statement.", style: "corporate" },
+    { prompt: "A corporate investment bank. Market ticker, skyline view, and leather textures.", style: "corporate" },
+    { prompt: "A professional software vendor. Product screenshots, feature matrix, and enterprise pricing.", style: "corporate" },
+    { prompt: "A clean supply chain solutions. Global map, shipping container photos, and flowcharts.", style: "corporate" },
+    { prompt: "A corporate hr solutions provider. People focused, diversity photos, and benefits list.", style: "corporate" },
+    { prompt: "A professional engineering firm. CAD drawings, technical specs, and team bios.", style: "corporate" },
+    { prompt: "A clean veterinary clinic. Pet photos, paw icons, and emergency contact.", style: "corporate" },
+    { prompt: "A corporate facility management. Building icons, maintenance services, and quote form.", style: "corporate" },
+    { prompt: "A professional translation service. Language flags, globe icon, and upload doc.", style: "corporate" },
+    { prompt: "A clean pr agency. Press release list, media contacts, and case studies.", style: "corporate" },
+    { prompt: "A corporate waste management. Recycling icons, green truck photos, and pickup schedule.", style: "corporate" },
+    { prompt: "A professional legal aid. Gavel image, scale icon, and consultation booking.", style: "corporate" },
+    { prompt: "A clean chiropractor clinic. Spine diagram, posture photos, and wellness tips.", style: "corporate" },
+    { prompt: "A corporate telecommunications. Cell tower photos, network map, and 5g branding.", style: "corporate" },
+    { prompt: "A professional maritime shipping. Cargo ship photos, ocean blue, and port logistics.", style: "corporate" },
+    { prompt: "A clean aviation services. Private jet photos, cloud background, and booking.", style: "corporate" },
+    { prompt: "A corporate mining company. Excavator photos, earth tones, and sustainability report.", style: "corporate" },
+    { prompt: "A professional agriculture business. Field photos, tractor icons, and crop data.", style: "corporate" },
+    { prompt: "A clean bio-tech research. Microscope photos, dna strands, and lab team.", style: "corporate" },
+    { prompt: "A corporate pharmaceutical. Pill bottle photos, health icons, and clinical trials.", style: "corporate" },
+    { prompt: "A professional automotive fleet. Car lineup, key icons, and leasing plans.", style: "corporate" },
+    { prompt: "A clean warehouse storage. Box stacking photos, barcode icons, and size guide.", style: "corporate" },
+    { prompt: "A corporate printing service. CMYK colors, paper textures, and service list.", style: "corporate" },
+    { prompt: "A professional interior decorator. Room photos, fabric swatches, and design process.", style: "corporate" },
+    { prompt: "A clean funeral home service. Peaceful flowers, serif fonts, and memorial pages.", style: "corporate" },
+    { prompt: "A corporate cleaning service. Sparkle icons, blue and white, and checklist.", style: "corporate" },
+    { prompt: "A professional locksmith. Key imagery, 24/7 badge, and service areas.", style: "corporate" },
+    { prompt: "A clean pest control. Shield icons, bug illustrations, and guarantee seal.", style: "corporate" },
+    { prompt: "A corporate landscaping. Grass texture, tree icons, and project portfolio.", style: "corporate" },
+    { prompt: "A professional electrician. Lightning bolt, wire diagrams, and safety certs.", style: "corporate" },
+    { prompt: "A clean plumbing service. Water drop icons, blue pipes, and emergency button.", style: "corporate" },
+    { prompt: "A corporate hvac specialist. Thermostat images, air flow arrows, and maintenance plans.", style: "corporate" },
 
-    // Retail & E-commerce
-    {
-        prompt: "A playful, vibrant e-commerce store for handmade candles. Use bright colors and soft shapes.",
-        style: "vibrant"
-    },
-    {
-        prompt: "A streetwear fashion drop site. Grungy textures, graffiti fonts, and high-contrast black and white.",
-        style: "dark"
-    },
-    {
-        prompt: "A luxury watch store. Dark elegance, serif fonts, and gold details. Focus on product photography.",
-        style: "dark"
-    },
-    {
-        prompt: "A quirky colorful sock shop. Memphis design style with patterns and bright primary colors.",
-        style: "vibrant"
-    },
-    {
-        prompt: "An organic skincare brand. Soft beige colors, botanical illustrations, and clean sans-serif type.",
-        style: "minimal"
-    },
-    {
-        prompt: "A specialized coffee bean roaster. Warm brown tones, steam motifs, and rustic paper textures.",
-        style: "minimal"
-    },
-    {
-        prompt: "A tech gadget store. Apple-inspired minimalism with large product hero images.",
-        style: "minimal"
-    },
-    {
-        prompt: "A vintage sneaker resale site. Retro 90s aesthetic with neon pops and collage elements.",
-        style: "vibrant"
-    },
-    {
-        prompt: "A flower delivery service. Romantic, floral color palette with elegant script typography.",
-        style: "minimal"
-    },
-    {
-        prompt: "A craft beer brewery site. Hops green and amber colors with bold, rustic typography.",
-        style: "dark"
-    },
-    {
-        prompt: "A children's toy store. Primary colors, rounded buttons, and playful bouncy animations.",
-        style: "vibrant"
-    },
-    {
-        prompt: "A furniture design studio. Scandinavian minimalism, lots of white space and grey text.",
-        style: "minimal"
-    },
-    {
-        prompt: "A surf shop website. Ocean blues, sandy beiges, and wave motifs.",
-        style: "vibrant"
-    },
-    {
-        prompt: "A vinyl record store. Classic rock aesthetic, dark backgrounds, and album cover grids.",
-        style: "dark"
-    },
-    {
-        prompt: "A bakery ordering page. Warm, appetizing colors like bread crust brown and cream.",
-        style: "minimal"
-    },
+    // Minimalist (Batch 2/2)
+    { prompt: "A minimalist coding tutorial site. Monospace fonts, light grey background, and clear code snippets.", style: "minimal" },
+    { prompt: "A clean scientific journal. Serif body text, white paper feel, and citation footnotes.", style: "minimal" },
+    { prompt: "A simple bike repair shop. Gear icons, service list, and contact map.", style: "minimal" },
+    { prompt: "A minimalist pottery studio schedule. Earth tones, class table, and booking button.", style: "minimal" },
+    { prompt: "A clean legal deposition service. Scale icon, upload form, and secure badge.", style: "minimal" },
+    { prompt: "A simple tutoring profile. Subject tags, rate info, and availability calendar.", style: "minimal" },
+    { prompt: "A minimalist tea shop. Green tea pale colors, leaf icons, and brewing guide.", style: "minimal" },
+    { prompt: "A clean urban farming blog. Plant photos, white space, and growth tips.", style: "minimal" },
+    { prompt: "A simple moving company. Box icons, truck photo, and quote request.", style: "minimal" },
+    { prompt: "A minimalist language learning. Flag icons, vocabulary list, and audio clips.", style: "minimal" },
+    { prompt: "A clean resume for a nurse. Blue accents, cert list, and employment history.", style: "minimal" },
+    { prompt: "A simple car wash price list. Bubble icons, package tiers, and location info.", style: "minimal" },
+    { prompt: "A minimalist bakery menu. Croissant photos, price list, and allergens.", style: "minimal" },
+    { prompt: "A clean driving school. Car icons, lesson packages, and sign up.", style: "minimal" },
+    { prompt: "A simple tailor service. Needle and thread icon, measurement guide, and prices.", style: "minimal" },
+    { prompt: "A minimalist antique shop. Vintage font headers, item grid, and white background.", style: "minimal" },
+    { prompt: "A clean library catalog. Search bar, book covers, and category list.", style: "minimal" },
+    { prompt: "A simple notary public site. Seal icon, service list, and appointment.", style: "minimal" },
+    { prompt: "A minimalist hiking trail guide. Map view, trail stats, and elevation graph.", style: "minimal" },
+    { prompt: "A clean recycling center info. Material icons, hours, and location map.", style: "minimal" },
+    { prompt: "A simple storage unit rental. Lock icon, size guide, and book now.", style: "minimal" },
+    { prompt: "A minimalist coffee roaster. Bean photos, roast levels, and buy button.", style: "minimal" },
+    { prompt: "A clean coworking space info. Desk photos, amenities list, and tour booking.", style: "minimal" },
+    { prompt: "A simple laundromat location. Machine icons, prices, and hours.", style: "minimal" },
+    { prompt: "A minimalist personal trainer. Exercise list, before/after text, and contact.", style: "minimal" },
+    { prompt: "A clean juice cleanse shop. Bottle photos, ingredient list, and order form.", style: "minimal" },
+    { prompt: "A simple handyman service. Tool icons, service areas, and phone number.", style: "minimal" },
+    { prompt: "A minimalist makeup artist portfolio. Face charts, service menu, and gallery.", style: "minimal" },
+    { prompt: "A clean psychology clinic. Brain icon, calming blue, and therapist bio.", style: "minimal" },
+    { prompt: "A simple house painting service. Brush icon, color swatch, and quote form.", style: "minimal" },
+    { prompt: "A minimalist dog grooming. Paw icon, breed list, and prices.", style: "minimal" },
+    { prompt: "A clean tax preparation. Calculator icon, document list, and deadline.", style: "minimal" },
+    { prompt: "A simple window cleaning. Squeegee icon, service pricing, and contact.", style: "minimal" },
+    { prompt: "A minimalist flower shop. Bloom photos, bouquet list, and delivery info.", style: "minimal" },
+    { prompt: "A clean copywriting portfolio. Text samples, client list, and services.", style: "minimal" },
+    { prompt: "A simple pest control. Bug icon, treatment list, and guarantee.", style: "minimal" },
+    { prompt: "A minimalist electrician. Bulb icon, service list, and emergency contact.", style: "minimal" },
+    { prompt: "A clean plumber site. Wrench icon, repair list, and phone number.", style: "minimal" },
+    { prompt: "A simple locksmith. Key icon, unlock service, and 24/7 badge.", style: "minimal" },
+    { prompt: "A minimalist roofing company. Roof icon, material list, and estimate.", style: "minimal" },
+    { prompt: "A clean landscaping. Tree icon, service menu, and green palette.", style: "minimal" },
+    { prompt: "A simple pool cleaning. Water icon, weekly plan, and phone.", style: "minimal" },
+    { prompt: "A minimalist carpet cleaning. Vacuum icon, room prices, and book now.", style: "minimal" },
+    { prompt: "A clean junk removal. Truck icon, item list, and schedule pickup.", style: "minimal" },
+    { prompt: "A simple fence builder. Picket icon, material types, and gallery.", style: "minimal" },
+    { prompt: "A minimalist deck builder. Wood texture, project photos, and contact.", style: "minimal" },
+    { prompt: "A clean flooring installer. Tile patterns, material list, and quote.", style: "minimal" },
+    { prompt: "A simple cabinet maker. Woodwork photos, style guide, and contact.", style: "minimal" },
+    { prompt: "A minimalist home inspector. Checklist icon, report sample, and pricing.", style: "minimal" },
+    { prompt: "A clean surveyor site. Land map, service list, and contact form.", style: "minimal" },
 
-    // Food & Hospitality
-    {
-        prompt: "A fine dining restaurant reservation page. Elegant dark mode, gold thin lines, and atmospheric lighting.",
-        style: "dark"
-    },
-    {
-        prompt: "A vibrant taco truck tracker. Mexican-inspired colors, bold fonts, and distressed textures.",
-        style: "vibrant"
-    },
-    {
-        prompt: "A healthy smoothie bar menu. Fresh fruit colors, liquid gradients, and energetic layout.",
-        style: "vibrant"
-    },
-    {
-        prompt: "A cozy boutique hotel homepage. Warm lighting photography, serif fonts, and welcoming text.",
-        style: "corporate"
-    },
-    {
-        prompt: "A nightly jazz club schedule. Smoky dark background, neon blue accents, and brass instrument colors.",
-        style: "dark"
-    },
-    {
-        prompt: "A japanese sushi bar. Minimalist, zen aesthetic with bamboo colors and ink brush strokes.",
-        style: "minimal"
-    },
-    {
-        prompt: "A burger joint menu. bold red and yellow ketchup/mustard theme with grunge textures.",
-        style: "vibrant"
-    },
-    {
-        prompt: "A winery tour booking site. Deep burgundy and grape colors with elegant, classic layout.",
-        style: "corporate"
-    },
-    {
-        prompt: "A vegan cafe. Fresh greens, earthy browns, and hand-drawn vegetable illustrations.",
-        style: "minimal"
-    },
-    {
-        prompt: "A rooftop bar. City lights background (dark), neon cocktails, and sophisticated vibe.",
-        style: "dark"
-    },
-    {
-        prompt: "A pizzeria delivery site. Italian flag colors, checkered tablecloth patterns, and warm vibes.",
-        style: "vibrant"
-    },
-    {
-        prompt: "A ice cream parlor. Pastel colors, sprinkles patterns, and dripping effects.",
-        style: "vibrant"
-    },
-    {
-        prompt: "A rustic cabin rental site. Wood textures, forest green colors, and cozy fireplace imagery.",
-        style: "corporate"
-    },
-    {
-        prompt: "A bubble tea shop. Pop culture aesthetic, bright purples and pinks, rounded bubbles.",
-        style: "vibrant"
-    },
-    {
-        prompt: "A seafood restaurant. Nautical theme, navy blue and white, rope and anchor motifs.",
-        style: "corporate"
-    },
+    // Vibrant (Batch 2/2)
+    { prompt: "A colorful mini donut shop. Sprinkle patterns, pastel pink, and menu grid.", style: "vibrant" },
+    { prompt: "An energetic salsa dance class. Red and yellow, motion photos, and schedule.", style: "vibrant" },
+    { prompt: "A playful slime shop. Drip graphics, neon green, and video clips.", style: "vibrant" },
+    { prompt: "A vibrant smoothie truck. Fruit icons, bright orange, and location map.", style: "vibrant" },
+    { prompt: "A colorful sticker shop. Die-cut shapes, rainbow bg, and cart.", style: "vibrant" },
+    { prompt: "An energetic laser tag arena. Neon beams, dark bg, and score list.", style: "vibrant" },
+    { prompt: "A playful balloon twisting service. Balloon animal photos, bright blue, and book.", style: "vibrant" },
+    { prompt: "A vibrant pop art gallery. Halftone dots, comic style, and artist bios.", style: "vibrant" },
+    { prompt: "A colorful retro diner. Checkerboard, teal and pink, and milkshake menu.", style: "vibrant" },
+    { prompt: "An energetic rock climbing gym. geometric shapes, orange accents, and waivers.", style: "vibrant" },
+    { prompt: "A playful face painting service. Brush strokes, sparkle effects, and gallery.", style: "vibrant" },
+    { prompt: "A vibrant food festival. Food icons, confetti, and ticket buttons.", style: "vibrant" },
+    { prompt: "A colorful swimwear brand. Tropical patterns, sun yellow, and shop.", style: "vibrant" },
+    { prompt: "An energetic spin studio. Cycle icons, pulse animation, and timetable.", style: "vibrant" },
+    { prompt: "A playful magic shop. Star icons, purple and gold, and trick list.", style: "vibrant" },
+    { prompt: "A vibrant cocktail recipe blog. Drink photos, lime green, and ingredients.", style: "vibrant" },
+    { prompt: "A colorful party rental. Bounce house photos, confetti bg, and prices.", style: "vibrant" },
+    { prompt: "An energetic zumba class. Dancer silhouettes, neon pink, and signup.", style: "vibrant" },
+    { prompt: "A playful cupcake bakery. Swirl graphics, pastel palette, and menu.", style: "vibrant" },
+    { prompt: "A vibrant music blog. Equalizer bars, album art, and bold headers.", style: "vibrant" },
+    { prompt: "A colorful street art tour. Graffiti tags, spray paint texture, and map.", style: "vibrant" },
+    { prompt: "An energetic crossfit gym. Grunge texture, red alerts, and WOD list.", style: "vibrant" },
+    { prompt: "A playful pet photography. Paw prints, bright colors, and gallery.", style: "vibrant" },
+    { prompt: "A vibrant festival gear shop. Glow stick icons, neon colors, and cart.", style: "vibrant" },
+    { prompt: "A colorful tarot reader. Card images, mystic purple, and booking.", style: "vibrant" },
+    { prompt: "An energetic dj portfolio. Turntable icon, sound waves, and gig list.", style: "vibrant" },
+    { prompt: "A playful costume shop. Mask icons, bright orange, and category grid.", style: "vibrant" },
+    { prompt: "A vibrant vegan junk food. Burger photos, green and pink, and menu.", style: "vibrant" },
+    { prompt: "A colorful roller rink. Disco ball, neon floor, and hours.", style: "vibrant" },
+    { prompt: "An energetic kickboxing gym. Punch icon, red and black, and schedule.", style: "vibrant" },
+    { prompt: "A playful puppet theater. Curtain graphics, character photos, and tickets.", style: "vibrant" },
+    { prompt: "A vibrant retro gaming store. Pixel art, neon blue, and console list.", style: "vibrant" },
+    { prompt: "A colorful nail art blog. Polish drips, glitter bg, and tutorials.", style: "vibrant" },
+    { prompt: "An energetic hip hop dance. Boombox icon, graffiti font, and classes.", style: "vibrant" },
+    { prompt: "A playful candy buffet service. Jar photos, rainbow stripes, and quote.", style: "vibrant" },
+    { prompt: "A vibrant hot yoga. Fire icon, orange gradient, and booking.", style: "vibrant" },
+    { prompt: "A colorful bracelet shop. Bead photos, patterns, and shop now.", style: "vibrant" },
+    { prompt: "An energetic parkour team. Jump photos, urban grey, and videos.", style: "vibrant" },
+    { prompt: "A playful comic con info. Hero icons, comic font, and schedule.", style: "vibrant" },
+    { prompt: "A vibrant karaoke machine rental. Mic icon, musical notes, and prices.", style: "vibrant" },
+    { prompt: "A colorful pin badge store. Circle icons, pop colors, and cart.", style: "vibrant" },
+    { prompt: "An energetic surfing contest. Wave graphics, sun orange, and results.", style: "vibrant" },
+    { prompt: "A playful board game cafe. Dice icons, primary colors, and menu.", style: "vibrant" },
+    { prompt: "A vibrant rave gear shop. LED icons, neon dark, and products.", style: "vibrant" },
+    { prompt: "A colorful hair dye brand. Hair strands, rainbow palette, and shop.", style: "vibrant" },
+    { prompt: "An energetic marathon event. Runner icon, asphalt grey, and register.", style: "vibrant" },
+    { prompt: "A playful circus school. Tent stripes, red and yellow, and classes.", style: "vibrant" },
+    { prompt: "A vibrant tattoo parlour. Ink drip, bold red, and artist gallery.", style: "vibrant" },
+    { prompt: "A colorful phone case store. Pattern items, bright bg, and buy.", style: "vibrant" },
+    { prompt: "An energetic breakdance crew. Freeze photos, street vibe, and bookings.", style: "vibrant" },
 
-    // Community & Non-Profit
-    {
-        prompt: "A charity organization for ocean cleanup. Deep ocean blues, wave patterns, and clean white text.",
-        style: "minimal"
-    },
-    {
-        prompt: "A local library event calendar. Quiet, studious colors like parchment and dark wood.",
-        style: "corporate"
-    },
-    {
-        prompt: "A youth sports league. Energetic team colors, bold scoreboards, and action photography.",
-        style: "vibrant"
-    },
-    {
-        prompt: "A church community page. Welcoming light, stain-glass colors, and traditional serif fonts.",
-        style: "minimal"
-    },
-    {
-        prompt: "A stray animal shelter. Heartwarming photography, soft colors, and rounded friendly buttons.",
-        style: "minimal"
-    },
-    {
-        prompt: "A political campaign landing page. Patriotic colors, strong bold headers, and clear manifesto.",
-        style: "corporate"
-    },
-    {
-        prompt: "A music festival lineup page. Psychedelic colors, wild fonts, and chaotic energy.",
-        style: "vibrant"
-    },
-    {
-        prompt: "A university alumni network. Academic colors like maroon or navy, traditional crests.",
-        style: "corporate"
-    },
-    {
-        prompt: "A coding club for kids. Pixel art style, bright colors, and gamified elements.",
-        style: "vibrant"
-    },
-    {
-        prompt: "A neighborhood watch newsletter site. Community focused, safe blue colors, and map icons.",
-        style: "minimal"
-    },
-    {
-        prompt: "A hiking club trail guide. Topographic map lines, forest greens, and adventurous spirit.",
-        style: "minimal"
-    },
-    {
-        prompt: "A museum exhibition preview. High-contrast labels, art focus, and neutral backgrounds.",
-        style: "minimal"
-    },
-    {
-        prompt: "A public transport timetable. High legibility, clear color-coded lines, and functional design.",
-        style: "corporate"
-    },
-    {
-        prompt: "A space enthusiast blog. Starry background, orbit animations, and nasa-style fonts.",
-        style: "dark"
-    },
-    {
-        prompt: "A gardening community tips site. Floral patterns, sun yellow and leaf green colors.",
-        style: "vibrant"
-    }
+    // Corporate (Batch 2/2)
+    { prompt: "A professional patent attorney. Document icon, serif font, and services.", style: "corporate" },
+    { prompt: "A corporate tax consultant. Calculator image, navy blue, and contact.", style: "corporate" },
+    { prompt: "A clean dental surgeon. Tooth icon, white and blue, and appointment.", style: "corporate" },
+    { prompt: "A robust freight forwarder. Container photo, globe map, and tracking.", style: "corporate" },
+    { prompt: "A corporate commercial real estate. Building photo, gold accent, and listings.", style: "corporate" },
+    { prompt: "A professional auditor. Checklist icon, grey tones, and team.", style: "corporate" },
+    { prompt: "A clean orthodontist. Brace icon, smile photos, and pricing.", style: "corporate" },
+    { prompt: "A corporate risk management. Shield icon, dark blue, and policy info.", style: "corporate" },
+    { prompt: "A professional headhunter. Magnifying glass, people photos, and jobs.", style: "corporate" },
+    { prompt: "A clean network security. Lock icon, circuit bg, and services.", style: "corporate" },
+    { prompt: "A corporate civil engineering. Bridge photo, blueprint lines, and projects.", style: "corporate" },
+    { prompt: "A professional notary services. Pen icon, parchment color, and contact.", style: "corporate" },
+    { prompt: "A clean market research. Chart icon, data tables, and reports.", style: "corporate" },
+    { prompt: "A corporate renewable energy. Solar panel photo, green accent, and stats.", style: "corporate" },
+    { prompt: "A professional vocational school. Tool icon, classroom photo, and enroll.", style: "corporate" },
+    { prompt: "A clean industrial manufacturing. Gear icon, metal texture, and products.", style: "corporate" },
+    { prompt: "A corporate private investigator. Eye icon, mysterious dark, and services.", style: "corporate" },
+    { prompt: "A professional conference center. Hall photo, schedule grid, and booking.", style: "corporate" },
+    { prompt: "A clean charity foundation. Heart icon, giving form, and impact.", style: "corporate" },
+    { prompt: "A corporate wealth management. Coin icon, gold gradient, and advisor.", style: "corporate" },
+    { prompt: "A professional erp software. Screen mockup, feature list, and demo.", style: "corporate" },
+    { prompt: "A clean logistics broker. Truck icon, map view, and quote.", style: "corporate" },
+    { prompt: "A corporate payroll service. Dollar sign, calendar, and signup.", style: "corporate" },
+    { prompt: "A professional structural engineer. Beam photo, calculations, and team.", style: "corporate" },
+    { prompt: "A clean animal hospital. Cross icon, pet photos, and emergency.", style: "corporate" },
+    { prompt: "A corporate property management. Key icon, house photo, and services.", style: "corporate" },
+    { prompt: "A professional interpreter. Headset icon, language list, and book.", style: "corporate" },
+    { prompt: "A clean crisis management. Phone icon, serious tone, and contact.", style: "corporate" },
+    { prompt: "A corporate junk haulage. Trash bin icon, green truck, and schedule.", style: "corporate" },
+    { prompt: "A professional arbitrator. Gavel photo, neutral colors, and bio.", style: "corporate" },
+    { prompt: "A clean physical therapy. Body icon, exercise photos, and booking.", style: "corporate" },
+    { prompt: "A corporate wireless provider. Signal icon, coverage map, and plans.", style: "corporate" },
+    { prompt: "A professional cargo shipping. Box icon, ship photo, and tracking.", style: "corporate" },
+    { prompt: "A clean flight school. Plane icon, sky blue, and courses.", style: "corporate" },
+    { prompt: "A corporate oil and gas. Rig photo, earth tones, and safety.", style: "corporate" },
+    { prompt: "A professional agronomy. Plant icon, field photo, and consulting.", style: "corporate" },
+    { prompt: "A clean genetic testing. Helix icon, lab photo, and kit order.", style: "corporate" },
+    { prompt: "A corporate medical devices. Device photo, sterile look, and catalog.", style: "corporate" },
+    { prompt: "A professional car leasing. Steering wheel, fleet photos, and rates.", style: "corporate" },
+    { prompt: "A clean self storage. Door icon, size chart, and rent now.", style: "corporate" },
+    { prompt: "A corporate copy center. Paper icon, cmyk dots, and services.", style: "corporate" },
+    { prompt: "A professional home stager. Sofa icon, room photos, and portfolio.", style: "corporate" },
+    { prompt: "A clean cremation service. Urn icon, peaceful colors, and plans.", style: "corporate" },
+    { prompt: "A corporate office cleaning. Spray bottle, sparkle, and quote.", style: "corporate" },
+    { prompt: "A professional security guard. Badge icon, uniform photo, and hire.", style: "corporate" },
+    { prompt: "A clean termite control. Wood icon, inspection list, and warranty.", style: "corporate" },
+    { prompt: "A corporate lawn care. Mower icon, green grass, and weekly plan.", style: "corporate" },
+    { prompt: "A professional ac repair. Fan icon, cool blue, and emergency.", style: "corporate" },
+    { prompt: "A clean pipe fitter. Pipe icon, industrial look, and contact.", style: "corporate" },
+    { prompt: "A corporate elevator service. Lift icon, metal texture, and maintenance.", style: "corporate" },
+
+    // Futuristic (Batch 1/2)
+    { prompt: "A futuristic AI research lab. Holographic data streams, dark neon grid, and floating UI elements.", style: "futuristic" },
+    { prompt: "A sleek crypto trading platform. Neon blue charts, glassmorphism panels, and glowing tokens.", style: "futuristic" },
+    { prompt: "A modern space agency portal. Star fields, orbit animations, and metallic textures.", style: "futuristic" },
+    { prompt: "A futuristic electric vehicle showcase. Glowing outlines, speed motion blur, and sleek typography.", style: "futuristic" },
+    { prompt: "A high-tech cybersecurity firm. Matrix rain code, neon green shields, and digital glitsch.", style: "futuristic" },
+    { prompt: "A virtual reality headset landing page. Immersive 3D depth, neon pink edges, and dark mode.", style: "futuristic" },
+    { prompt: "A robotic engineering workshop. Blueprint overlays, metallic grey, and circuit animations.", style: "futuristic" },
+    { prompt: "A futuristic drone delivery service. Hexagon patterns, aerial views, and bright cyan accents.", style: "futuristic" },
+    { prompt: "A smart home automation interface. Glowing buttons, glass panels, and voice wave visualizers.", style: "futuristic" },
+    { prompt: "A quantum computing research site. Particle effects, subatomic orbital lines, and deep indigo.", style: "futuristic" },
+    { prompt: "A futuristic esports tournament. Neon arena lights, player holograms, and dynamic scoreboards.", style: "futuristic" },
+    { prompt: "A sleek 3D printing service. Low poly mesh backgrounds, glowing orange filament, and tech fonts.", style: "futuristic" },
+    { prompt: "A modern biotech startup. DNA helix animations, neon blue and white, and clean glass cards.", style: "futuristic" },
+    { prompt: "A futuristic architectural firm. Wireframe building models, neon skylines, and dark grey.", style: "futuristic" },
+    { prompt: "A high-tech music production software. Equalizer bars, neon knobs, and dark metallic surface.", style: "futuristic" },
+    { prompt: "A sleek digital banking app. Contactless cards, glowing transaction lines, and face id icons.", style: "futuristic" },
+    { prompt: "A futuristic gaming hardware store. RGB lighting effects, angular product shots, and dark theme.", style: "futuristic" },
+    { prompt: "A modern artificial intelligence blog. Neural network nodes, brain scan visuals, and monospace type.", style: "futuristic" },
+    { prompt: "A high-tech surveillance systems. Camera lens flare, night vision green, and grid overlays.", style: "futuristic" },
+    { prompt: "A sleek autonomous taxi service. City lights blur, neon route lines, and futuristic map.", style: "futuristic" },
+    { prompt: "A futuristic wearable tech showcase. Wrist interfaces, health pulse graphs, and glowing sensors.", style: "futuristic" },
+    { prompt: "A modern cloud computing provider. Server rack lights, data flow particles, and infinite scrolling.", style: "futuristic" },
+    { prompt: "A high-tech logistics drone net. Map grids, target reticles, and neon tracking dots.", style: "futuristic" },
+    { prompt: "A sleek nft marketplace. Digital art frames, etherum crystals, and glowing bid buttons.", style: "futuristic" },
+    { prompt: "A futuristic scientific telescope. Star cluster backgrounds, lens UI, and deep space black.", style: "futuristic" },
+    { prompt: "A modern clean energy plant. Solar flare effects, neon fusion rings, and energy bars.", style: "futuristic" },
+    { prompt: "A high-tech medical scanner interface. Body wireframes, vital sign hues, and scan lines.", style: "futuristic" },
+    { prompt: "A sleek holographic display tech. Floating menus, transparent screens, and light beams.", style: "futuristic" },
+    { prompt: "A futuristic deep sea exploration. Sonar waves, bioluminescent blue, and submersibles.", style: "futuristic" },
+    { prompt: "A modern cybernetics lab. Robotic arm renders, circuit skin, and metallic sheen.", style: "futuristic" },
+    { prompt: "A high-tech data center tour. Cooling mist effects, server lights, and infinite corridors.", style: "futuristic" },
+    { prompt: "A sleek satellite internet provider. Globe orbit views, signal beams, and starlink vibes.", style: "futuristic" },
+    { prompt: "A futuristic weather control station. Radar sweeps, storm tracker maps, and neon alerts.", style: "futuristic" },
+    { prompt: "A modern augmented reality app. Camera viewports, overlay markers, and 3D objects.", style: "futuristic" },
+    { prompt: "A high-tech fitness mirror. Ghost trainer outline, heart rate glow, and sleek mirror ui.", style: "futuristic" },
+    { prompt: "A sleek electric bike rental. Battery charge bars, neon wheel rims, and night ride city.", style: "futuristic" },
+    { prompt: "A futuristic vertical farming. UV grow lights, hydroponic tubes, and data dashboards.", style: "futuristic" },
+    { prompt: "A modern nanobots medical page. Bloodstream view, tiny robot swarms, and healing light.", style: "futuristic" },
+    { prompt: "A high-tech smart city control. Traffic flow lines, energy grids, and surveillance cams.", style: "futuristic" },
+    { prompt: "A sleek hyperloop ticket booking. Speed tunnel blur, tube pods, and futuristic stations.", style: "futuristic" },
+    { prompt: "A futuristic neuro interface. Brain wave patterns, synapse flashes, and thought bubbles.", style: "futuristic" },
+    { prompt: "A modern asteroids mining corp. Rock textures, laser beams, and space freighter ships.", style: "futuristic" },
+    { prompt: "A high-tech holographic concert. Virtual stage, crowd motes, and laser shows.", style: "futuristic" },
+    { prompt: "A sleek molecular gastronomy. Food science icons, liquid nitrogen smoke, and precise plating.", style: "futuristic" },
+    { prompt: "A futuristic gene editing lab. CRISPR scissors icon, dna spiral, and mutation chart.", style: "futuristic" },
+    { prompt: "A modern exoplanet travel agency. Alien landscape art, twin suns, and warp drive ui.", style: "futuristic" },
+    { prompt: "A high-tech submarine cable map. Ocean floor depth, fiber optic glows, and data pulse.", style: "futuristic" },
+    { prompt: "A sleek personal flying vehicle. Sky lanes, landing pad lights, and aero design.", style: "futuristic" },
+    { prompt: "A futuristic memory cloud storage. Brain storage banks, file transfer beams, and vault lock.", style: "futuristic" },
+    { prompt: "A modern fusion reactor monitor. Core heat glow, magnetic field lines, and energy output.", style: "futuristic" },
+
+    // Dark (Batch 1/2) (Futuristic Dark)
+    { prompt: "A sleek dark mode portfolio. Charcoal background, subtle shadows, and white text.", style: "dark" },
+    { prompt: "A night club event page. Deep black, strobe light effects, and bold event dates.", style: "dark" },
+    { prompt: "A luxury car configurator. Pitch black showroom, spotlight reflections, and leather textures.", style: "dark" },
+    { prompt: "A cinematic movie trailer site. Letterbox layout, dark vignette, and dramatic title font.", style: "dark" },
+    { prompt: "A coding terminal blog. Pure black bg, bright green text, and blinking cursor.", style: "dark" },
+    { prompt: "A dark themed photography gallery. Matte black matte, high contrast b&w photos, and dim UI.", style: "dark" },
+    { prompt: "A sleek whiskey brand page. Amber glow, oak barrel textures, and shadow play.", style: "dark" },
+    { prompt: "A mysterious escape room. Fog effects, dim flashlight beam, and hidden clues.", style: "dark" },
+    { prompt: "A dark academia book club. Leather bound textures, candle light warmth, and serif fonts.", style: "dark" },
+    { prompt: "A sleek heavy metal band site. Grunge black, distressed red logo, and tour dates.", style: "dark" },
+    { prompt: "A midnight cafe menu. Coffee steam, dark wood table, and chalk art.", style: "dark" },
+    { prompt: "A luxury watch showcase. Spotlight on dial, mechanical gears background, and silver text.", style: "dark" },
+    { prompt: "A dark forest hiking guide. Silhouette trees, moon white text, and misty layers.", style: "dark" },
+    { prompt: "A sleek tattoo artist portfolio. Ink black background, grey scale art, and needle icon.", style: "dark" },
+    { prompt: "A gothic fashion store. Lace patterns, velvet textures, and dark purple accents.", style: "dark" },
+    { prompt: "A mysterious podcast landing. Sound wave in shadow, microphone silhouette, and suspense.", style: "dark" },
+    { prompt: "A dark themed weather app. Storm clouds, lightning flash, and rain animation.", style: "dark" },
+    { prompt: "A sleek cocktail lounge. Neon bar sign reflection, wet bar surface, and drink menu.", style: "dark" },
+    { prompt: "A horror movie review blog. Blood red accents, torn paper, and gritty noise.", style: "dark" },
+    { prompt: "A dark mode crypto wallet. Obsidian cards, gold coin edge, and secure lock.", style: "dark" },
+    { prompt: "A sleek automotive detailing. Carbon fiber texture, glossy finish, and before/after.", style: "dark" },
+    { prompt: "A midnight run club. Reflective gear highlights, street light orange, and map.", style: "dark" },
+    { prompt: "A dark fantasy game wiki. Dragon scales, ancient runes, and map parchment.", style: "dark" },
+    { prompt: "A sleek vinyl record store. Spinning disc, groove texture, and album covers.", style: "dark" },
+    { prompt: "A mysterious magic show. Smoke swirls, card suits, and curtain reveal.", style: "dark" },
+    { prompt: "A dark themed chess club. Checkerboard floor, strategical pieces, and shadow.", style: "dark" },
+    { prompt: "A sleek perfume brand. Glass bottle reflection, mist spray, and scent notes.", style: "dark" },
+    { prompt: "A midnight coding hackathon. Laptop screen glow, energy drink neon, and code.", style: "dark" },
+    { prompt: "A dark mode dev portfolio. IDE color scheme, syntax highlighting, and clean lines.", style: "dark" },
+    { prompt: "A sleek urban exploration. Flashlight circle, abandoned texture, and map.", style: "dark" },
+    { prompt: "A mysterious detective agency. Fedora silhouette, rainy window, and files.", style: "dark" },
+    { prompt: "A dark themed astronomy club. Deep space background, telescope lens, and stars.", style: "dark" },
+    { prompt: "A sleek cigar lounge. Smoke wisps, ash grey, and tobacco brown.", style: "dark" },
+    { prompt: "A midnight jazz bar. Saxophone gold, smoky blue, and table lamps.", style: "dark" },
+    { prompt: "A dark fantasy book launch. Sword icon, castle silhouette, and prologue.", style: "dark" },
+    { prompt: "A sleek black friday sale. Countdown timer, neon red sale tag, and product grid.", style: "dark" },
+    { prompt: "A mysterious ancient history. Hieroglyphs, tomb walls, and torch light.", style: "dark" },
+    { prompt: "A dark themed meditation. Closed eyes, candle flame, and silence.", style: "dark" },
+    { prompt: "A sleek poker tournament. Green felt table, chip stacks, and card backs.", style: "dark" },
+    { prompt: "A midnight street food. Neon stall sign, steam vents, and night city.", style: "dark" },
+    { prompt: "A dark mode financial report. loss charts in red, profit in green, black bg.", style: "dark" },
+    { prompt: "A sleek boxing match info. spotlight ring, glove leather, and fight card.", style: "dark" },
+    { prompt: "A mysterious hidden bar. Keyhole icon, password input, and speakeasy vibe.", style: "dark" },
+    { prompt: "A dark themed cavern tour. Stalactites, lantern glow, and rocky textures.", style: "dark" },
+    { prompt: "A sleek limousine service. Tinted window, long car silhouette, and chauffeur.", style: "dark" },
+    { prompt: "A midnight poetry slam. Mic stand, spotlight, and snap fingers.", style: "dark" },
+    { prompt: "A dark mode resume. Grey text, skills bars, and profile photo.", style: "dark" },
+    { prompt: "A sleek billiards hall. 8-ball icon, green felt, and chalk dust.", style: "dark" },
+    { prompt: "A mysterious urban legend blog. Glitch text, fuzzy photos, and rumors.", style: "dark" },
+    { prompt: "A dark themed bat conservation. Cave entrance, hanging bats, and night sky.", style: "dark" },
+
+    // Luxury (Batch 1/2)
+    { prompt: "A luxury hotel homepage. Marble textures, gold serif font, and concierge bell.", style: "luxury" },
+    { prompt: "A high-end jewelry store. Diamond sparkle, velvet display, and ring closeups.", style: "luxury" },
+    { prompt: "A prestigious law firm. Mahogany wood, brass nameplate, and lawyer portraits.", style: "luxury" },
+    { prompt: "A luxury yacht charter. Ocean blue, teak deck, and champagne glass.", style: "luxury" },
+    { prompt: "A bespoke suit tailor. Fabric swatches, measuring tape, and mannequin.", style: "luxury" },
+    { prompt: "A fine dining restaurant. White tablecloth, silver cutlery, and plated art.", style: "luxury" },
+    { prompt: "A luxury real estate. Mansion facade, infinity pool, and interior tour.", style: "luxury" },
+    { prompt: "A premium perfume house. Crystal bottle, flower petals, and scent mist.", style: "luxury" },
+    { prompt: "A high-end car dealership. Showroom floor, sleek curves, and emblem.", style: "luxury" },
+    { prompt: "A luxury spa retreat. Lotus flower, hot stones, and towel fold.", style: "luxury" },
+    { prompt: "A prestigious private school. Crest logo, brick building, and uniform.", style: "luxury" },
+    { prompt: "A luxury watchmaker. Gear movement, sapphire glass, and leather strap.", style: "luxury" },
+    { prompt: "A bespoke furniture studio. Handcrafted wood, leather armchair, and studio.", style: "luxury" },
+    { prompt: "A fine art auction house. Gavel, framed painting, and bid paddle.", style: "luxury" },
+    { prompt: "A luxury travel agency. Private jet interior, tropical island, and passport.", style: "luxury" },
+    { prompt: "A premium wine cellar. Bottle racks, cork texture, and tasting glass.", style: "luxury" },
+    { prompt: "A high-end fashion boutique. Runway photo, hanger rack, and silk texture.", style: "luxury" },
+    { prompt: "A luxury chocolate shop. Gold foil wrapper, truffle box, and ribbon.", style: "luxury" },
+    { prompt: "A prestigious golf club. Green fairway, club house, and tee off.", style: "luxury" },
+    { prompt: "A luxury interior design. Chandelier, plush rug, and mood board.", style: "luxury" },
+    { prompt: "A bespoke wedding planner. Ring box, floral arch, and cake tiers.", style: "luxury" },
+    { prompt: "A fine leather goods store. Handbag stitch, wallet texture, and tools.", style: "luxury" },
+    { prompt: "A luxury concierge service. Bellhop hat, silver platter, and key.", style: "luxury" },
+    { prompt: "A premium cigar lounge. Humidor box, smoke swirls, and leather chair.", style: "luxury" },
+    { prompt: "A high-end audio equipment. Tube amp glow, vinyl player, and speaker.", style: "luxury" },
+    { prompt: "A luxury event venue. Ballroom lights, banquet table, and stage.", style: "luxury" },
+    { prompt: "A prestigious investment firm. Bull statue, stock ticker, and boardroom.", style: "luxury" },
+    { prompt: "A luxury flower delivery. Rose bouquet, vase, and card envelope.", style: "luxury" },
+    { prompt: "A bespoke shoe maker. Lasting tool, leather sole, and shoelace.", style: "luxury" },
+    { prompt: "A fine antique dealer. Grandfather clock, porcelain vase, and dust.", style: "luxury" },
+    { prompt: "A luxury ski resort. Snow peak, chalet fire, and ski lift.", style: "luxury" },
+    { prompt: "A premium coffee reserve. Gold bag, pour over, and bean origin.", style: "luxury" },
+    { prompt: "A high-end beauty salon. Gold mirror, lipstick tube, and brush set.", style: "luxury" },
+    { prompt: "A luxury pet accessories. Diamond collar, silk bed, and gourmet treat.", style: "luxury" },
+    { prompt: "A prestigious university. Ivy wall, library stack, and graduation cap.", style: "luxury" },
+    { prompt: "A luxury home automation. Gold switch, smart screen, and voice command.", style: "luxury" },
+    { prompt: "A bespoke stationery. Fountain pen, wax seal, and heavy paper.", style: "luxury" },
+    { prompt: "A fine caviar shop. Tin can, pearl spoon, and blini.", style: "luxury" },
+    { prompt: "A luxury limousine fleet. Stretch limo, driver cap, and red carpet.", style: "luxury" },
+    { prompt: "A premium whiskey distillery. Copper still, barrel rows, and tasting.", style: "luxury" },
+    { prompt: "A high-end fitness club. Sauna wood, towel stack, and pool deck.", style: "luxury" },
+    { prompt: "A luxury yacht broker. Blueprint, compass, and sea horizon.", style: "luxury" },
+    { prompt: "A prestigious award show. Gold statue, envelope, and podium.", style: "luxury" },
+    { prompt: "A luxury handbag rental. Clutch bag, chain strap, and calendar.", style: "luxury" },
+    { prompt: "A bespoke hat milliner. Hat box, ribbon, and feathers.", style: "luxury" },
+    { prompt: "A fine dining chef portfolio. Plating tweezer, signature dish, and bio.", style: "luxury" },
+    { prompt: "A luxury organic market. Gold apple, woven basket, and fresh herbs.", style: "luxury" },
+    { prompt: "A premium cigar club. Smoke ring, ash tray, and member card.", style: "luxury" },
+    { prompt: "A high-end art gallery. Spotlights, white wall, and red dot.", style: "luxury" },
+    { prompt: "A luxury private jet charter. Wing view, champagne, and leather seat.", style: "luxury" },
+
+    // Futuristic (Batch 2/2)
+    { prompt: "A clean energy fusion control. Reactor core glow, safety stats, and start button.", style: "futuristic" },
+    { prompt: "A sleek asteroid mining dashboard. Resource bars, drill cams, and cargo status.", style: "futuristic" },
+    { prompt: "A modern drone racing league. Course map, pilot stats, and neon leaderboard.", style: "futuristic" },
+    { prompt: "A futuristic vertical transport. Elevator shafts, pod icons, and floor plans.", style: "futuristic" },
+    { prompt: "A high-tech cybernetic surgery. Organ holograms, robotic arms, and vitals.", style: "futuristic" },
+    { prompt: "A sleek smart grid monitor. Power lines, consumption graph, and battery storage.", style: "futuristic" },
+    { prompt: "A modern space elevator ticket. Altitude meter, pod view, and booking.", style: "futuristic" },
+    { prompt: "A futuristic holographic comms. Avatar projection, signal strength, and contacts.", style: "futuristic" },
+    { prompt: "A high-tech planetary rover. Terrain map, wheel status, and battery life.", style: "futuristic" },
+    { prompt: "A sleek orbital defense system. Satellite net, shield integrity, and alert logs.", style: "futuristic" },
+    { prompt: "A modern memory backup service. Brain icon, cloud upload, and restore points.", style: "futuristic" },
+    { prompt: "A futuristic genetic ancestry. DNA strand, origin map, and trait list.", style: "futuristic" },
+    { prompt: "A high-tech submarine tourism. Depth gauge, window view, and dive path.", style: "futuristic" },
+    { prompt: "A sleek flying car taxi. Sky route, landing pads, and fare calc.", style: "futuristic" },
+    { prompt: "A modern terraforming project. Mars map, atmosphere graph, and progress.", style: "futuristic" },
+    { prompt: "A futuristic synthetic food lab. Nutrient bars, printer icon, and menu.", style: "futuristic" },
+    { prompt: "A high-tech climate control. Dome map, temp slider, and air quality.", style: "futuristic" },
+    { prompt: "A sleek robotic pet store. Dog model, battery specs, and customize.", style: "futuristic" },
+    { prompt: "A modern deep sleep pod. Cryo chamber, wake timer, and dream settings.", style: "futuristic" },
+    { prompt: "A futuristic ocean city guide. Underwater tunnels, dome list, and transport.", style: "futuristic" },
+    { prompt: "A high-tech personal shield. Field strength, recharge dock, and buy.", style: "futuristic" },
+    { prompt: "A sleek anti-gravity sports. Zero-g arena, player list, and scores.", style: "futuristic" },
+    { prompt: "A modern asteroid defense. Laser array, target lock, and impact time.", style: "futuristic" },
+    { prompt: "A futuristic universal translator. Language nodes, mic icon, and text output.", style: "futuristic" },
+    { prompt: "A high-tech sentient ai chat. Face avatar, thought process, and input.", style: "futuristic" },
+    { prompt: "A sleek hyperloop map. Tube lines, speed readout, and stations.", style: "futuristic" },
+    { prompt: "A modern cyber security academy. Lock puzzle, code rain, and courses.", style: "futuristic" },
+    { prompt: "A futuristic mood lighting app. Color wheel, room scan, and presets.", style: "futuristic" },
+    { prompt: "A high-tech nanomedicine. Blood cell cam, bot status, and treatment.", style: "futuristic" },
+    { prompt: "A sleek space junk cleaner. Claw arm, debris map, and mission log.", style: "futuristic" },
+    { prompt: "A modern digital afterlife. Cloud upload, avatar editor, and memory bank.", style: "futuristic" },
+    { prompt: "A futuristic weather modification. Cloud seeder, rain toggle, and radar.", style: "futuristic" },
+    { prompt: "A high-tech dream recorder. Sleep cycle, video playback, and share.", style: "futuristic" },
+    { prompt: "A sleek invisibility cloak shop. Fabric texture, vanish demo, and buy.", style: "futuristic" },
+    { prompt: "A modern telepathy network. Mind connection, signal boost, and user list.", style: "futuristic" },
+    { prompt: "A futuristic cloning facility. Pet dna, incubator status, and price.", style: "futuristic" },
+    { prompt: "A high-tech portal travel. Wormhole icon, destination list, and energy.", style: "futuristic" },
+    { prompt: "A sleek kinetic energy harverster. Floor tiles, battery charge, and stats.", style: "futuristic" },
+    { prompt: "A modern smart tattoo studio. Ink circuit, changing patterns, and artist.", style: "futuristic" },
+    { prompt: "A futuristic lunar base. Crater map, oxygen level, and dome housing.", style: "futuristic" },
+    { prompt: "A high-tech thought police. Brain scan, alert red, and report form.", style: "futuristic" },
+    { prompt: "A sleek emotion regulator. Hormonal sliders, calm blue, and status.", style: "futuristic" },
+    { prompt: "A modern robot rights group. Fist icon, circuit flag, and manifesto.", style: "futuristic" },
+    { prompt: "A futuristic time travel agency. Clock dial, era list, and paradox warning.", style: "futuristic" },
+    { prompt: "A high-tech hive mind social. Connection web, shared thought, and join.", style: "futuristic" },
+    { prompt: "A sleek gravity boots store. Magnetic sole, jump height, and style.", style: "futuristic" },
+    { prompt: "A modern holographic pet. Projection base, cute creature, and food.", style: "futuristic" },
+    { prompt: "A futuristic dark matter plant. Void energy, containment field, and output.", style: "futuristic" },
+    { prompt: "A high-tech exoskeleton rental. Suit specs, lift capacity, and book.", style: "futuristic" },
+    { prompt: "A sleek warp drive mechanic. Engine core, plasma leak, and repair.", style: "futuristic" },
+
+    // Dark (Batch 2/2)
+    { prompt: "A sleek gothic castle tour. Spire silhouette, fog texture, and booking.", style: "dark" },
+    { prompt: "A mysterious secret society. Eye icon, password gate, and lore.", style: "dark" },
+    { prompt: "A dark themed horror game. Jump scare, blood splatter, and download.", style: "dark" },
+    { prompt: "A sleek noir detective blog. Typewriter font, smoke bg, and cases.", style: "dark" },
+    { prompt: "A midnight ghost tour. Spirit orb, cemetery map, and tickets.", style: "dark" },
+    { prompt: "A dark mode hacker forum. Green text, black bg, and anonymous user.", style: "dark" },
+    { prompt: "A sleek vampire lore site. Bat icon, red velvet, and history.", style: "dark" },
+    { prompt: "A mysterious ancient ruins. Crumbling stone, shadow cast, and explore.", style: "dark" },
+    { prompt: "A dark themed metal concert. Distressed font, amps wall, and mosh pit.", style: "dark" },
+    { prompt: "A sleek night driving school. Headlights, rain slick road, and courses.", style: "dark" },
+    { prompt: "A midnight observatory. Dome silhouette, star field, and telescope.", style: "dark" },
+    { prompt: "A dark mode code repository. Branch tree, dark grey, and commit log.", style: "dark" },
+    { prompt: "A sleek underground rave. Laser beams, smoke machine, and dj set.", style: "dark" },
+    { prompt: "A mysterious true crime blog. Fingerprint, crime tape, and stories.", style: "dark" },
+    { prompt: "A dark themed tattoo studio. Ink bottle, needle gun, and flash art.", style: "dark" },
+    { prompt: "A sleek motorcycle club. Leather jacket, chrome pipes, and ride log.", style: "dark" },
+    { prompt: "A midnight cinema club. Projector beam, red seats, and film list.", style: "dark" },
+    { prompt: "A dark mode trading terminal. Candlesticks, volume bars, and dark blue.", style: "dark" },
+    { prompt: "A sleek batcave parody. Gadget wall, car turnstile, and cowl.", style: "dark" },
+    { prompt: "A mysterious deep web portal. Onion icon, encrypted text, and enter.", style: "dark" },
+    { prompt: "A dark themed witch shop. Cauldron, herbs jar, and spell book.", style: "dark" },
+    { prompt: "A sleek night vision specs. Green overlay, heat map, and product.", style: "dark" },
+    { prompt: "A midnight werewolf clan. Moon phase, wolf howl, and members.", style: "dark" },
+    { prompt: "A dark mode linux distrio. Terminal window, penguin icon, and download.", style: "dark" },
+    { prompt: "A sleek horror author site. Book covers, spooky font, and bio.", style: "dark" },
+    { prompt: "A mysterious haunted house. Ghost icon, floor plan, and scare spots.", style: "dark" },
+    { prompt: "A dark themed black cat rescue. Cat eyes, shadow silhouette, and adopt.", style: "dark" },
+    { prompt: "A sleek espresso bar. Coffee bean, dark roast, and steam.", style: "dark" },
+    { prompt: "A midnight owl sanctuary. Feather texture, yellow eyes, and donate.", style: "dark" },
+    { prompt: "A dark mode text editor. Syntax color, minimap, and download.", style: "dark" },
+    { prompt: "A sleek spy gear shop. Pen cam, wire tap, and buy.", style: "dark" },
+    { prompt: "A mysterious area 51 tour. Alien head, fence sign, and map.", style: "dark" },
+    { prompt: "A dark themed funeral planner. Candle light, lily flower, and services.", style: "dark" },
+    { prompt: "A sleek dark chocolate brand. Cocoa pod, richness scale, and shop.", style: "dark" },
+    { prompt: "A midnight burglar alarm. Sensor beam, keypad, and install.", style: "dark" },
+    { prompt: "A dark mode os theme. Window borders, icon pack, and apply.", style: "dark" },
+    { prompt: "A sleek underground poker. Card fan, chips, and invite only.", style: "dark" },
+    { prompt: "A mysterious relic hunter. Map fragment, compass, and artifacts.", style: "dark" },
+    { prompt: "A dark themed dungeon master. D20 die, character sheet, and campaign.", style: "dark" },
+    { prompt: "A sleek ninja dojo. Shuriken, black gi, and classes.", style: "dark" },
+    { prompt: "A midnight street racing. Spoiler wing, nitro flame, and roster.", style: "dark" },
+    { prompt: "A dark mode music player. Waveform, album art, and controls.", style: "dark" },
+    { prompt: "A sleek villain lair. Shark tank, laser trap, and blueprint.", style: "dark" },
+    { prompt: "A mysterious scp database. Redacted text, creature photo, and file.", style: "dark" },
+    { prompt: "A dark themed goth club. Fishnet pattern, boots photo, and events.", style: "dark" },
+    { prompt: "A sleek darkroom photography. Film strip, red light, and develop.", style: "dark" },
+    { prompt: "A midnight insomnia blog. Clock face, sleepy thoughts, and post.", style: "dark" },
+    { prompt: "A dark mode vpn service. Lock icon, tunnel graphic, and pricing.", style: "dark" },
+    { prompt: "A sleek assassin guild. Target scope, contract list, and contact.", style: "dark" },
+    { prompt: "A mysterious shadow puppet show. Hand shapes, light beam, and tickets.", style: "dark" },
+
+    // Luxury (Batch 2/2)
+    { prompt: "A luxury butler service. Silver tray, white glove, and hire.", style: "luxury" },
+    { prompt: "A high-end art restorer. Paint brush, canvas texture, and services.", style: "luxury" },
+    { prompt: "A prestigious derby club. Horse silhouette, jockey silk, and race.", style: "luxury" },
+    { prompt: "A luxury yacht design. Hull blueprint, teak sample, and contact.", style: "luxury" },
+    { prompt: "A bespoke perfume lab. Beaker, flower essence, and blend.", style: "luxury" },
+    { prompt: "A fine crystal shop. Wine glass, chandelier, and sparkle.", style: "luxury" },
+    { prompt: "A luxury silk scarf brand. Pattern twist, fabric flow, and shop.", style: "luxury" },
+    { prompt: "A premium polo club. Mallot icon, green field, and membership.", style: "luxury" },
+    { prompt: "A high-end watch repair. Magnifier, gear tiny, and service.", style: "luxury" },
+    { prompt: "A luxury fountain pen. Gold nib, ink pot, and writing.", style: "luxury" },
+    { prompt: "A prestigious opera house. Red curtain, balcony view, and tickets.", style: "luxury" },
+    { prompt: "A luxury diamond cutter. Gem facet, shine effect, and process.", style: "luxury" },
+    { prompt: "A bespoke suit fabric. Wool texture, pinstripe, and swatch.", style: "luxury" },
+    { prompt: "A fine cognac brand. Bottle shape, amber liquid, and age.", style: "luxury" },
+    { prompt: "A luxury safari lodge. Lion silhouette, sunset orange, and book.", style: "luxury" },
+    { prompt: "A premium golf resort. Sand trap, flag stick, and stay.", style: "luxury" },
+    { prompt: "A high-end violin maker. Wood grain, varnish, and sound.", style: "luxury" },
+    { prompt: "A luxury cashmere brand. Soft knit, goat icon, and catalog.", style: "luxury" },
+    { prompt: "A prestigious ballet school. Toe shoe, ribbon, and classes.", style: "luxury" },
+    { prompt: "A luxury home cinema. Velvet seat, screen glow, and install.", style: "luxury" },
+    { prompt: "A bespoke jewelry custom. Sketch pad, loose gem, and create.", style: "luxury" },
+    { prompt: "A fine porcelain maker. Tea cup, floral paint, and kiln.", style: "luxury" },
+    { prompt: "A luxury helicopter tour. Rotor blade, city view, and flight.", style: "luxury" },
+    { prompt: "A premium spice merchant. Saffron thread, jar row, and buy.", style: "luxury" },
+    { prompt: "A high-end furrier. Fur texture, coat hanger, and store.", style: "luxury" },
+    { prompt: "A luxury tea room. Scone stand, teapot, and reserve.", style: "luxury" },
+    { prompt: "A prestigious fencing club. Foil sword, mask, and bout.", style: "luxury" },
+    { prompt: "A luxury wallpaper design. Damask pattern, gold ink, and roll.", style: "luxury" },
+    { prompt: "A bespoke glove maker. Leather hand, stitching, and size.", style: "luxury" },
+    { prompt: "A fine truffle hunter. Dog sniffing, black gold, and order.", style: "luxury" },
+    { prompt: "A luxury island rental. Palm tree, blue water, and villa.", style: "luxury" },
+    { prompt: "A premium cigar cutter. Blade shine, tobacco leaf, and tool.", style: "luxury" },
+    { prompt: "A high-end audio cable. Gold connector, braided wire, and sound.", style: "luxury" },
+    { prompt: "A luxury chess set. Marble board, carved piece, and play.", style: "luxury" },
+    { prompt: "A prestigious rowing club. Oar cross, boat house, and team.", style: "luxury" },
+    { prompt: "A luxury chandelier shop. Crystal drop, light refraction, and buy.", style: "luxury" },
+    { prompt: "A bespoke luggage brand. Leather trunk, brass lock, and travel.", style: "luxury" },
+    { prompt: "A fine wine investments. Cellar chart, grape icon, and portfolio.", style: "luxury" },
+    { prompt: "A luxury glamping site. Canvas tent, starry sky, and book.", style: "luxury" },
+    { prompt: "A premium oyster bar. Shell texture, pearl, and menu.", style: "luxury" },
+    { prompt: "A high-end soundproofing. Foam texture, silence icon, and service.", style: "luxury" },
+    { prompt: "A luxury beard oil. Dropper bottle, wood scent, and groom.", style: "luxury" },
+    { prompt: "A prestigious debate society. Podium, gavel, and events.", style: "luxury" },
+    { prompt: "A luxury candle maker. Wax drip, scent cloud, and shop.", style: "luxury" },
+    { prompt: "A bespoke bicycle builder. Steel frame, leather seat, and ride.", style: "luxury" },
+    { prompt: "A fine whiskey glass. Crystal cut, amber pour, and buy.", style: "luxury" },
+    { prompt: "A luxury penthouse sale. City skyline, glass wall, and price.", style: "luxury" },
+    { prompt: "A premium steakhouse. Grill mark, knife, and table.", style: "luxury" },
+    { prompt: "A high-end personal stylist. Wardrobe, mirror, and consult.", style: "luxury" },
+    { prompt: "A luxury sailing school. Sail cloth, knot rope, and learn.", style: "luxury" },
 ];
