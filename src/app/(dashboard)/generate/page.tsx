@@ -269,7 +269,7 @@ export default function GeneratePage() {
 
               {/* Style Selection - V2 Cards */}
               <div className="space-y-4">
-                <span className="text-sm font-semibold text-gray-700 dark:text-gray-200 px-1 flex items-center gap-2">
+                <span className="text-sm font-semibold text-foreground px-1 flex items-center gap-2">
                   <Palette className="w-4 h-4 text-pink-500" />
                   {t.generate.form.visualStyle}
                 </span>
@@ -279,17 +279,17 @@ export default function GeneratePage() {
                       key={s.id}
                       type="button"
                       onClick={() => handleStyleSelect(s.id)}
-                      className={`group relative p-4 rounded-2xl flex flex-col items-start gap-2 text-left transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] overflow-hidden ${formData.style === s.id ? 'bg-indigo-50 dark:bg-indigo-900/20 ' + s.activeClass : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20'
+                      className={`group relative p-4 rounded-2xl flex flex-col items-start gap-2 text-left transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] overflow-hidden ${formData.style === s.id ? 'bg-primary/5 ' + s.activeClass : 'bg-transparent border border-border hover:border-primary/50'
                         } ${s.class.replace('border-2', 'border')}`}
                     >
                       <div className={`w-full h-12 rounded-lg mb-1 ${s.preview} shadow-sm opacity-90 group-hover:opacity-100 transition-opacity ring-1 ring-black/5 dark:ring-white/10`} />
                       <div className="space-y-0.5 z-10 w-full">
-                        <span className={`text-sm font-bold leading-none truncate w-full block ${formData.style === s.id ? 'text-indigo-900 dark:text-indigo-100' : 'text-gray-700 dark:text-gray-200'}`}>{s.name}</span>
-                        <span className="text-[10px] text-gray-500 dark:text-gray-400 leading-tight block">{s.desc}</span>
+                        <span className={`text-sm font-bold leading-none truncate w-full block text-foreground`}>{s.name}</span>
+                        <span className="text-[10px] text-muted-foreground leading-tight block">{s.desc}</span>
                       </div>
                       {/* Selection Indicator */}
                       {formData.style === s.id && (
-                        <div className="absolute top-2 right-2 text-indigo-600 dark:text-indigo-400 scale-75">
+                        <div className="absolute top-2 right-2 text-primary scale-75">
                           <CheckCircle2 className="w-5 h-5" />
                         </div>
                       )}
@@ -303,11 +303,11 @@ export default function GeneratePage() {
 
                 {/* Color Picker */}
                 <div className="space-y-3">
-                  <label htmlFor="color" className="text-sm font-semibold text-gray-700 dark:text-gray-200 flex items-center gap-2">
+                  <label htmlFor="color" className="text-sm font-semibold text-foreground flex items-center gap-2">
                     <div className="w-4 h-4 rounded-full bg-gradient-to-tr from-blue-500 to-green-500 shadow-sm" />
                     {t.generate.form.primaryColor}
                   </label>
-                  <div className="flex items-center gap-4 p-3 bg-white dark:bg-black/20 rounded-2xl border border-gray-200 dark:border-white/10 hover:border-indigo-300 transition-all group cursor-pointer shadow-sm hover:shadow-md" onClick={() => document.getElementById('primaryColor')?.click()}>
+                  <div className="flex items-center gap-4 p-3 bg-transparent rounded-2xl border border-border hover:border-primary/50 transition-all group cursor-pointer shadow-sm hover:shadow-md" onClick={() => document.getElementById('primaryColor')?.click()}>
                     <div className="relative shrink-0">
                       <input
                         type="color"
@@ -320,15 +320,15 @@ export default function GeneratePage() {
                       <div className="w-10 h-10 rounded-full border-2 border-white shadow-md ring-1 ring-gray-100" style={{ backgroundColor: formData.primaryColor }} />
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-xs font-mono font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-white/10 px-2 py-0.5 roundedElement w-fit mb-0.5">{formData.primaryColor}</span>
-                      <span className="text-[10px] text-gray-400">{t.generate.form.clickToChange}</span>
+                      <span className="text-xs font-mono font-medium text-foreground bg-secondary px-2 py-0.5 roundedElement w-fit mb-0.5">{formData.primaryColor}</span>
+                      <span className="text-[10px] text-muted-foreground">{t.generate.form.clickToChange}</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Multi-Page Selection */}
                 <div className="space-y-3">
-                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-200 flex items-center gap-2">
+                  <label className="text-sm font-semibold text-foreground flex items-center gap-2">
                     <BookOpen className="w-4 h-4 text-orange-500" />
                     {t.generate.form.includePages}
                   </label>
@@ -345,8 +345,8 @@ export default function GeneratePage() {
                           setFormData(prev => ({ ...prev, pages: newPages }));
                         }}
                         className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all duration-200 ${(formData.pages || []).includes(page)
-                          ? 'bg-gray-900 dark:bg-white text-white dark:text-black border-transparent shadow-md transform scale-105'
-                          : 'bg-white dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-500 dark:text-gray-400 hover:border-gray-300 hover:bg-gray-50'
+                          ? 'bg-foreground text-background border-transparent shadow-md transform scale-105'
+                          : 'bg-transparent border-border text-muted-foreground hover:border-primary/50 hover:bg-secondary/50'
                           }`}
                       >
                         {(formData.pages || []).includes(page) && <CheckCircle2 className="w-3 h-3 inline mr-1.5 mb-0.5" />}
@@ -358,14 +358,14 @@ export default function GeneratePage() {
               </div>
 
               {/* Submit & Lang */}
-              <div className="flex items-center gap-4 pt-6 border-t border-gray-100 dark:border-white/5 mt-6">
-                <div className="flex bg-gray-100 dark:bg-white/5 p-1 rounded-full shrink-0">
+              <div className="flex items-center gap-4 pt-6 border-t border-border mt-6">
+                <div className="flex bg-secondary/50 p-1 rounded-full shrink-0">
                   {(['en', 'az'] as const).map((l) => (
                     <button
                       key={l}
                       type="button"
                       onClick={() => setOutputLang(l)}
-                      className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${outputLang === l ? 'bg-white dark:bg-zinc-800 shadow-sm text-gray-900 dark:text-white' : 'text-gray-400 hover:text-gray-600'}`}
+                      className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${outputLang === l ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
                     >
                       {l === 'en' ? 'EN' : 'AZ'}
                     </button>
