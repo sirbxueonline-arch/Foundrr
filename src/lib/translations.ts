@@ -117,7 +117,26 @@ export const translations = {
         },
         submit: "Saytı Yarat",
         inspireMe: "Məni İlhamlandır",
-        generating: "Sehr Yaradılır..."
+        generating: "Sehr Yaradılır...",
+        visualStyle: "Vizual Estetika Seçin",
+        primaryColor: "Əsas Brend Rəngi",
+        clickToChange: "Dəyişmək üçün dairəyə klikləyin",
+        includePages: "Səhifələr Daxil Edin",
+        logs: {
+          init: "Memar Agent işə salınır...",
+          analyzing: "Tələblər təhlil edilir...",
+          connection: "Əlaqə quruldu. Dizayn axını başlayır...",
+          nav: "Naviqasiya sistemi qurulur...",
+          hero: "Hero bölməsi dizayn edilir...",
+          grid: "Grid strukturları qurulur...",
+          assets: "Premium vizuallar seçilir...",
+          content: "Məzmun bölmələri yaradılır...",
+          forms: "Əlaqə formaları inteqrasiya edilir...",
+          footer: "Footer komponentləri tamamlanır...",
+          interactivity: "İnteraktivlik əlavə edilir...",
+          complete: "Yaradılma tamamlandı. Yönləndirilir...",
+          error: "Xəta baş verdi"
+        }
       },
       loading: [
         "Konsept təhlil edilir...",
@@ -189,9 +208,9 @@ export const translations = {
         {
           title: "3. İstifadəçi Məsuliyyətləri",
           items: [
-             "Hesabınızın məxfiliyini qorumaq sizin məsuliyyətinizdir.",
-             "Platformadan qeyri-qanuni, təhqiredici və ya zərərli məzmun yaratmaq üçün istifadə etməməlisiniz.",
-             "API-mızı tərs mühəndislik etməməyə və ya sui-istifadə etməməyə razılaşırsınız."
+            "Hesabınızın məxfiliyini qorumaq sizin məsuliyyətinizdir.",
+            "Platformadan qeyri-qanuni, təhqiredici və ya zərərli məzmun yaratmaq üçün istifadə etməməlisiniz.",
+            "API-mızı tərs mühəndislik etməməyə və ya sui-istifadə etməməyə razılaşırsınız."
           ]
         },
         {
@@ -363,7 +382,26 @@ export const translations = {
         },
         submit: "Generate Masterpiece",
         inspireMe: "Inspire Me",
-        generating: "Crafting Magic..."
+        generating: "Crafting Magic...",
+        visualStyle: "Choose a visual style",
+        primaryColor: "Primary Brand Color",
+        clickToChange: "Click circle to change",
+        includePages: "Include Pages",
+        logs: {
+          init: "> Initializing Architect Agent...",
+          analyzing: "> Analysing request...",
+          connection: "> Connection established. Streaming design...",
+          nav: "> Architecting Navigation System...",
+          hero: "> Designing Hero Section...",
+          grid: "> Structuring Grid Layouts...",
+          assets: "> Selecting Premium Assets...",
+          content: "> Building Content Section...",
+          forms: "> Integrating Contact Forms...",
+          footer: "> Finalizing Footer Components...",
+          interactivity: "> Injecting Interactivity...",
+          complete: "> Generation Complete. Redirecting...",
+          error: "> Error:"
+        }
       },
       loading: [
         "Analyzing concept...",
@@ -435,9 +473,9 @@ export const translations = {
         {
           title: "3. User Responsibilities",
           items: [
-             "You are responsible for maintaining the confidentiality of your account.",
-             "You must not use the platform to generate illegal, offensive, or harmful content.",
-             "You agree not to reverse engineer or abuse our API."
+            "You are responsible for maintaining the confidentiality of your account.",
+            "You must not use the platform to generate illegal, offensive, or harmful content.",
+            "You agree not to reverse engineer or abuse our API."
           ]
         },
         {

@@ -101,8 +101,8 @@ export default function AdminPage() {
     const paidSites = sites.filter(s => ['paid', 'succeeded', 'approved'].includes(s.payment_status))
 
     // Calculate revenues
-    const pendingRevenue = pendingSites.reduce((acc, site) => acc + (site.price || 49.99), 0)
-    const totalRevenue = paidSites.reduce((acc, site) => acc + (site.price || 49.99), 0)
+    const pendingRevenue = pendingSites.reduce((acc, site) => acc + (site.price || 75.99), 0)
+    const totalRevenue = paidSites.reduce((acc, site) => acc + (site.price || 75.99), 0)
 
     // Fallback UI for loading/error
     if (loading && sites.length === 0) return <LoadingState />
@@ -225,7 +225,7 @@ export default function AdminPage() {
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4">
-                                                <span className="font-bold text-emerald-600">${(site.price || 49.99).toFixed(2)}</span>
+                                                <span className="font-bold text-emerald-600">${(site.price || 75.99).toFixed(2)}</span>
                                             </td>
                                             <td className="px-6 py-4">
                                                 <span className="text-sm text-slate-500">{format(new Date(site.created_at), 'MMM d, HH:mm')}</span>

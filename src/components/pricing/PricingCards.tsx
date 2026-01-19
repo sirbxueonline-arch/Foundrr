@@ -57,7 +57,7 @@ export function PricingCards() {
                                 <div className="mt-6 mb-4 space-y-2 bg-muted/40 p-4 rounded-xl border border-border/50 text-sm">
                                     <div className="flex justify-between text-muted-foreground">
                                         <span>{lang === 'az' ? 'Saytın Qiyməti' : 'Website Price'}</span>
-                                        <span>49.99</span>
+                                        <span>75.99</span>
                                     </div>
                                     <div className="flex justify-between text-muted-foreground">
                                         <span>{lang === 'az' ? 'Xidmət Haqqı' : 'Service Fee'}</span>
@@ -67,7 +67,7 @@ export function PricingCards() {
                                     <div className="flex justify-between items-baseline font-bold text-lg text-foreground">
                                         <span>{lang === 'az' ? 'Cəmi' : 'Total'}</span>
                                         <span className="flex items-baseline gap-1">
-                                            49.99 <span className="text-sm font-normal text-muted-foreground">USD</span>
+                                            75.99 <span className="text-sm font-normal text-muted-foreground">USD</span>
                                         </span>
                                     </div>
                                 </div>

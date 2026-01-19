@@ -247,7 +247,7 @@ export async function POST(request: Request) {
             user_id: user.id,
             html_path: fileName,
             paid: false,
-            price: 49.99, // Force explicit price
+            price: 75.99, // Force explicit price
             name: prompt.substring(0, 30) || 'Untitled Project',
             created_at: new Date().toISOString(),
           })

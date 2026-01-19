@@ -1,10 +1,8 @@
-
-
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Loader2, Wand2, Sparkles, ArrowRight, BookOpen, Code2, CheckCircle2, Palette, Terminal } from 'lucide-react'
+import { Loader2, Wand2, Sparkles, ArrowRight, BookOpen, Code2, CheckCircle2, Palette, Terminal, LayoutTemplate } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { INSPIRATION_PROMPTS } from '@/lib/inspiration-prompts'
 import { useLanguage } from '@/contexts/LanguageContext'
@@ -66,8 +64,10 @@ export default function GeneratePage() {
     setStreamData('')
     setPreviewHtml('')
     setLogs([])
-    addLog('> Initializing Architect Agent...', 'info')
-    addLog('> Analysing request...', 'info')
+
+    // Initial logs
+    addLog(t.generate.form.logs.init, 'info')
+    setTimeout(() => addLog(t.generate.form.logs.analyzing, 'info'), 500)
 
     try {
       const response = await fetch('/api/generate', {
@@ -82,7 +82,7 @@ export default function GeneratePage() {
         throw new Error(response.statusText)
       }
 
-      addLog('> Connection established. Streaming design...', 'success')
+      addLog(t.generate.form.logs.connection, 'success')
 
       const reader = response.body.getReader()
       const decoder = new TextDecoder()
@@ -106,21 +106,21 @@ export default function GeneratePage() {
             lastUpdateTime = now
           }
 
-          // Simple log simulator
-          if (chunk.includes('<nav')) addLog('> Architecting Navigation System...', 'info')
-          if (chunk.includes('<header') || chunk.includes('id="hero"')) addLog('> Designing Hero Section...', 'success')
-          if (chunk.includes('class="grid')) addLog('> Structuring Grid Layouts...', 'info')
-          if (chunk.includes('<img')) addLog('> Selecting Premium Assets...', 'warning')
-          if (chunk.includes('<section')) addLog('> Building Content Section...', 'info')
-          if (chunk.includes('<form')) addLog('> Integrating Contact Forms...', 'success')
-          if (chunk.includes('<footer')) addLog('> Finalizing Footer Components...', 'info')
-          if (chunk.includes('<script')) addLog('> Injecting Interactivity...', 'warning')
+          // Localized log simulator
+          if (chunk.includes('<nav')) addLog(t.generate.form.logs.nav, 'info')
+          if (chunk.includes('<header') || chunk.includes('id="hero"')) addLog(t.generate.form.logs.hero, 'success')
+          if (chunk.includes('class="grid')) addLog(t.generate.form.logs.grid, 'info')
+          if (chunk.includes('<img')) addLog(t.generate.form.logs.assets, 'warning')
+          if (chunk.includes('<section')) addLog(t.generate.form.logs.content, 'info')
+          if (chunk.includes('<form')) addLog(t.generate.form.logs.forms, 'success')
+          if (chunk.includes('<footer')) addLog(t.generate.form.logs.footer, 'info')
+          if (chunk.includes('<script')) addLog(t.generate.form.logs.interactivity, 'warning')
 
           // Check for redirection
           if (buffer.includes('<!-- SITE_ID:')) {
             const match = buffer.match(/<!-- SITE_ID:(.*?) -->/)
             if (match && match[1]) {
-              addLog('> Generation Complete. Redirecting...', 'success')
+              addLog(t.generate.form.logs.complete, 'success')
               window.location.href = `/website/${match[1]}`
               return
             }
@@ -132,7 +132,7 @@ export default function GeneratePage() {
 
     } catch (error) {
       console.error('Generation failed:', error)
-      addLog(`> Error: ${error || 'Unknown error'}`, 'error')
+      addLog(`${t.generate.form.logs.error} ${error || 'Unknown error'}`, 'error')
       alert('Failed to generate. Please try again.')
       setLoading(false)
     }
@@ -141,24 +141,24 @@ export default function GeneratePage() {
   const styles = [
     {
       id: 'minimal',
-      name: 'Minimal',
-      desc: 'Clean, whitespace, elegance',
+      name: t.generate.form.style.minimal,
+      desc: t.generate.form.style.minimalDesc,
       class: 'bg-white border-slate-200 text-slate-800 hover:border-slate-400',
       activeClass: 'ring-2 ring-slate-900 border-transparent',
       preview: 'bg-slate-50'
     },
     {
       id: 'vibrant',
-      name: 'Vibrant',
-      desc: 'Bold gradients, high saturation',
+      name: t.generate.form.style.vibrant,
+      desc: t.generate.form.style.vibrantDesc,
       class: 'bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white border-transparent hover:brightness-110',
       activeClass: 'ring-2 ring-indigo-500 ring-offset-2',
       preview: 'bg-gradient-to-br from-indigo-500 to-pink-500'
     },
     {
       id: 'corporate',
-      name: 'Corporate',
-      desc: 'Professional, trustworthy, blue',
+      name: t.generate.form.style.corporate,
+      desc: t.generate.form.style.corporateDesc,
       class: 'bg-slate-900 text-white border-slate-700 hover:border-slate-500',
       activeClass: 'ring-2 ring-blue-500 ring-offset-2',
       preview: 'bg-slate-800'
@@ -166,31 +166,31 @@ export default function GeneratePage() {
     {
       id: 'neobrutal',
       name: 'Neo-Brutal',
-      desc: 'High contrast, bold borders',
+      desc: 'High contrast, bold',
       class: 'bg-[#FF6B6B] text-black border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-transform',
       activeClass: 'ring-2 ring-black ring-offset-2',
       preview: 'bg-[#FF6B6B] border-2 border-black'
     },
     {
       id: 'retro',
-      name: 'Retro 90s',
-      desc: 'Pixel art, nostalgic',
+      name: t.generate.form.style.retro,
+      desc: t.generate.form.style.retroDesc,
       class: 'bg-[#000080] text-white border-2 border-gray-400 font-mono',
       activeClass: 'ring-2 ring-green-400 ring-offset-2',
       preview: 'bg-[#000080]'
     },
     {
       id: 'dark',
-      name: 'Dark Mode',
-      desc: 'Sleek, modern dark UI',
+      name: t.generate.form.style.dark,
+      desc: t.generate.form.style.darkDesc,
       class: 'bg-black text-white border-white/20 hover:border-white/50',
       activeClass: 'ring-2 ring-white ring-offset-2',
       preview: 'bg-zinc-900'
     },
     {
       id: 'luxury',
-      name: 'Luxury',
-      desc: 'Gold, serif, premium',
+      name: t.generate.form.style.luxury,
+      desc: t.generate.form.style.luxuryDesc,
       class: 'bg-[#1a1a1a] text-[#d4af37] border-[#d4af37]/30 hover:border-[#d4af37]',
       activeClass: 'ring-2 ring-[#d4af37] ring-offset-2',
       preview: 'bg-neutral-900'
@@ -237,20 +237,21 @@ export default function GeneratePage() {
               {/* Prompt Input */}
               <div className="space-y-4">
                 <div className="flex justify-between items-center px-1">
-                  <label htmlFor="prompt" className="text-sm font-medium text-foreground/80">
-                    Describe your dream website
+                  <label htmlFor="prompt" className="text-sm font-medium text-foreground/80 flex items-center gap-2">
+                    <LayoutTemplate className="w-4 h-4 text-purple-500" />
+                    {t.generate.form.promptLabel}
                   </label>
                   <button
                     type="button"
                     onClick={handleInspireMe}
-                    className="text-xs flex items-center gap-1.5 text-primary hover:text-primary/80 transition-colors bg-primary/10 px-3 py-1 rounded-full"
+                    className="group/btn text-xs flex items-center gap-1.5 text-primary hover:text-primary/80 transition-all bg-primary/10 px-3 py-1 rounded-full hover:bg-primary/20"
                   >
-                    <Sparkles className="w-3 h-3" />
+                    <Sparkles className="w-3 h-3 transition-transform group-hover/btn:rotate-12" />
                     {t.generate.form.inspireMe}
                   </button>
                 </div>
 
-                <div className="group relative rounded-2xl p-[1px] overflow-hidden">
+                <div className="group relative rounded-2xl p-[1px] overflow-hidden transition-all hover:shadow-[0_0_20px_rgba(124,58,237,0.3)]">
                   <div className="absolute inset-[-100%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#0000_0%,#0000_50%,var(--color-primary)_100%)] opacity-0 group-focus-within:opacity-100 transition-opacity duration-500" />
                   <div className="relative rounded-2xl bg-background/80 backdrop-blur-xl border border-white/10">
                     <textarea
@@ -258,7 +259,7 @@ export default function GeneratePage() {
                       name="prompt"
                       rows={3}
                       className="w-full bg-transparent text-lg font-light rounded-2xl border-none px-6 py-4 placeholder:text-muted-foreground/30 focus:ring-0 resize-none transition-all duration-300 leading-relaxed"
-                      placeholder="E.g. A futuristic crypto dashboard with a dark mode, real-time charts, and neon accents..."
+                      placeholder={t.generate.form.promptPlaceholder}
                       value={formData.prompt}
                       onChange={handleChange}
                       disabled={loading}
@@ -269,21 +270,30 @@ export default function GeneratePage() {
 
               {/* Style Selection - V2 Cards */}
               <div className="space-y-4">
-                <span className="text-sm font-medium text-foreground/80 px-1">Choose a visual style</span>
+                <span className="text-sm font-medium text-foreground/80 px-1 flex items-center gap-2">
+                  <Palette className="w-4 h-4 text-pink-500" />
+                  {t.generate.form.visualStyle}
+                </span>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {styles.map((s) => (
                     <button
                       key={s.id}
                       type="button"
                       onClick={() => handleStyleSelect(s.id)}
-                      className={`group relative p-4 rounded-2xl flex flex-col items-start gap-2 text-left transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] overflow-hidden ${formData.style === s.id ? s.activeClass : 'border'
+                      className={`group relative p-4 rounded-2xl flex flex-col items-start gap-2 text-left transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] overflow-hidden ${formData.style === s.id ? s.activeClass : 'border border-white/10 hover:border-white/30'
                         } ${s.class}`}
                     >
                       <div className={`w-full h-12 rounded-lg mb-1 ${s.preview} shadow-inner opacity-80 group-hover:opacity-100 transition-opacity`} />
-                      <div className="space-y-0.5">
+                      <div className="space-y-0.5 z-10">
                         <span className="text-sm font-bold leading-none">{s.name}</span>
-                        <span className="text-[10px] opacity-70 leading-tight block">{s.desc}</span>
+                        <span className="text-[9px] opacity-70 leading-tight block">{s.desc}</span>
                       </div>
+                      {/* Selection Indicator */}
+                      {formData.style === s.id && (
+                        <div className="absolute top-2 right-2 text-current scale-75">
+                          <CheckCircle2 className="w-5 h-5" />
+                        </div>
+                      )}
                     </button>
                   ))}
                 </div>
@@ -295,21 +305,24 @@ export default function GeneratePage() {
                 {/* Color Picker */}
                 <div className="space-y-3">
                   <label htmlFor="color" className="text-sm font-medium text-foreground/80 flex items-center gap-2">
-                    <Palette className="w-4 h-4" />
-                    Primary Brand Color
+                    <div className="w-4 h-4 rounded-full bg-gradient-to-tr from-blue-500 to-green-500" />
+                    {t.generate.form.primaryColor}
                   </label>
-                  <div className="flex items-center gap-3 p-2 bg-secondary/20 rounded-xl border border-white/5">
-                    <input
-                      type="color"
-                      id="primaryColor"
-                      name="primaryColor"
-                      value={formData.primaryColor}
-                      onChange={handleChange}
-                      className="w-10 h-10 rounded-lg cursor-pointer border-none p-0 bg-transparent"
-                    />
+                  <div className="flex items-center gap-3 p-3 bg-secondary/20 rounded-2xl border border-white/5 hover:border-white/10 transition-colors group cursor-pointer" onClick={() => document.getElementById('primaryColor')?.click()}>
+                    <div className="relative">
+                      <input
+                        type="color"
+                        id="primaryColor"
+                        name="primaryColor"
+                        value={formData.primaryColor}
+                        onChange={handleChange}
+                        className="w-12 h-12 rounded-full cursor-pointer border-none p-0 bg-transparent opacity-0 absolute inset-0 z-10"
+                      />
+                      <div className="w-12 h-12 rounded-full border-2 border-white/20 shadow-lg" style={{ backgroundColor: formData.primaryColor }} />
+                    </div>
                     <div className="flex flex-col">
-                      <span className="text-xs font-mono opacity-70">{formData.primaryColor}</span>
-                      <span className="text-[10px] text-muted-foreground">Click circle to change</span>
+                      <span className="text-xs font-mono opacity-80 bg-black/20 px-2 py-1 rounded-md">{formData.primaryColor}</span>
+                      <span className="text-[10px] text-muted-foreground">{t.generate.form.clickToChange}</span>
                     </div>
                   </div>
                 </div>
@@ -317,8 +330,8 @@ export default function GeneratePage() {
                 {/* Multi-Page Selection */}
                 <div className="space-y-3">
                   <label className="text-sm font-medium text-foreground/80 flex items-center gap-2">
-                    <BookOpen className="w-4 h-4" />
-                    Include Pages
+                    <BookOpen className="w-4 h-4 text-orange-500" />
+                    {t.generate.form.includePages}
                   </label>
                   <div className="flex flex-wrap gap-2">
                     {['About', 'Contact', 'Pricing', 'Blog', 'Features'].map((page) => (
@@ -393,12 +406,13 @@ export default function GeneratePage() {
               >
                 <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 via-transparent to-purple-500/20 rounded-[3rem] blur-3xl opacity-50 animate-pulse" />
                 <div className="relative w-full h-full border border-white/10 bg-black/40 backdrop-blur-md rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col items-center justify-center text-center p-12 group">
-                  <div className="w-24 h-24 bg-gradient-to-br from-white/10 to-white/5 rounded-3xl flex items-center justify-center mb-8 border border-white/10 shadow-inner group-hover:scale-110 transition-transform duration-500">
+                  <div className="w-24 h-24 bg-gradient-to-br from-white/10 to-white/5 rounded-3xl flex items-center justify-center mb-8 border border-white/10 shadow-inner group-hover:scale-110 transition-transform duration-500 relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
                     <Code2 className="w-10 h-10 text-white/60" />
                   </div>
                   <h3 className="text-3xl font-bold text-white mb-3">Foundrr Architect</h3>
                   <p className="text-white/40 max-w-sm text-sm leading-relaxed">
-                    Our AI engine creates full-stack, production-ready websites in seconds. Enter a prompt to activate the build sequence.
+                    {t.generate.desc}
                   </p>
                 </div>
               </motion.div>
@@ -415,7 +429,7 @@ export default function GeneratePage() {
                   <div className="bg-[#161b22] px-4 py-3 flex items-center justify-between border-b border-white/5">
                     <div className="flex gap-2">
                       <Terminal className="w-4 h-4 text-white/40" />
-                      <span className="text-xs font-bold text-white/60">Build Log</span>
+                      <span className="text-xs font-bold text-white/60">Architect Build Log</span>
                     </div>
                     <div className="flex gap-1.5">
                       <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
@@ -428,7 +442,7 @@ export default function GeneratePage() {
                     ref={logContainerRef}
                   >
                     {logs.map((log, i) => (
-                      <div key={i} className="flex gap-3 text-[11px] leading-tight">
+                      <div key={i} className="flex gap-3 text-[11px] leading-tight animate-fade-in-up">
                         <span className="text-white/20 select-none">{(i + 1).toString().padStart(2, '0')}</span>
                         <span className={`${log.type === 'error' ? 'text-red-400' :
                             log.type === 'success' ? 'text-emerald-400' :
@@ -466,7 +480,7 @@ export default function GeneratePage() {
                     ) : (
                       <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground gap-4 bg-dot-pattern">
                         <Loader2 className="w-8 h-8 animate-spin opacity-20" />
-                        <p className="text-sm font-light opacity-50">Connecting to Cloud Architect...</p>
+                        <p className="text-sm font-light opacity-50">{t.generate.form.generating}</p>
                       </div>
                     )}
 
@@ -481,4 +495,3 @@ export default function GeneratePage() {
     </div>
   )
 }
-
