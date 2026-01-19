@@ -151,7 +151,7 @@ export default function GeneratePage() {
       id: 'vibrant',
       name: t.generate.form.style.vibrant,
       desc: t.generate.form.style.vibrantDesc,
-      class: 'bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white border-transparent hover:brightness-110',
+      class: 'bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white border-transparent hover:brightness-110 shadow-md',
       activeClass: 'ring-2 ring-indigo-500 ring-offset-2',
       preview: 'bg-gradient-to-br from-indigo-500 to-pink-500'
     },
@@ -159,31 +159,15 @@ export default function GeneratePage() {
       id: 'corporate',
       name: t.generate.form.style.corporate,
       desc: t.generate.form.style.corporateDesc,
-      class: 'bg-slate-900 text-white border-slate-700 hover:border-slate-500',
+      class: 'bg-slate-900 text-white border-slate-700 hover:border-slate-500 shadow-md',
       activeClass: 'ring-2 ring-blue-500 ring-offset-2',
       preview: 'bg-slate-800'
-    },
-    {
-      id: 'neobrutal',
-      name: 'Neo-Brutal',
-      desc: 'High contrast, bold',
-      class: 'bg-[#FF6B6B] text-black border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-transform',
-      activeClass: 'ring-2 ring-black ring-offset-2',
-      preview: 'bg-[#FF6B6B] border-2 border-black'
-    },
-    {
-      id: 'retro',
-      name: t.generate.form.style.retro,
-      desc: t.generate.form.style.retroDesc,
-      class: 'bg-[#000080] text-white border-2 border-gray-400 font-mono',
-      activeClass: 'ring-2 ring-green-400 ring-offset-2',
-      preview: 'bg-[#000080]'
     },
     {
       id: 'dark',
       name: t.generate.form.style.dark,
       desc: t.generate.form.style.darkDesc,
-      class: 'bg-black text-white border-white/20 hover:border-white/50',
+      class: 'bg-black text-white border-white/20 hover:border-white/50 shadow-md',
       activeClass: 'ring-2 ring-white ring-offset-2',
       preview: 'bg-zinc-900'
     },
@@ -191,7 +175,7 @@ export default function GeneratePage() {
       id: 'luxury',
       name: t.generate.form.style.luxury,
       desc: t.generate.form.style.luxuryDesc,
-      class: 'bg-[#1a1a1a] text-[#d4af37] border-[#d4af37]/30 hover:border-[#d4af37]',
+      class: 'bg-[#1a1a1a] text-[#d4af37] border-[#d4af37]/30 hover:border-[#d4af37] shadow-md',
       activeClass: 'ring-2 ring-[#d4af37] ring-offset-2',
       preview: 'bg-neutral-900'
     },
@@ -218,7 +202,7 @@ export default function GeneratePage() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="text-4xl md:text-5xl font-bold tracking-tighter mb-2 text-gray-900 dark:text-white"
+                className="text-4xl md:text-5xl font-bold tracking-tighter mb-2 text-black dark:text-white drop-shadow-sm"
               >
                 {t.generate.title}
               </motion.h1>
@@ -226,7 +210,7 @@ export default function GeneratePage() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="text-gray-500 dark:text-gray-400 text-sm md:text-base font-light text-balance leading-relaxed"
+                className="text-black/60 dark:text-white/60 text-sm md:text-base font-medium text-balance leading-relaxed"
               >
                 {t.generate.desc}
               </motion.p>
@@ -273,7 +257,7 @@ export default function GeneratePage() {
                   <Palette className="w-4 h-4 text-pink-500" />
                   {t.generate.form.visualStyle}
                 </span>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {styles.map((s) => (
                     <button
                       key={s.id}
@@ -284,12 +268,12 @@ export default function GeneratePage() {
                     >
                       <div className={`w-full h-12 rounded-lg mb-1 ${s.preview} shadow-sm opacity-90 group-hover:opacity-100 transition-opacity ring-1 ring-black/5 dark:ring-white/10`} />
                       <div className="space-y-0.5 z-10 w-full">
-                        <span className={`text-sm font-bold leading-none truncate w-full block text-foreground`}>{s.name}</span>
-                        <span className="text-[10px] text-muted-foreground leading-tight block">{s.desc}</span>
+                        <span className={`text-sm font-bold leading-none truncate w-full block`}>{s.name}</span>
+                        <span className="text-[10px] opacity-70 leading-tight block">{s.desc}</span>
                       </div>
                       {/* Selection Indicator */}
                       {formData.style === s.id && (
-                        <div className="absolute top-2 right-2 text-primary scale-75">
+                        <div className="absolute top-2 right-2 scale-75">
                           <CheckCircle2 className="w-5 h-5" />
                         </div>
                       )}
