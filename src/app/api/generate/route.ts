@@ -38,7 +38,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { prompt, style = 'minimal', lang = 'en', pages = [] } = await request.json()
+    const { prompt, style = 'minimal', lang = 'en', primaryColor = '', pages = [] } = await request.json()
 
     if (!prompt) {
       return NextResponse.json({ error: 'Missing prompt' }, { status: 400 })
@@ -154,8 +154,8 @@ export async function POST(request: Request) {
                 serif: ['Playfair Display', 'serif'],
                 mono: ['Space Grotesk', 'monospace'],
               },
-              colors: {
-                primary: '${style === 'vibrant' ? '#4f46e5' : style === 'corporate' ? '#0f172a' : '#18181b'}',
+                colors: {
+                primary: '${primaryColor ? primaryColor : style === 'vibrant' ? '#4f46e5' : style === 'corporate' ? '#0f172a' : '#18181b'}',
               },
               animation: {
                 'fade-in-down': 'fadeInDown 0.5s ease-out',

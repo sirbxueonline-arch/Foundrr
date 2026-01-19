@@ -1,9 +1,10 @@
 
+
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Loader2, Wand2, Sparkles, ArrowRight, BookOpen, Code2, CheckCircle2 } from 'lucide-react'
+import { Loader2, Wand2, Sparkles, ArrowRight, BookOpen, Code2, CheckCircle2, Palette, Terminal } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { INSPIRATION_PROMPTS } from '@/lib/inspiration-prompts'
 import { useLanguage } from '@/contexts/LanguageContext'
@@ -16,10 +17,12 @@ export default function GeneratePage() {
   const [formData, setFormData] = useState<{
     prompt: string;
     style: string;
+    primaryColor: string;
     pages: string[];
   }>({
     prompt: '',
     style: 'minimal',
+    primaryColor: '#000000',
     pages: []
   })
 
@@ -27,7 +30,7 @@ export default function GeneratePage() {
   const [loading, setLoading] = useState(false)
   const [streamData, setStreamData] = useState('') // Full raw data
   const [previewHtml, setPreviewHtml] = useState('') // Throttled for iframe
-  const [logs, setLogs] = useState<string[]>([])
+  const [logs, setLogs] = useState<{ text: string, type: 'info' | 'success' | 'warning' | 'error' }[]>([])
 
   // Ref for auto-scrolling terminal
   const logContainerRef = useRef<HTMLDivElement>(null)
@@ -44,6 +47,8 @@ export default function GeneratePage() {
 
   const handleStyleSelect = (style: string) => {
     setFormData(prev => ({ ...prev, style }))
+    // Update default color based on style if user hasn't touched it? 
+    // For now, let's keep it manual or simple.
   }
 
   const handleInspireMe = () => {
@@ -51,12 +56,18 @@ export default function GeneratePage() {
     setFormData(prev => ({ ...prev, ...random }))
   }
 
+  const addLog = (text: string, type: 'info' | 'success' | 'warning' | 'error' = 'info') => {
+    setLogs(prev => [...prev, { text, type }])
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setStreamData('')
     setPreviewHtml('')
-    setLogs(['> Initializing Architect Agent...', '> Analysing request...'])
+    setLogs([])
+    addLog('> Initializing Architect Agent...', 'info')
+    addLog('> Analysing request...', 'info')
 
     try {
       const response = await fetch('/api/generate', {
@@ -71,7 +82,7 @@ export default function GeneratePage() {
         throw new Error(response.statusText)
       }
 
-      setLogs(prev => [...prev, '> Connection established. Streaming design...'])
+      addLog('> Connection established. Streaming design...', 'success')
 
       const reader = response.body.getReader()
       const decoder = new TextDecoder()
@@ -96,20 +107,20 @@ export default function GeneratePage() {
           }
 
           // Simple log simulator
-          if (chunk.includes('<nav')) setLogs(prev => [...prev, '> Architecting Navigation System...'])
-          if (chunk.includes('<header') || chunk.includes('id="hero"')) setLogs(prev => [...prev, '> Designing Hero Section...'])
-          if (chunk.includes('class="grid')) setLogs(prev => [...prev, '> Structuring Grid Layouts...'])
-          if (chunk.includes('<img')) setLogs(prev => [...prev, '> Selecting Premium Assets...'])
-          if (chunk.includes('<section')) setLogs(prev => [...prev, '> Building Content Section...'])
-          if (chunk.includes('<form')) setLogs(prev => [...prev, '> Integrating Contact Forms...'])
-          if (chunk.includes('<footer')) setLogs(prev => [...prev, '> Finalizing Footer Components...'])
-          if (chunk.includes('<script')) setLogs(prev => [...prev, '> Injecting Interactivity...'])
+          if (chunk.includes('<nav')) addLog('> Architecting Navigation System...', 'info')
+          if (chunk.includes('<header') || chunk.includes('id="hero"')) addLog('> Designing Hero Section...', 'success')
+          if (chunk.includes('class="grid')) addLog('> Structuring Grid Layouts...', 'info')
+          if (chunk.includes('<img')) addLog('> Selecting Premium Assets...', 'warning')
+          if (chunk.includes('<section')) addLog('> Building Content Section...', 'info')
+          if (chunk.includes('<form')) addLog('> Integrating Contact Forms...', 'success')
+          if (chunk.includes('<footer')) addLog('> Finalizing Footer Components...', 'info')
+          if (chunk.includes('<script')) addLog('> Injecting Interactivity...', 'warning')
 
           // Check for redirection
           if (buffer.includes('<!-- SITE_ID:')) {
             const match = buffer.match(/<!-- SITE_ID:(.*?) -->/)
             if (match && match[1]) {
-              setLogs(prev => [...prev, '> Generation Complete. Redirecting...'])
+              addLog('> Generation Complete. Redirecting...', 'success')
               window.location.href = `/website/${match[1]}`
               return
             }
@@ -121,20 +132,69 @@ export default function GeneratePage() {
 
     } catch (error) {
       console.error('Generation failed:', error)
-      setLogs(prev => [...prev, `> Error: ${error || 'Unknown error'}`])
+      addLog(`> Error: ${error || 'Unknown error'}`, 'error')
       alert('Failed to generate. Please try again.')
       setLoading(false)
     }
   }
 
   const styles = [
-    { id: 'minimal', name: t.generate.form.style.minimal, desc: t.generate.form.style.minimalDesc },
-    { id: 'vibrant', name: t.generate.form.style.vibrant, desc: t.generate.form.style.vibrantDesc },
-    { id: 'corporate', name: t.generate.form.style.corporate, desc: t.generate.form.style.corporateDesc },
-    { id: 'neobrutal', name: 'Neo-Brutalism', desc: 'Bold, high contrast, raw' },
-    { id: 'retro', name: 'Retro 90s', desc: 'Pixel art, nostalgic, fun' },
-    { id: 'dark', name: t.generate.form.style.dark, desc: t.generate.form.style.darkDesc },
-    { id: 'luxury', name: t.generate.form.style.luxury, desc: t.generate.form.style.luxuryDesc },
+    {
+      id: 'minimal',
+      name: 'Minimal',
+      desc: 'Clean, whitespace, elegance',
+      class: 'bg-white border-slate-200 text-slate-800 hover:border-slate-400',
+      activeClass: 'ring-2 ring-slate-900 border-transparent',
+      preview: 'bg-slate-50'
+    },
+    {
+      id: 'vibrant',
+      name: 'Vibrant',
+      desc: 'Bold gradients, high saturation',
+      class: 'bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white border-transparent hover:brightness-110',
+      activeClass: 'ring-2 ring-indigo-500 ring-offset-2',
+      preview: 'bg-gradient-to-br from-indigo-500 to-pink-500'
+    },
+    {
+      id: 'corporate',
+      name: 'Corporate',
+      desc: 'Professional, trustworthy, blue',
+      class: 'bg-slate-900 text-white border-slate-700 hover:border-slate-500',
+      activeClass: 'ring-2 ring-blue-500 ring-offset-2',
+      preview: 'bg-slate-800'
+    },
+    {
+      id: 'neobrutal',
+      name: 'Neo-Brutal',
+      desc: 'High contrast, bold borders',
+      class: 'bg-[#FF6B6B] text-black border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-transform',
+      activeClass: 'ring-2 ring-black ring-offset-2',
+      preview: 'bg-[#FF6B6B] border-2 border-black'
+    },
+    {
+      id: 'retro',
+      name: 'Retro 90s',
+      desc: 'Pixel art, nostalgic',
+      class: 'bg-[#000080] text-white border-2 border-gray-400 font-mono',
+      activeClass: 'ring-2 ring-green-400 ring-offset-2',
+      preview: 'bg-[#000080]'
+    },
+    {
+      id: 'dark',
+      name: 'Dark Mode',
+      desc: 'Sleek, modern dark UI',
+      class: 'bg-black text-white border-white/20 hover:border-white/50',
+      activeClass: 'ring-2 ring-white ring-offset-2',
+      preview: 'bg-zinc-900'
+    },
+    {
+      id: 'luxury',
+      name: 'Luxury',
+      desc: 'Gold, serif, premium',
+      class: 'bg-[#1a1a1a] text-[#d4af37] border-[#d4af37]/30 hover:border-[#d4af37]',
+      activeClass: 'ring-2 ring-[#d4af37] ring-offset-2',
+      preview: 'bg-neutral-900'
+    },
   ]
 
   return (
@@ -148,11 +208,11 @@ export default function GeneratePage() {
         <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-20" />
       </div>
 
-      <div className={`animate-fade-in relative z-10 w-full transition-all duration-700 ${loading ? 'max-w-[98vw] h-[calc(100vh-6rem)]' : 'max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-12'}`}>
+      <div className={`animate-fade-in relative z-10 w-full transition-all duration-700 ${loading ? 'max-w-[98vw] h-[calc(100vh-6rem)]' : 'max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-12'}`}>
 
         {/* LEFT COLUMN: FORM */}
         {!loading && (
-          <div className="transition-all duration-700 opacity-100 scale-100">
+          <div className="transition-all duration-700 opacity-100 scale-100 flex flex-col justify-center">
             <div className="text-left mb-8">
               <motion.h1
                 initial={{ opacity: 0, y: 10 }}
@@ -172,62 +232,96 @@ export default function GeneratePage() {
               </motion.p>
             </div>
 
-            <form onSubmit={handleSubmit} className="relative w-full space-y-8">
+            <form onSubmit={handleSubmit} className="relative w-full space-y-8 glass p-6 rounded-3xl border border-white/5 shadow-xl backdrop-blur-sm">
 
               {/* Prompt Input */}
-              <div className="group relative rounded-2xl p-[1px] overflow-hidden">
-                <div className="absolute inset-[-100%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#0000_0%,#0000_50%,var(--color-primary)_100%)] opacity-100 transition-opacity duration-500" />
-                <div className="relative rounded-2xl bg-background backdrop-blur-xl border border-white/10">
-                  <textarea
-                    id="prompt"
-                    name="prompt"
-                    rows={3}
-                    className="w-full bg-transparent text-lg font-light rounded-2xl border-none px-6 py-4 placeholder:text-muted-foreground/50 focus:ring-0 resize-none transition-all duration-300 leading-relaxed"
-                    placeholder={t.generate.form.promptPlaceholder}
-                    value={formData.prompt}
-                    onChange={handleChange}
-                    disabled={loading}
-                  />
-                </div>
-              </div>
-
-              {/* Style Selection */}
               <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground/60">{t.generate.form.style.title}</span>
-                  {/* Inspire Me */}
+                <div className="flex justify-between items-center px-1">
+                  <label htmlFor="prompt" className="text-sm font-medium text-foreground/80">
+                    Describe your dream website
+                  </label>
                   <button
                     type="button"
                     onClick={handleInspireMe}
-                    className="text-xs flex items-center gap-1 text-primary hover:text-primary/80 transition-colors"
+                    className="text-xs flex items-center gap-1.5 text-primary hover:text-primary/80 transition-colors bg-primary/10 px-3 py-1 rounded-full"
                   >
                     <Sparkles className="w-3 h-3" />
                     {t.generate.form.inspireMe}
                   </button>
                 </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                <div className="group relative rounded-2xl p-[1px] overflow-hidden">
+                  <div className="absolute inset-[-100%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#0000_0%,#0000_50%,var(--color-primary)_100%)] opacity-0 group-focus-within:opacity-100 transition-opacity duration-500" />
+                  <div className="relative rounded-2xl bg-background/80 backdrop-blur-xl border border-white/10">
+                    <textarea
+                      id="prompt"
+                      name="prompt"
+                      rows={3}
+                      className="w-full bg-transparent text-lg font-light rounded-2xl border-none px-6 py-4 placeholder:text-muted-foreground/30 focus:ring-0 resize-none transition-all duration-300 leading-relaxed"
+                      placeholder="E.g. A futuristic crypto dashboard with a dark mode, real-time charts, and neon accents..."
+                      value={formData.prompt}
+                      onChange={handleChange}
+                      disabled={loading}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Style Selection - V2 Cards */}
+              <div className="space-y-4">
+                <span className="text-sm font-medium text-foreground/80 px-1">Choose a visual style</span>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {styles.map((s) => (
                     <button
                       key={s.id}
                       type="button"
                       onClick={() => handleStyleSelect(s.id)}
-                      className={`relative p-3 rounded-xl border text-left transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] ${formData.style === s.id
-                        ? 'border-primary bg-primary/5 shadow-md shadow-primary/10 ring-1 ring-primary/20'
-                        : 'border-border/40 bg-white/5 hover:border-border hover:bg-muted/30'
-                        }`}
+                      className={`group relative p-4 rounded-2xl flex flex-col items-start gap-2 text-left transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] overflow-hidden ${formData.style === s.id ? s.activeClass : 'border'
+                        } ${s.class}`}
                     >
-                      <div className="text-xs font-bold mb-0.5">{s.name}</div>
-                      <div className="text-[10px] text-muted-foreground leading-tight">{s.desc}</div>
+                      <div className={`w-full h-12 rounded-lg mb-1 ${s.preview} shadow-inner opacity-80 group-hover:opacity-100 transition-opacity`} />
+                      <div className="space-y-0.5">
+                        <span className="text-sm font-bold leading-none">{s.name}</span>
+                        <span className="text-[10px] opacity-70 leading-tight block">{s.desc}</span>
+                      </div>
                     </button>
                   ))}
                 </div>
+              </div>
+
+              {/* Colors & Features */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                {/* Color Picker */}
+                <div className="space-y-3">
+                  <label htmlFor="color" className="text-sm font-medium text-foreground/80 flex items-center gap-2">
+                    <Palette className="w-4 h-4" />
+                    Primary Brand Color
+                  </label>
+                  <div className="flex items-center gap-3 p-2 bg-secondary/20 rounded-xl border border-white/5">
+                    <input
+                      type="color"
+                      id="primaryColor"
+                      name="primaryColor"
+                      value={formData.primaryColor}
+                      onChange={handleChange}
+                      className="w-10 h-10 rounded-lg cursor-pointer border-none p-0 bg-transparent"
+                    />
+                    <div className="flex flex-col">
+                      <span className="text-xs font-mono opacity-70">{formData.primaryColor}</span>
+                      <span className="text-[10px] text-muted-foreground">Click circle to change</span>
+                    </div>
+                  </div>
+                </div>
 
                 {/* Multi-Page Selection */}
-                <div className="space-y-4 pt-2">
-                  <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground/60">Pages & Features</span>
+                <div className="space-y-3">
+                  <label className="text-sm font-medium text-foreground/80 flex items-center gap-2">
+                    <BookOpen className="w-4 h-4" />
+                    Include Pages
+                  </label>
                   <div className="flex flex-wrap gap-2">
-                    {['About', 'Contact', 'Pricing', 'Blog', 'Features', 'Team', 'FAQ'].map((page) => (
+                    {['About', 'Contact', 'Pricing', 'Blog', 'Features'].map((page) => (
                       <button
                         key={page}
                         type="button"
@@ -238,9 +332,9 @@ export default function GeneratePage() {
                             : [...current, page];
                           setFormData(prev => ({ ...prev, pages: newPages }));
                         }}
-                        className={`px-4 py-2 rounded-lg text-xs font-medium border transition-all ${(formData.pages || []).includes(page)
-                          ? 'bg-primary text-primary-foreground border-primary shadow-sm'
-                          : 'bg-background border-border/50 hover:bg-muted'
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${(formData.pages || []).includes(page)
+                            ? 'bg-foreground text-background border-foreground shadow-sm'
+                            : 'bg-background/50 border-border/50 hover:bg-muted text-muted-foreground'
                           }`}
                       >
                         {(formData.pages || []).includes(page) && <CheckCircle2 className="w-3 h-3 inline mr-1.5 mb-0.5" />}
@@ -249,11 +343,10 @@ export default function GeneratePage() {
                     ))}
                   </div>
                 </div>
-
               </div>
 
               {/* Submit & Lang */}
-              <div className="flex items-center gap-4 pt-4">
+              <div className="flex items-center gap-4 pt-4 border-t border-white/10 mt-6">
                 <div className="flex bg-secondary/50 p-1 rounded-full border border-border/50 shrink-0">
                   {(['en', 'az'] as const).map((l) => (
                     <button
@@ -270,13 +363,15 @@ export default function GeneratePage() {
                 <button
                   type="submit"
                   disabled={loading || !formData.prompt.trim()}
-                  className="flex-1 group relative inline-flex h-12 items-center justify-center rounded-full bg-foreground px-8 text-base font-bold text-background shadow-lg shadow-foreground/20 transition-all hover:scale-[1.02] hover:bg-foreground/90 disabled:opacity-50 disabled:pointer-events-none"
+                  className="flex-1 group relative inline-flex h-12 items-center justify-center rounded-full bg-foreground px-8 text-base font-bold text-background shadow-lg shadow-foreground/20 transition-all hover:scale-[1.02] hover:bg-foreground/90 disabled:opacity-50 disabled:pointer-events-none overflow-hidden"
                 >
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
                   {loading ? (
                     <Loader2 className="h-5 w-5 animate-spin" />
                   ) : (
                     <span className="flex items-center gap-2">
-                      {t.generate.form.submit} <ArrowRight className="h-4 w-4" />
+                      <Wand2 className="h-4 w-4" />
+                      {t.generate.form.submit}
                     </span>
                   )}
                 </button>
@@ -294,16 +389,16 @@ export default function GeneratePage() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.3 } }}
-                className="relative w-full h-full"
+                className="relative w-full h-full p-8"
               >
                 <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 via-transparent to-purple-500/20 rounded-[3rem] blur-3xl opacity-50 animate-pulse" />
-                <div className="relative w-full h-full border border-white/10 bg-black/40 backdrop-blur-md rounded-[2rem] shadow-2xl overflow-hidden flex flex-col items-center justify-center text-center p-12">
-                  <div className="w-24 h-24 bg-white/5 rounded-3xl flex items-center justify-center mb-8 border border-white/10 shadow-inner">
-                    <Code2 className="w-10 h-10 text-white/40" />
+                <div className="relative w-full h-full border border-white/10 bg-black/40 backdrop-blur-md rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col items-center justify-center text-center p-12 group">
+                  <div className="w-24 h-24 bg-gradient-to-br from-white/10 to-white/5 rounded-3xl flex items-center justify-center mb-8 border border-white/10 shadow-inner group-hover:scale-110 transition-transform duration-500">
+                    <Code2 className="w-10 h-10 text-white/60" />
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-2">Ready to Build</h3>
-                  <p className="text-white/40 max-w-sm">
-                    Our AI Architect is standing by. Enter a prompt to start the new streaming engine.
+                  <h3 className="text-3xl font-bold text-white mb-3">Foundrr Architect</h3>
+                  <p className="text-white/40 max-w-sm text-sm leading-relaxed">
+                    Our AI engine creates full-stack, production-ready websites in seconds. Enter a prompt to activate the build sequence.
                   </p>
                 </div>
               </motion.div>
@@ -313,43 +408,51 @@ export default function GeneratePage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
-                className="w-full h-full flex flex-col lg:flex-row gap-6"
+                className="w-full h-full flex flex-col lg:flex-row gap-6 p-4"
               >
                 {/* TERMINAL UI */}
-                <div className="w-full lg:w-[400px] shrink-0 bg-[#1e1e1e] rounded-xl border border-white/10 shadow-2xl overflow-hidden flex flex-col h-[300px] lg:h-full">
-                  <div className="bg-[#2d2d2d] px-4 py-2 flex items-center gap-2 border-b border-white/5">
-                    <div className="flex gap-1.5">
-                      <div className="w-3 h-3 rounded-full bg-red-500/80" />
-                      <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-                      <div className="w-3 h-3 rounded-full bg-green-500/80" />
+                <div className="w-full lg:w-[400px] shrink-0 bg-[#0d1117] rounded-xl border border-white/10 shadow-2xl overflow-hidden flex flex-col h-[300px] lg:h-full font-mono">
+                  <div className="bg-[#161b22] px-4 py-3 flex items-center justify-between border-b border-white/5">
+                    <div className="flex gap-2">
+                      <Terminal className="w-4 h-4 text-white/40" />
+                      <span className="text-xs font-bold text-white/60">Build Log</span>
                     </div>
-                    <span className="text-[10px] font-mono text-white/40 ml-2">architect-agent — zsh</span>
+                    <div className="flex gap-1.5">
+                      <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
+                    </div>
                   </div>
                   <div
-                    className="p-4 font-mono text-[10px] leading-3 text-green-400/80 overflow-y-auto custom-scrollbar flex-1"
+                    className="p-4 overflow-y-auto custom-scrollbar flex-1 space-y-2"
                     ref={logContainerRef}
                   >
-                    <pre className="whitespace-pre-wrap break-all font-mono">
-                      {logs.join('\n')}
-                      <span className="animate-pulse inline-block w-2 h-4 bg-green-500 ml-1 align-middle">_</span>
-                    </pre>
+                    {logs.map((log, i) => (
+                      <div key={i} className="flex gap-3 text-[11px] leading-tight">
+                        <span className="text-white/20 select-none">{(i + 1).toString().padStart(2, '0')}</span>
+                        <span className={`${log.type === 'error' ? 'text-red-400' :
+                            log.type === 'success' ? 'text-emerald-400' :
+                              log.type === 'warning' ? 'text-amber-400' :
+                                'text-blue-300'
+                          }`}>
+                          {log.text}
+                        </span>
+                      </div>
+                    ))}
+                    <div className="animate-pulse flex gap-2 text-[11px]">
+                      <span className="text-white/20 select-none">{(logs.length + 1).toString().padStart(2, '0')}</span>
+                      <span className="w-2 h-4 bg-white/50 block" />
+                    </div>
                   </div>
                 </div>
 
                 {/* LIVE PREVIEW IFRAME */}
                 <div className="flex-1 bg-white rounded-xl border border-white/10 shadow-2xl overflow-hidden relative group">
-                  <div className="absolute top-3 left-1/2 -translate-x-1/2 flex items-center gap-2 z-50">
+                  <div className="absolute top-3 right-3 flex items-center gap-2 z-50">
                     <div className="bg-black/80 backdrop-blur-md text-white text-[10px] px-3 py-1.5 rounded-full font-medium border border-white/10 flex items-center gap-2 shadow-lg">
-                      <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-[pulse_1.5s_infinite]" />
-                      LIVE PREVIEW
+                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-[pulse_1.5s_infinite]" />
+                      LIVE STARTUP PREVIEW
                     </div>
-                    <button
-                      onClick={() => alert('Magic Rewrite: AI is analyzing text... (Demo)')}
-                      className="bg-white/90 hover:bg-white text-black text-[10px] px-3 py-1.5 rounded-full font-bold border border-white/10 flex items-center gap-1.5 shadow-lg transition-transform hover:scale-105 active:scale-95"
-                    >
-                      <Wand2 className="w-3 h-3 text-purple-600" />
-                      Magic Rewrite
-                    </button>
                   </div>
 
                   {/* Iframe Container */}
@@ -361,9 +464,9 @@ export default function GeneratePage() {
                         title="Live Preview"
                       />
                     ) : (
-                      <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground gap-4">
+                      <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground gap-4 bg-dot-pattern">
                         <Loader2 className="w-8 h-8 animate-spin opacity-20" />
-                        <p className="text-sm font-light opacity-50">Waiting for HTML stream...</p>
+                        <p className="text-sm font-light opacity-50">Connecting to Cloud Architect...</p>
                       </div>
                     )}
 
@@ -378,3 +481,4 @@ export default function GeneratePage() {
     </div>
   )
 }
+
