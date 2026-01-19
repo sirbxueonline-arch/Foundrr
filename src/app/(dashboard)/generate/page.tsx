@@ -210,7 +210,7 @@ export default function GeneratePage() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="text-4xl md:text-5xl font-bold tracking-tighter mb-2 text-black dark:text-white drop-shadow-sm"
+                className="text-4xl md:text-5xl font-bold tracking-tighter mb-2 text-black drop-shadow-sm"
               >
                 {t.generate.title}
               </motion.h1>
@@ -218,7 +218,7 @@ export default function GeneratePage() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="text-black/60 dark:text-white/60 text-sm md:text-base font-medium text-balance leading-relaxed"
+                className="text-black/60 text-sm md:text-base font-medium text-balance leading-relaxed"
               >
                 {t.generate.desc}
               </motion.p>
