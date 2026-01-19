@@ -251,15 +251,14 @@ export default function GeneratePage() {
                   </button>
                 </div>
 
-                <div className="group relative rounded-2xl p-[2px] overflow-hidden transition-all hover:shadow-[0_0_40px_rgba(124,58,237,0.3)]">
-                  <div className="absolute inset-[-100%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#0000_0%,#0000_50%,var(--color-primary)_100%)] opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-500" />
-                  <div className="absolute inset-[-100%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#0000_0%,#0000_50%,var(--color-primary)_100%)] opacity-0 group-focus-within:opacity-50 blur-xl transition-opacity duration-500" />
-                  <div className="relative rounded-[14px] bg-background/90 backdrop-blur-xl border border-white/10 group-focus-within:bg-background/95 transition-colors">
+                <div className="relative group">
+                  <div className="absolute -inset-0.5 bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500" />
+                  <div className="relative rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 focus-within:border-white/20 focus-within:bg-white/10 transition-all duration-300 shadow-sm">
                     <textarea
                       id="prompt"
                       name="prompt"
                       rows={3}
-                      className="w-full bg-transparent text-lg font-light rounded-2xl border-none px-6 py-4 placeholder:text-muted-foreground/30 focus:ring-0 resize-none transition-all duration-300 leading-relaxed"
+                      className="w-full bg-transparent text-lg font-light rounded-2xl border-none px-6 py-4 placeholder:text-muted-foreground/40 focus:ring-0 resize-none transition-all duration-300 leading-relaxed text-foreground"
                       placeholder={t.generate.form.promptPlaceholder}
                       value={formData.prompt}
                       onChange={handleChange}
@@ -281,13 +280,13 @@ export default function GeneratePage() {
                       key={s.id}
                       type="button"
                       onClick={() => handleStyleSelect(s.id)}
-                      className={`group relative p-4 rounded-2xl flex flex-col items-start gap-2 text-left transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] overflow-hidden ${formData.style === s.id ? s.activeClass : 'border border-white/10 hover:border-white/30'
-                        } ${s.class}`}
+                      className={`group relative p-4 rounded-2xl flex flex-col items-start gap-2 text-left transition-all duration-300 hover:scale-[1.01] active:scale-[0.99] overflow-hidden ${formData.style === s.id ? s.activeClass : 'border border-white/10 hover:border-white/20 bg-white/5'
+                        } ${s.class.replace('border-2', 'border')}`}
                     >
-                      <div className={`w-full h-12 rounded-lg mb-1 ${s.preview} shadow-inner opacity-80 group-hover:opacity-100 transition-opacity`} />
-                      <div className="space-y-0.5 z-10">
-                        <span className="text-sm font-bold leading-none">{s.name}</span>
-                        <span className="text-[9px] opacity-70 leading-tight block">{s.desc}</span>
+                      <div className={`w-full h-12 rounded-lg mb-1 ${s.preview} shadow-sm opacity-90 group-hover:opacity-100 transition-opacity`} />
+                      <div className="space-y-0.5 z-10 w-full">
+                        <span className="text-sm font-semibold leading-none truncate w-full block">{s.name}</span>
+                        <span className="text-[10px] opacity-60 leading-tight block">{s.desc}</span>
                       </div>
                       {/* Selection Indicator */}
                       {formData.style === s.id && (
@@ -319,10 +318,10 @@ export default function GeneratePage() {
                         onChange={handleChange}
                         className="w-12 h-12 rounded-full cursor-pointer border-none p-0 bg-transparent opacity-0 absolute inset-0 z-10"
                       />
-                      <div className="w-12 h-12 rounded-full border-2 border-white/20 shadow-lg" style={{ backgroundColor: formData.primaryColor }} />
+                      <div className="w-12 h-12 rounded-full border border-white/10 shadow-sm" style={{ backgroundColor: formData.primaryColor }} />
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-xs font-mono opacity-80 bg-black/20 px-2 py-1 rounded-md">{formData.primaryColor}</span>
+                      <span className="text-xs font-mono opacity-80 bg-black/10 dark:bg-white/10 px-2 py-1 rounded-md">{formData.primaryColor}</span>
                       <span className="text-[10px] text-muted-foreground">{t.generate.form.clickToChange}</span>
                     </div>
                   </div>
@@ -348,7 +347,7 @@ export default function GeneratePage() {
                         }}
                         className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${(formData.pages || []).includes(page)
                           ? 'bg-foreground text-background border-foreground shadow-sm'
-                          : 'bg-background/50 border-border/50 hover:bg-muted text-muted-foreground'
+                          : 'bg-background/40 border-border/40 hover:bg-muted text-muted-foreground'
                           }`}
                       >
                         {(formData.pages || []).includes(page) && <CheckCircle2 className="w-3 h-3 inline mr-1.5 mb-0.5" />}
@@ -361,7 +360,7 @@ export default function GeneratePage() {
 
               {/* Submit & Lang */}
               <div className="flex items-center gap-4 pt-4 border-t border-white/10 mt-6">
-                <div className="flex bg-secondary/50 p-1 rounded-full border border-border/50 shrink-0">
+                <div className="flex bg-secondary/30 p-1 rounded-full border border-border/30 shrink-0">
                   {(['en', 'az'] as const).map((l) => (
                     <button
                       key={l}
@@ -377,9 +376,8 @@ export default function GeneratePage() {
                 <button
                   type="submit"
                   disabled={loading || !formData.prompt.trim()}
-                  className="flex-1 group relative inline-flex h-12 items-center justify-center rounded-full bg-foreground px-8 text-base font-bold text-background shadow-[0_0_20px_rgba(255,255,255,0.15)] transition-all hover:scale-[1.02] hover:bg-foreground hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] disabled:opacity-50 disabled:pointer-events-none overflow-hidden"
+                  className="flex-1 inline-flex h-12 items-center justify-center rounded-full bg-foreground px-8 text-base font-bold text-background shadow-lg transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out" />
                   {loading ? (
                     <Loader2 className="h-5 w-5 animate-spin" />
                   ) : (
@@ -425,68 +423,59 @@ export default function GeneratePage() {
                 transition={{ duration: 0.5, ease: "easeOut" }}
                 className="w-full h-full flex flex-col lg:flex-row gap-6 p-4"
               >
-                {/* TERMINAL UI */}
-                <div className="w-full lg:w-[400px] shrink-0 bg-[#0d1117] rounded-xl border border-white/10 shadow-2xl overflow-hidden flex flex-col h-[300px] lg:h-full font-mono">
-                  <div className="bg-[#161b22] px-4 py-3 flex items-center justify-between border-b border-white/5 relative z-20">
-                    <div className="flex gap-2">
-                      <Terminal className="w-4 h-4 text-emerald-500/80" />
-                      <span className="text-xs font-bold text-emerald-500/60 tracking-widest uppercase">Architect OS v2.4</span>
-                    </div>
-                    <div className="flex gap-1.5">
-                      <div className="w-2.5 h-2.5 rounded-full bg-red-500/80 shadow-[0_0_10px_rgba(239,68,68,0.5)]" />
-                      <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80 shadow-[0_0_10px_rgba(234,179,8,0.5)]" />
-                      <div className="w-2.5 h-2.5 rounded-full bg-green-500/80 shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
+                {/* TERMINAL UI - CLEAN SANS SERIF CONSOLE */}
+                <div className="w-full lg:w-[400px] shrink-0 bg-zinc-950 rounded-xl border border-white/10 shadow-2xl overflow-hidden flex flex-col h-[300px] lg:h-full font-mono relative group">
+                  <div className="bg-zinc-900/50 px-4 py-3 flex items-center justify-between border-b border-white/5 backdrop-blur-sm">
+                    <div className="flex gap-2 items-center">
+                      <Terminal className="w-3.5 h-3.5 text-zinc-500" />
+                      <span className="text-xs font-medium text-zinc-400">Build Stream</span>
                     </div>
                   </div>
 
-                  {/* CRT Effects */}
-                  <div className="absolute inset-0 pointer-events-none z-10 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] opacity-20" />
-                  <div className="absolute inset-0 pointer-events-none z-10 animate-scanline bg-gradient-to-b from-transparent via-emerald-500/10 to-transparent h-[20%] w-full opacity-30" />
-                  <div className="absolute inset-0 pointer-events-none z-10 shadow-[inset_0_0_100px_rgba(0,0,0,0.9)]" />
                   <div
-                    className="p-4 overflow-y-auto custom-scrollbar flex-1 space-y-2"
+                    className="p-4 overflow-y-auto custom-scrollbar flex-1 space-y-3"
                     ref={logContainerRef}
                   >
                     {logs.map((log, i) => (
-                      <div key={i} className="flex gap-3 text-[11px] leading-tight animate-fade-in-up">
-                        <span className="text-white/20 select-none">{(i + 1).toString().padStart(2, '0')}</span>
+                      <div key={i} className="flex gap-3 text-[11px] leading-relaxed font-mono tracking-tight animate-fade-in-up">
+                        <span className="text-zinc-700 select-none w-4 text-right">{(i + 1)}</span>
                         <span className={`${log.type === 'error' ? 'text-red-400' :
                           log.type === 'success' ? 'text-emerald-400' :
                             log.type === 'warning' ? 'text-amber-400' :
-                              'text-blue-300'
+                              'text-zinc-300'
                           }`}>
                           {log.text}
                         </span>
                       </div>
                     ))}
-                    <div className="animate-pulse flex gap-2 text-[11px]">
-                      <span className="text-white/20 select-none">{(logs.length + 1).toString().padStart(2, '0')}</span>
-                      <span className="w-2 h-4 bg-white/50 block" />
+                    <div className="flex gap-3 text-[11px] animate-pulse">
+                      <span className="text-zinc-800 select-none w-4 text-right">{(logs.length + 1)}</span>
+                      <span className="w-1.5 h-4 bg-zinc-600 block" />
                     </div>
                   </div>
                 </div>
 
                 {/* LIVE PREVIEW IFRAME */}
-                <div className="flex-1 bg-white rounded-xl border border-white/10 shadow-2xl overflow-hidden relative group">
-                  <div className="absolute top-3 right-3 flex items-center gap-2 z-50">
-                    <div className="bg-black/80 backdrop-blur-md text-white text-[10px] px-3 py-1.5 rounded-full font-medium border border-white/10 flex items-center gap-2 shadow-lg">
-                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-[pulse_1.5s_infinite]" />
-                      LIVE STARTUP PREVIEW
+                <div className="flex-1 bg-transparent rounded-xl border border-white/10 shadow-xl overflow-hidden relative">
+                  <div className="absolute top-3 right-3 z-50">
+                    <div className="bg-zinc-950/80 backdrop-blur text-zinc-400 text-[10px] px-3 py-1.5 rounded-full font-medium border border-white/10 flex items-center gap-2 shadow-sm">
+                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                      Live Preview
                     </div>
                   </div>
 
                   {/* Iframe Container */}
-                  <div className="w-full h-full bg-neutral-100 dark:bg-neutral-900">
+                  <div className="w-full h-full">
                     {previewHtml ? (
                       <iframe
                         srcDoc={previewHtml}
-                        className="w-full h-full border-0"
+                        className="w-full h-full border-0 bg-white"
                         title="Live Preview"
                       />
                     ) : (
-                      <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground gap-4 bg-dot-pattern">
-                        <Loader2 className="w-8 h-8 animate-spin opacity-20" />
-                        <p className="text-sm font-light opacity-50">{t.generate.form.generating}</p>
+                      <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground gap-3 bg-white/5 backdrop-blur-sm">
+                        <Loader2 className="w-6 h-6 animate-spin opacity-20" />
+                        <p className="text-xs font-medium opacity-40 uppercase tracking-widest">{t.generate.form.generating}</p>
                       </div>
                     )}
 

@@ -1,14 +1,16 @@
 @import "tailwindcss";
 
 /* Hide Next.js Dev Indicator */
-body > [data-nextjs-toast] {
+body>[data-nextjs-toast] {
   display: none !important;
 }
-body > [data-nextjs-toast-wrapper] {
-    display: none !important;
+
+body>[data-nextjs-toast-wrapper] {
+  display: none !important;
 }
+
 .nextjs-toast-errors-parent {
-    display: none !important;
+  display: none !important;
 }
 
 @theme {
@@ -31,7 +33,7 @@ body > [data-nextjs-toast-wrapper] {
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
-  
+
   --radius: 0.5rem;
 }
 
@@ -58,7 +60,8 @@ body > [data-nextjs-toast-wrapper] {
 }
 
 .dark {
-  --background: 240 10% 3.9%;  /* Darker, richer background */
+  --background: 240 10% 3.9%;
+  /* Darker, richer background */
   --foreground: 0 0% 98%;
   --card: 240 10% 3.9%;
   --card-foreground: 0 0% 98%;
@@ -83,6 +86,7 @@ body > [data-nextjs-toast-wrapper] {
   * {
     border-color: var(--color-border);
   }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
@@ -104,34 +108,74 @@ html {
 }
 
 .bg-dot-pattern {
-    background-size: 24px 24px;
-    background-image: radial-gradient(var(--color-foreground) 1px, transparent 1px);
-    mask-image: radial-gradient(ellipse at center, black, transparent 80%);
+  background-size: 24px 24px;
+  background-image: radial-gradient(var(--color-foreground) 1px, transparent 1px);
+  mask-image: radial-gradient(ellipse at center, black, transparent 80%);
 }
 
 /* Animations */
 @keyframes fade-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes shimmer {
-  from { background-position: 0 0; }
-  to { background-position: -200% 0; }
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: -200% 0;
+  }
 }
 
 @keyframes type-code {
-    0% { height: 0; opacity: 0; }
-    10% { height: auto; opacity: 1; }
-    90% { height: auto; opacity: 1; }
-    100% { height: auto; opacity: 1; } /* Keep it simple */
+  0% {
+    height: 0;
+    opacity: 0;
+  }
+
+  10% {
+    height: auto;
+    opacity: 1;
+  }
+
+  90% {
+    height: auto;
+    opacity: 1;
+  }
+
+  100% {
+    height: auto;
+    opacity: 1;
+  }
+
+  /* Keep it simple */
 }
 
 @keyframes blob {
-  0% { transform: translate(0px, 0px) scale(1); }
-  33% { transform: translate(30px, -50px) scale(1.1); }
-  66% { transform: translate(-20px, 20px) scale(0.9); }
-  100% { transform: translate(0px, 0px) scale(1); }
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
 }
 
 .animate-fade-in {
@@ -139,7 +183,7 @@ html {
 }
 
 .animate-shimmer {
-  background: linear-gradient(to right, transparent 20%, rgba(255,255,255,0.1) 40%, transparent 60%);
+  background: linear-gradient(to right, transparent 20%, rgba(255, 255, 255, 0.1) 40%, transparent 60%);
   background-size: 200% 100%;
   animation: shimmer 3s infinite linear;
 }
@@ -155,13 +199,3 @@ html {
 .animation-delay-4000 {
   animation-delay: 4s;
 }
-
-@keyframes scanline {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100%); }
-}
-
-.animate-scanline {
-  animation: scanline 8s linear infinite;
-}
-
