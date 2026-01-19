@@ -53,13 +53,14 @@ export function Features() {
               key={i}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
               viewport={{ once: true }}
-              className={`group relative overflow-hidden rounded-2xl border border-border/40 bg-zinc-900/30 p-8 hover:bg-zinc-900/50 transition-colors ${feature.className}`}
+              className={`group relative overflow-hidden rounded-2xl border border-border/40 bg-zinc-900/30 p-8 hover:bg-zinc-900/50 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/10 ${feature.className}`}
             >
               <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="absolute -inset-px bg-gradient-to-r from-primary/50 to-purple-500/50 rounded-2xl opacity-0 group-hover:opacity-20 blur transition-opacity duration-500" />
-              
+
               <div className="relative z-10">
                 <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300 shadow-inner">
                   <feature.icon className="h-6 w-6" />

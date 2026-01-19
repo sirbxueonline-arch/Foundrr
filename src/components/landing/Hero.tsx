@@ -23,9 +23,9 @@ export function Hero({ lang = 'az', t }: { lang?: string, t?: any }) {
       {/* Background Effects */}
       <div className="absolute inset-0 -z-10 h-full w-full bg-background overflow-hidden">
         <div className="absolute top-0 z-[0] h-screen w-screen bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.15),rgba(255,255,255,0))]" />
-        <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob" />
-        <div className="absolute top-0 -right-4 w-72 h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000" />
-        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000" />
+        <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-500/30 rounded-full mix-blend-screen filter blur-3xl opacity-30 animate-blob" />
+        <div className="absolute top-0 -right-4 w-72 h-72 bg-yellow-500/30 rounded-full mix-blend-screen filter blur-3xl opacity-30 animate-blob animation-delay-2000" />
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-500/30 rounded-full mix-blend-screen filter blur-3xl opacity-30 animate-blob animation-delay-4000" />
         <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-20" />
       </div>
 
@@ -102,10 +102,10 @@ export function Hero({ lang = 'az', t }: { lang?: string, t?: any }) {
             className="mt-8 text-xs font-medium text-muted-foreground/60 tracking-wider uppercase"
           >
             {text.madeIn}
-            <img 
-              src="https://flagcdn.com/20x15/az.png" 
-              alt="Azerbaijan Flag" 
-              className="inline-block h-3 w-4 ml-2 object-contain" 
+            <img
+              src="https://flagcdn.com/20x15/az.png"
+              alt="Azerbaijan Flag"
+              className="inline-block h-3 w-4 ml-2 object-contain"
             />
           </motion.div>
 
@@ -114,17 +114,27 @@ export function Hero({ lang = 'az', t }: { lang?: string, t?: any }) {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
-            className="mt-20 relative w-full max-w-5xl rounded-xl border border-border/40 bg-zinc-950/50 shadow-2xl overflow-hidden backdrop-blur-sm ring-1 ring-white/10"
+            whileHover={{ y: -5, transition: { duration: 0.2 } }}
+            className="mt-20 relative w-full max-w-5xl rounded-xl border border-border/40 bg-zinc-950/50 shadow-2xl overflow-hidden backdrop-blur-sm ring-1 ring-white/10 group/browser hover:shadow-primary/20 hover:ring-primary/20 transition-all duration-500"
           >
+            {/* Ambient Glow behind mock browser */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-purple-500/20 rounded-xl blur-2xl opacity-0 group-hover/browser:opacity-100 transition-opacity duration-700 -z-10" />
             {/* Mock Browser Header */}
-            <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10 bg-white/5">
+            <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10 bg-white/5 transition-colors group-hover/browser:bg-white/10">
               <div className="flex gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-red-500/80" />
-                <div className="w-3 h-3 rounded-full bg-amber-500/80" />
-                <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
+                <div className="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-500 transition-colors" />
+                <div className="w-3 h-3 rounded-full bg-amber-500/80 hover:bg-amber-500 transition-colors" />
+                <div className="w-3 h-3 rounded-full bg-emerald-500/80 hover:bg-emerald-500 transition-colors" />
               </div>
-              <div className="ml-4 flex-1 max-w-sm h-6 rounded bg-white/5 border border-white/10 flex items-center px-3 text-[10px] text-zinc-400 font-mono">
+              <div className="ml-4 flex-1 max-w-sm h-6 rounded bg-white/5 border border-white/10 flex items-center px-3 text-[10px] text-zinc-400 font-mono overflow-hidden">
+                <span className="text-emerald-500 mr-2">🔒</span>
                 foundrr.ai/generate
+              </div>
+
+              {/* Price Badge in Header */}
+              <div className="ml-auto hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-white/5 text-[10px] font-medium text-white/60">
+                <Sparkles className="w-3 h-3 text-amber-400" />
+                <span>Premium Engine v2.0</span>
               </div>
             </div>
 

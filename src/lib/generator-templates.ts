@@ -298,7 +298,7 @@ export const TEMPLATES = {
                                 <p class="font-bold text-slate-900 dark:text-white">New Sale!</p>
                                 <p class="text-xs text-slate-500">Just now</p>
                             </div>
-                            <div class="text-green-500 font-bold ml-2">+$49.00</div>
+                            <div class="text-green-500 font-bold ml-2">+$75.99</div>
                         </div>
                     </div>
                 </div>

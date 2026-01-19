@@ -42,9 +42,11 @@ export default function LandingContent({ user }: { user: any }) {
               </p>
               <ul className="space-y-4">
                 {t.whatYouGet.list.map((item, i) => (
-                  <li key={i} className="flex items-center">
-                    <CheckCircle2 className="mr-3 h-5 w-5 text-primary" />
-                    <span className="text-foreground/80">{item}</span>
+                  <li key={i} className="flex items-center p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                    <div className="mr-3 h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                      <CheckCircle2 className="h-5 w-5 text-primary" />
+                    </div>
+                    <span className="text-foreground/90 font-medium">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -52,11 +54,12 @@ export default function LandingContent({ user }: { user: any }) {
 
             {/* Visual */}
             <div className="relative rounded-xl border bg-card shadow-2xl overflow-hidden aspect-[4/3] group">
-              <div className="flex items-center gap-1.5 px-4 py-3 border-b bg-muted/50">
-                <div className="w-3 h-3 rounded-full bg-red-400/80" />
-                <div className="w-3 h-3 rounded-full bg-amber-400/80" />
-                <div className="w-3 h-3 rounded-full bg-green-400/80" />
-                <div className="ml-4 flex-1 h-6 rounded-md bg-background border flex items-center px-3 text-[10px] text-muted-foreground font-mono">
+              <div className="flex items-center gap-1.5 px-4 py-3 border-b bg-muted/50 backdrop-blur-sm">
+                <div className="w-3 h-3 rounded-full bg-red-400/80 shadow-sm" />
+                <div className="w-3 h-3 rounded-full bg-amber-400/80 shadow-sm" />
+                <div className="w-3 h-3 rounded-full bg-green-400/80 shadow-sm" />
+                <div className="ml-4 flex-1 h-6 rounded-md bg-background/50 border flex items-center px-3 text-[10px] text-muted-foreground font-mono shadow-inner">
+                  <span className="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse" />
                   foundrr.com/preview
                 </div>
               </div>
@@ -95,18 +98,18 @@ export default function LandingContent({ user }: { user: any }) {
             </div>
           </div>
         </div>
-      </section>
-      
+      </section >
+
       {/* Pricing Section on Homepage */}
-      <div className="w-full bg-background border-t border-border/40 pt-24">
+      < div className="w-full bg-background border-t border-border/40 pt-24" >
         <div className="text-center max-w-3xl mx-auto mb-16 px-4">
-             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">{t.whatYouGet.title} {t.whatYouGet.titleSub}</h2>
-             <p className="text-muted-foreground">{t.whatYouGet.desc}</p>
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">{t.whatYouGet.title} {t.whatYouGet.titleSub}</h2>
+          <p className="text-muted-foreground">{t.whatYouGet.desc}</p>
         </div>
         <PricingCards />
-      </div>
+      </div >
 
       <Footer />
-    </div>
+    </div >
   )
 }
