@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { FoundryAgent } from '@/components/FoundryAgent'
-import { Lock, Download, Smartphone, Tablet, Monitor, Sparkles, Rocket, Globe, Pencil, CheckCircle2, Loader2 } from 'lucide-react'
+import { Lock, Download, Smartphone, Tablet, Monitor, Sparkles, Rocket, Globe, Pencil, CheckCircle2, Loader2, Languages } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useLanguage } from '@/contexts/LanguageContext'
@@ -25,6 +25,50 @@ export default function PreviewWrapper({ siteId, isPaid }: PreviewWrapperProps) 
   const [isTextEditing, setIsTextEditing] = useState(false)
   const [isPublishModalOpen, setIsPublishModalOpen] = useState(false)
   const [publishSlug, setPublishSlug] = useState('')
+  const [isTranslating, setIsTranslating] = useState(false)
+
+  const handleTranslate = async () => {
+    if (!confirm("This will auto-translate all text on the page to Azerbaijani. It might take ~10 seconds. Continue?")) return;
+    
+    setIsTranslating(true);
+    try {
+       // Get current HTML
+       let currentHtml = '';
+       if (iframeRef.current?.contentDocument) {
+           currentHtml = iframeRef.current.contentDocument.documentElement.outerHTML;
+       } else {
+           // Fallback fetch
+           const res = await fetch(`/api/preview/${siteId}?file=${activeFile}`);
+           currentHtml = await res.text();
+       }
+
+       const res = await fetch('/api/translate-content', {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({ siteId, currentHtml, targetLanguage: 'Azerbaijani' })
+       });
+
+       if (!res.ok) throw new Error("Translation failed");
+       
+       const data = await res.json();
+       if (data.html) {
+          // Update iframe
+          if (iframeRef.current?.contentDocument) {
+              iframeRef.current.contentDocument.open();
+              iframeRef.current.contentDocument.write(data.html);
+              iframeRef.current.contentDocument.close();
+          }
+          alert("Translation complete! Page updated.");
+          setReloadKey(prev => prev + 1); // Force reload to ensure everything syncs
+       }
+
+    } catch (e) {
+      console.error(e);
+      alert("Translation failed. Please try again.");
+    } finally {
+      setIsTranslating(false);
+    }
+  }
 
   const handlePublishSubmit = async () => {
     if (!publishSlug.trim()) return;
@@ -488,6 +532,15 @@ export default function PreviewWrapper({ siteId, isPaid }: PreviewWrapperProps) 
                     <Globe className="h-4 w-4 text-emerald-600" />
                 </button>
               )}
+
+              <button
+                onClick={handleTranslate}
+                disabled={isTranslating}
+                className="p-2 rounded-full bg-indigo-50 border border-indigo-200 shadow-sm transition-all hover:bg-indigo-100 text-indigo-600"
+                title="Translate to Azerbaijani"
+              >
+                 {isTranslating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Languages className="h-4 w-4" />}
+              </button>
 
               <a
                 href={`/api/download/${siteId}`}
