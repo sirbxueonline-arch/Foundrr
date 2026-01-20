@@ -345,7 +345,7 @@ export const TEMPLATES = {
                        <h3 class="text-3xl font-bold text-slate-900 dark:text-white mb-4">Advanced Analytics</h3>
                        <p class="text-slate-600 dark:text-slate-400 text-lg leading-relaxed mb-8 max-w-sm">Deep dive into your data with our real-time dashboard. Track every metric that matters to your business.</p>
                        <div class="mt-auto">
-                           <button class="text-blue-600 font-bold group-hover:translate-x-2 transition-transform inline-flex items-center">Explore Dashboard <i class="fas fa-arrow-right ml-2 group-hover:ml-3 transition-all"></i></button>
+                           <button onclick="navigateTo('login')" class="text-blue-600 font-bold group-hover:translate-x-2 transition-transform inline-flex items-center">Explore Dashboard <i class="fas fa-arrow-right ml-2 group-hover:ml-3 transition-all"></i></button>
                        </div>
                    </div>
                    <div class="absolute right-0 bottom-0 w-3/5 h-4/5 translate-x-12 translate-y-12 rounded-tl-[2rem] overflow-hidden border-t border-l border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 shadow-2xl transition-transform duration-700 group-hover:translate-x-8 group-hover:translate-y-8 group-hover:scale-105">
@@ -417,7 +417,7 @@ export const TEMPLATES = {
         <div class="container mx-auto px-6">
             <h2 class="text-4xl font-bold mb-12" data-aos="fade-right">Selected Work</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="group relative aspect-[4/3] overflow-hidden rounded-2xl bg-gray-100 cursor-pointer" data-aos="fade-up">
+                <div class="group relative aspect-[4/3] overflow-hidden rounded-2xl bg-gray-100 cursor-pointer" data-aos="fade-up" onclick="alert('Project details view')">
                     <img src="/api/images/proxy?query=minimal architecture building" class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110" />
                     <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-center p-6">
                         <span class="text-white font-bold text-xl translate-y-4 group-hover:translate-y-0 transition-transform duration-300">Project Alpha</span>
@@ -646,8 +646,8 @@ export const TEMPLATES = {
                     <h3 class="font-bold text-lg">Alex Morgan</h3>
                     <p class="text-blue-600 text-sm font-medium mb-4">CEO & Founder</p>
                     <div class="flex justify-center gap-3 text-gray-400">
-                        <i class="fab fa-twitter hover:text-blue-400 cursor-pointer"></i>
-                        <i class="fab fa-linkedin hover:text-blue-700 cursor-pointer"></i>
+                        <i class="fab fa-twitter hover:text-blue-400 cursor-pointer" onclick="window.open('https://twitter.com', '_blank')"></i>
+                        <i class="fab fa-linkedin hover:text-blue-700 cursor-pointer" onclick="window.open('https://linkedin.com', '_blank')"></i>
                     </div>
                 </div>
                  <div class="bg-white p-6 rounded-2xl shadow-sm text-center group hover:-translate-y-2 transition-transform" data-aos="fade-up" data-aos-delay="100">
@@ -657,8 +657,8 @@ export const TEMPLATES = {
                     <h3 class="font-bold text-lg">Sarah Chen</h3>
                     <p class="text-blue-600 text-sm font-medium mb-4">CTO</p>
                     <div class="flex justify-center gap-3 text-gray-400">
-                        <i class="fab fa-twitter hover:text-blue-400 cursor-pointer"></i>
-                        <i class="fab fa-linkedin hover:text-blue-700 cursor-pointer"></i>
+                        <i class="fab fa-twitter hover:text-blue-400 cursor-pointer" onclick="window.open('https://twitter.com', '_blank')"></i>
+                        <i class="fab fa-linkedin hover:text-blue-700 cursor-pointer" onclick="window.open('https://linkedin.com', '_blank')"></i>
                     </div>
                 </div>
                  <div class="bg-white p-6 rounded-2xl shadow-sm text-center group hover:-translate-y-2 transition-transform" data-aos="fade-up" data-aos-delay="200">
@@ -668,8 +668,8 @@ export const TEMPLATES = {
                     <h3 class="font-bold text-lg">Marcus Weil</h3>
                     <p class="text-blue-600 text-sm font-medium mb-4">Head of Design</p>
                     <div class="flex justify-center gap-3 text-gray-400">
-                         <i class="fab fa-dribbble hover:text-pink-500 cursor-pointer"></i>
-                        <i class="fab fa-linkedin hover:text-blue-700 cursor-pointer"></i>
+                         <i class="fab fa-dribbble hover:text-pink-500 cursor-pointer" onclick="window.open('https://dribbble.com', '_blank')"></i>
+                        <i class="fab fa-linkedin hover:text-blue-700 cursor-pointer" onclick="window.open('https://linkedin.com', '_blank')"></i>
                     </div>
                 </div>
                  <div class="bg-white p-6 rounded-2xl shadow-sm text-center group hover:-translate-y-2 transition-transform" data-aos="fade-up" data-aos-delay="300">
@@ -679,8 +679,8 @@ export const TEMPLATES = {
                     <h3 class="font-bold text-lg">Elena Rodriguez</h3>
                     <p class="text-blue-600 text-sm font-medium mb-4">Marketing Lead</p>
                     <div class="flex justify-center gap-3 text-gray-400">
-                        <i class="fab fa-twitter hover:text-blue-400 cursor-pointer"></i>
-                        <i class="fab fa-instagram hover:text-pink-600 cursor-pointer"></i>
+                        <i class="fab fa-twitter hover:text-blue-400 cursor-pointer" onclick="window.open('https://twitter.com', '_blank')"></i>
+                        <i class="fab fa-instagram hover:text-pink-600 cursor-pointer" onclick="window.open('https://instagram.com', '_blank')"></i>
                     </div>
                 </div>
             </div>
@@ -762,12 +762,12 @@ export const TEMPLATES = {
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Blog Post 1 -->
-                <article class="group cursor-pointer flex flex-col items-start" data-aos="fade-up" data-aos-delay="0">
+                <article class="group cursor-pointer flex flex-col items-start" data-aos="fade-up" data-aos-delay="0" onclick="alert('Read full article (Demo)')">
                     <div class="w-full aspect-video rounded-2xl overflow-hidden mb-6 bg-slate-100 dark:bg-slate-900 relative">
                         <img src="/api/images/proxy?query=technology workspace minimal" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                         <div class="absolute top-4 left-4 bg-white/90 dark:bg-black/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Product</div>
                     </div>
-                    <div class="text-sm text-slate-500 mb-2">Mar 15, 2024 вЂў 5 min read</div>
+                    <div class="text-sm text-slate-500 mb-2">Mar 15, 2024 • 5 min read</div>
                     <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-blue-600 transition-colors">The Future of Digital Design</h3>
                     <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-4 line-clamp-3">
                         Exploring the upcoming trends that will shape how we interact with digital products in the next decade. From spatial computing to AI-driven interfaces.
@@ -851,16 +851,14 @@ export const TEMPLATES = {
                 <div>
                     <h4 class="font-semibold text-gray-900 mb-4">Product</h4>
                     <ul class="space-y-2 text-sm text-gray-500">
-                        <li><button onclick="navigateTo('features')" class="hover:text-black">Features</button></li>
-                        <li><button onclick="navigateTo('pricing')" class="hover:text-black">Pricing</button></li>
+                        {{FOOTER_PRODUCT_LINKS}}
                     </ul>
                 </div>
                 <div>
                     <h4 class="font-semibold text-gray-900 mb-4">Company</h4>
                     <ul class="space-y-2 text-sm text-gray-500">
-                        <li><button onclick="navigateTo('about')" class="hover:text-black">About</button></li>
-                        <li><button onclick="alert('We are hiring!')" class="hover:text-black">Careers</button></li>
-                        <li><button onclick="navigateTo('contact')" class="hover:text-black">Contact</button></li>
+                        {{FOOTER_COMPANY_LINKS}}
+                        <li><button onclick="alert('Careers page coming soon!')" class="hover:text-black">Careers</button></li>
                     </ul>
                 </div>
                 <div>
@@ -889,45 +887,44 @@ export const TEMPLATES = {
     JS_ROUTER: `
     <script>
         // Simple Single Page Router
-        function navigateTo(pageId) {
+        function navigateTo(targetId) {
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
+            const target = document.getElementById(targetId);
             const sections = document.querySelectorAll('.page-section');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const standalonePages = ['about', 'login', 'signup'];
+            const standalonePages = ['about', 'blog', 'login', 'signup', 'pricing-page'];
             
-            // Check if target is a standalone page
-            if (standalonePages.includes(pageId)) {
-                sections.forEach(sec => {
-                    if (sec.id === pageId || sec.tagName === 'NAVBAR') {
-                        sec.classList.remove('hidden');
-                    } else {
-                        sec.classList.add('hidden');
-                    }
-                });
+            if (standalonePages.includes(targetId)) {
+                // Standalone Page Logic
+                if (target) {
+                    sections.forEach(sec => sec.classList.add('hidden'));
+                    target.classList.remove('hidden');
+                    document.getElementById('navbar')?.classList.remove('hidden');
+                } else {
+                    console.warn('Page not found:', targetId);
+                    // Fallback if page doesn't exist (e.g. user didn't request blog)
+                    navigateTo('home');
+                    return;
+                }
             } else {
-                // It's a section on the main Home page (or Home itself)
+                // Home Section Logic (Hero, Features, Contact, etc)
                 sections.forEach(sec => {
-                    // Hide standalone pages
                     if (standalonePages.includes(sec.id)) {
                         sec.classList.add('hidden');
                     } else {
-                        // Show all home sections (Hero, Features, Footer, etc)
                         sec.classList.remove('hidden');
                     }
                 });
                 
-                // Scroll to specific section if not just 'home'
-                if (pageId !== 'home') {
-                    // Slight delay to allow DOM to unhide
+                if (targetId !== 'home' && target) {
                     setTimeout(() => {
-                         const target = document.getElementById(pageId);
-                         if (target) target.scrollIntoView({ behavior: 'smooth' });
+                         target.scrollIntoView({ behavior: 'smooth' });
                     }, 50);
                 }
             }
             
             // Close mobile menu
+            const mobileMenu = document.getElementById('mobile-menu');
             if (mobileMenu) mobileMenu.classList.add('hidden');
         }
 

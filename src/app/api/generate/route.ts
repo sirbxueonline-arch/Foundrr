@@ -64,10 +64,33 @@ export async function POST(request: Request) {
       `<button onclick="navigateTo('${link.toLowerCase()}'); toggleMobileMenu()" class="text-left font-semibold py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">${link}</button>`
     ).join('\n')
 
-    // Prepare Navbar Template with injected links
+    // Generate Footer Links (Product Column)
+    const productFooterLinks = []
+    if (pages.includes('Features')) productFooterLinks.push('Features')
+    if (pages.includes('Pricing')) productFooterLinks.push('Pricing')
+    
+    const footerProductHtml = productFooterLinks.map(link => 
+        `<li><button onclick="navigateTo('${link.toLowerCase()}')" class="hover:text-black">${link}</button></li>`
+    ).join('\n')
+
+    // Generate Footer Links (Company Column)
+    const companyFooterLinks = []
+    if (pages.includes('About')) companyFooterLinks.push('About')
+    if (pages.includes('Blog')) companyFooterLinks.push('Blog')
+    if (pages.includes('Contact')) companyFooterLinks.push('Contact')
+
+    const footerCompanyHtml = companyFooterLinks.map(link => 
+        `<li><button onclick="navigateTo('${link.toLowerCase()}')" class="hover:text-black">${link}</button></li>`
+    ).join('\n')
+
+    // Prepare Navbar & Footer Template with injected links
     const navbarTemplate = TEMPLATES.NAVBAR
       .replace('{{NAV_LINKS}}', navLinksHtml)
       .replace('{{MOBILE_NAV_LINKS}}', mobileNavLinksHtml)
+
+    const footerTemplate = TEMPLATES.FOOTER
+      .replace('{{FOOTER_PRODUCT_LINKS}}', footerProductHtml)
+      .replace('{{FOOTER_COMPANY_LINKS}}', footerCompanyHtml)
 
     const systemPrompt = `
     You are an expert Frontend Architect and UI/UX Designer.
@@ -148,7 +171,7 @@ export async function POST(request: Request) {
         ${pages.includes('Blog') ? `- Blog Page: ${TEMPLATES.PAGE_BLOG}` : ''}
     
     5. **Footer**: Always use this:
-    ${TEMPLATES.FOOTER}
+    ${footerTemplate}
     
     6. **Router Script**: REQUIRED for navigation:
     ${TEMPLATES.JS_ROUTER}

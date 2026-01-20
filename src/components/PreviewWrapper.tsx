@@ -633,23 +633,31 @@ export default function PreviewWrapper({ siteId, isPaid }: PreviewWrapperProps) 
               </div>
 
                {/* Editor Controls */}
-               <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-black/80 backdrop-blur-md border border-white/20 rounded-full p-1.5 shadow-xl">
-                 <button
-                    onClick={() => {
-                      setIsTextEditing(!isTextEditing);
-                    }}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${isTextEditing ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30' : 'hover:bg-white/10 text-white'}`}
-                 >
-                    {isTextEditing ? <CheckCircle2 className="w-3.5 h-3.5" /> : <Pencil className="w-3.5 h-3.5" />}
-                    {isTextEditing ? "Finish Editing" : "Edit Content"}
-                 </button>
-                 {isTextEditing && (
-                    <button 
-                      onClick={handleSaveText}
-                      className="px-3 py-1.5 rounded-full bg-emerald-500 text-white text-xs font-semibold shadow-md hover:bg-emerald-600 transition-colors animate-in fade-in zoom-in duration-200"
-                    >
-                      Save Changes
-                    </button>
+               <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-black/80 backdrop-blur-md border border-white/20 rounded-full p-1.5 shadow-xl transition-all duration-300">
+                 {!isTextEditing ? (
+                   <button
+                      onClick={() => setIsTextEditing(true)}
+                      className="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold bg-white text-black hover:bg-gray-200 transition-colors shadow-sm"
+                   >
+                      <Pencil className="w-3.5 h-3.5" />
+                      Edit Content
+                   </button>
+                 ) : (
+                   <>
+                      <button 
+                        onClick={() => setIsTextEditing(false)}
+                        className="px-3 py-2 rounded-full text-white/70 hover:text-white hover:bg-white/10 text-xs font-medium transition-colors"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={handleSaveText}
+                        className="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold bg-emerald-500 text-white shadow-lg shadow-emerald-500/30 hover:bg-emerald-600 transition-all hover:scale-105 active:scale-95"
+                      >
+                         <CheckCircle2 className="w-3.5 h-3.5" />
+                         Save & Done
+                      </button>
+                   </>
                  )}
               </div>
 
