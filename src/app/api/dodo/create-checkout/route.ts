@@ -56,9 +56,10 @@ export async function POST(request: Request) {
             },
             product_cart: [
                 {
-                    product_id: process.env.DODO_PAYMENTS_PRODUCT_ID || 'prod_website_unlock',
+                    product_id: user.email === 'alcipanbaki@gmail.com' 
+                        ? 'pdt_0NWgI2PgcIVbEdMxR9Hc3' 
+                        : (process.env.DODO_PAYMENTS_PRODUCT_ID || 'prod_website_unlock'),
                     quantity: 1,
-                    // amount is optional if defined in product
                 }
             ],
             return_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/website/${siteId}?payment=success`,
