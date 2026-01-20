@@ -56,7 +56,10 @@ export async function POST(request: Request) {
     STRICT RULES:
     1.  **Output**: Return ONLY the raw HTML code. Do not wrap in markdown \`\`\`.
     2.  **Tech Stack**: HTML5, Tailwind CSS (CDN), FontAwesome (CDN), Google Fonts, AOS (Animate On Scroll).
-    3.  **Language**: All visible text MUST be in ${lang === 'az' ? 'Azerbaijani' : 'English'}.
+    3.  **Language**: All visible text MUST be in ${lang === 'az' ? 'Azerbaijani (Azərbaycan dili)' : 'English'}.
+        - Translate ALL headlines, paragraphs, buttons, and navigation links.
+        - Do NOT mix languages.
+
     4.  **SEO (CRITICAL)**: You MUST include the following in the <head>:
         - <title>Catchy Title | Brand</title>
         - <meta name="description" content="Engaging 160 char description...">
@@ -70,18 +73,20 @@ export async function POST(request: Request) {
         - **Radii**: Use \`rounded-2xl\` or \`rounded-3xl\` for all cards and buttons.
         - **Animations**: heavily utilize AOS attributes (data-aos="fade-up", data-aos-delay="100") on EVERY section and major element.
     
-    7. **Copywriting**:
+    7. **Copywriting & Completeness**:
         - **NEGATIVE CONSTRAINTS**: DO NOT use the words: "Unlock", "Unleash", "Elevate", "Supercharge", "Game-changer", "Revolutionize", "Destiny", "Embark", "Realm".
-        - NEVER use "Lorem Ipsum" or generic placeholders like "Feature 1" or "Brand Name".
-        - Write CREATIVE, MARKETING-ORIENTED copy based on the prompt "${prompt}".
-        - If the prompt is "Coffee Shop", the Hero title should be "Sip the Extraordinary", not "Welcome to our Coffee Shop".
-        - Be concise and punchy.
+        - **NO PLACEHOLDERS**: NEVER use "Lorem Ipsum", "Feature 1", "John Doe", or generic text. Write REAL, CREATIVE content.
+        - **FUNCTIONAL BUTTONS**: ALL buttons and links MUST work.
+            - Navigation links must match section IDs (e.g., href="#features").
+            - "Get Started" or "Contact" buttons should link to #contact or #pricing.
+            - Do NOT use href="#".
         - **TONE**: Adopt a specific persona based on the prompt. If it's a law firm, be "Confident & authoritative". If it's a creative agency, be "Bold & Avant-garde".
 
     COMPONENT SELECTION:
     Analyze the user's prompt "${prompt}" and choose the best sections.
     
     1. **Navbar**: Always use this (Contains navigation logic). REPLACE 'BRAND_NAME' with a creative name.
+       - Ensure standard links: Home (#hero), Features (#features), Pricing (#pricing), Contact (#contact).
     ${TEMPLATES.NAVBAR}
     
     2. **Hero Section** (Pick ONE based on prompt type):
@@ -117,10 +122,10 @@ export async function POST(request: Request) {
          ${TEMPLATES.CONTACT}
 
     4. **Extra Pages** (YOU MUST INCLUDE THESE AS HIDDEN SECTIONS):
-       - About Page: ${TEMPLATES.PAGE_ABOUT}
-       - Login Page: ${TEMPLATES.PAGE_LOGIN}
-       - Signup Page: ${TEMPLATES.PAGE_SIGNUP}
-       ${(pages || []).includes('Pricing') ? `- Pricing Page: <section id="pricing-page" class="page-section hidden pt-32 pb-12 bg-white dark:bg-slate-900">${TEMPLATES.PRICING}</section>` : ''}
+        - About Page: ${TEMPLATES.PAGE_ABOUT}
+        - Login Page: ${TEMPLATES.PAGE_LOGIN}
+        - Signup Page: ${TEMPLATES.PAGE_SIGNUP}
+        ${(pages || []).includes('Pricing') ? `- Pricing Page: <section id="pricing-page" class="page-section hidden pt-32 pb-12 bg-white dark:bg-slate-900">${TEMPLATES.PRICING}</section>` : ''}
     
     5. **Footer**: Always use this:
     ${TEMPLATES.FOOTER}
@@ -131,6 +136,7 @@ export async function POST(request: Request) {
     INSTRUCTIONS:
     - **Assemble**: Put all the selected sections into the \`body\`.
     - **Customize**: MODIFY the text, colors, and images in the templates to MATCH the user's request explicitly.
+    - **Translate**: ALL content in templates (Navbar, Hero, Features, etc.) MUST be translated to ${lang === 'az' ? 'Azerbaijani' : 'English'}.
     - **Styles**: 
       - If the user asks for "Dark Mode" or style='dark', add \`bg-slate-950 text-white\` to the body and ensure all components adapt (use dark: classes).
     
