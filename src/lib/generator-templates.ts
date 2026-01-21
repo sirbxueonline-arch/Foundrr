@@ -1159,7 +1159,7 @@ export const TEMPLATES = {
     </script>
   `,
 
-  REACT_SHELL: `
+    REACT_SHELL: `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1270,11 +1270,12 @@ export const TEMPLATES = {
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <!-- React & Babel -->
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-    <!-- Lucide Icons (Global) -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Lucide Icons (UMD Build strictly for browser) -->
+    <script src="https://unpkg.com/lucide@0.263.1/dist/umd/lucide.js"></script>
 </head>
 <body class="font-sans antialiased">
     <div id="root"></div>
@@ -1286,21 +1287,59 @@ export const TEMPLATES = {
             once: true,
         });
     </script>
+    
+    <script>
+        window.onerror = function(message, source, lineno, colno, error) {
+            document.body.innerHTML = '<div style="padding: 20px; color: red; font-family: sans-serif;"><h1>Runtime Error</h1><p>' + message + '</p><pre>' + (error ? error.stack : '') + '</pre></div>';
+        };
+    </script>
 
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
+        
+        // Lucide icons are exposed globally as 'lucide' object in UMD build
         const { 
             Camera, Moon, Sun, Menu, X, ArrowRight, Check, Star, 
             ChevronRight, Play, Globe, Shield, Zap, Layout, 
             BarChart, Users, Mail, Phone, MapPin 
-        } = lucide;
+        } = lucide || {}; 
+
+        // Error Boundary
+        class ErrorBoundary extends React.Component {
+          constructor(props) {
+            super(props);
+            this.state = { hasError: false, error: null };
+          }
+        
+          static getDerivedStateFromError(error) {
+            return { hasError: true, error };
+          }
+        
+          render() {
+            if (this.state.hasError) {
+              return (
+                <div className="p-8 text-center text-red-500">
+                    <h2 className="text-xl font-bold">Something went wrong.</h2>
+                    <pre className="mt-4 text-xs text-left bg-gray-100 p-4 rounded overflow-auto">
+                        {this.state.error && this.state.error.toString()}
+                    </pre>
+                </div>
+              );
+            }
+            return this.props.children;
+          }
+        }
 
         // --- GENERATED CODE START ---
         {{REACT_CODE}}
         // --- GENERATED CODE END ---
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        root.render(
+            <ErrorBoundary>
+                <App />
+            </ErrorBoundary>
+        );
     </script>
 </body>
 </html>
