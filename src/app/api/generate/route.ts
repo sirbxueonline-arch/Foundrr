@@ -110,6 +110,31 @@ export async function POST(request: Request) {
     
     9.  **Persona**: Adopt the persona: ${style}.
     
+    **EXPECTED OUTPUT STRUCTURE (EXAMPLE):**
+    
+    function Navbar({ page, setPage }) {
+      return <nav>...</nav>;
+    }
+    
+    function Hero() {
+      return <div className="p-10">Hero Content</div>;
+    }
+    
+    function Footer() {
+      return <footer>...</footer>;
+    }
+    
+    function App() {
+      const [currentPage, setCurrentPage] = useState('home');
+      return (
+        <div className="min-h-screen bg-background text-foreground">
+           <Navbar page={currentPage} setPage={setCurrentPage} />
+           {currentPage === 'home' && <Hero />}
+           <Footer />
+        </div>
+      );
+    }
+
     GENERATE THE REACT CODE FOR \`App\` NOW.
     `
 
