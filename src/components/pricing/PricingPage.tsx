@@ -16,72 +16,86 @@ export default function PricingPage({ user }: { user: any }) {
 
             <main className="flex-1">
                 {/* Hero Section */}
-                <section className="relative pt-32 pb-20 overflow-hidden bg-background">
-                    <div className="absolute top-0 z-[0] h-screen w-screen bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]" />
-                    <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-muted border border-border text-xs font-medium text-muted-foreground mb-4">
-                        {lang === 'az' ? 'Sadə və Şəffaf' : 'Simple & Transparent'}
+                <section className="relative pt-32 pb-24 overflow-hidden bg-background">
+                    <div className="absolute top-0 z-[0] h-screen w-screen bg-[radial-gradient(ellipse_60%_60%_at_50%_-10%,rgba(120,119,198,0.15),rgba(255,255,255,0))]" />
+                    <div className="container px-4 relative z-10 text-center max-w-4xl mx-auto space-y-8">
+                        
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/50 border border-border/50 text-sm font-medium text-secondary-foreground backdrop-blur-md shadow-sm">
+                            <span className="relative flex h-2 w-2 mr-1">
+                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                              <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+                            </span>
+                            {lang === 'az' ? 'Sadə və Şəffaf' : 'Simple, Transparent, Honest'}
+                        </div>
+
+                        <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-foreground text-balance">
+                            {lang === 'az' ? 'Sayt başına bir qiymət.' : 'One price per website.'} <br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+                                {lang === 'az' ? 'Abunəlik yoxdur.' : 'Own the code forever.'}
+                            </span>
+                        </h1>
+                        
+                        <p className="text-xl md:text-2xl text-muted-foreground/80 max-w-2xl mx-auto leading-relaxed text-balance">
+                            {lang === 'az'
+                                ? 'Yalnız saytınız hazır olduqda ödəniş edin. Gizli aylıq ödəniş yoxdur. Ömürlük sahiblik.'
+                                : 'Stop renting your website. Pay once, download the React/HTML code, and host it anywhere you want.'}
+                        </p>
                     </div>
-                    <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-foreground text-balance">
-                        {lang === 'az' ? 'Sayt başına bir qiymət.' : 'One price per website.'} <br />
-                        {lang === 'az' ? 'Abunəlik yoxdur.' : 'No subscriptions ever.'}
-                    </h1>
-                    <p className="text-xl text-muted-foreground max-w-2xl mx-auto text-balance">
-                        {lang === 'az'
-                            ? 'Yalnız saytınız hazır olduqda ödəniş edin. Gizli aylıq ödəniş yoxdur. Ömürlük sahiblik.'
-                            : 'Pay only when you\'re ready to launch. No hidden monthly fees. Lifetime ownership.'}
-                    </p>
-                </div>
                 </section>
 
                 {/* Pricing Cards */}
                 <PricingCards />
 
-                {/* FAQ Style Grid */}
-                <section className="py-24 bg-muted/30 border-t border-border/40">
-                    <div className="container px-4 md:px-6 max-w-4xl mx-auto">
-                        <div className="grid md:grid-cols-2 gap-12">
-                            <div className="flex gap-4">
-                                <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/20 flex items-center justify-center text-blue-600 shrink-0">
-                                    <Code2 className="w-5 h-5" />
+                {/* Trust / FAQ Grid */}
+                <section className="py-24 bg-secondary/20 border-t border-border/40">
+                    <div className="container px-4 md:px-6 max-w-5xl mx-auto">
+                        <div className="text-center mb-16">
+                            <h2 className="text-3xl font-bold tracking-tight mb-4">{lang === 'az' ? 'Tez-tez verilən suallar' : 'Frequently Asked Questions'}</h2>
+                            <p className="text-muted-foreground">{lang === 'az' ? 'Ən çox soruşulan suallar' : 'Everything you need to know about ownership and tech.'}</p>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 gap-x-12 gap-y-10">
+                            <div className="flex gap-5">
+                                <div className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-600 shrink-0">
+                                    <Code2 className="w-6 h-6" />
                                 </div>
-                                <div>
-                                    <h3 className="font-bold mb-2">{lang === 'az' ? 'Kod mənimdir?' : 'Is the code mine?'}</h3>
-                                    <p className="text-sm text-muted-foreground leading-relaxed">
-                                        {lang === 'az' ? 'Bəli. Ödəniş etdikdən sonra kodu yükləyə bilərsiniz. Heç bir asılılıq yoxdur, istənilən yerdə yerləşdirin.' : 'Yes. Once you pay, you own the code. You can download it and host it anywhere (Netlify, Vercel, FTP). No lock-in.'}
+                                <div className="space-y-2">
+                                    <h3 className="font-bold text-lg">{lang === 'az' ? 'Kod mənimdir?' : 'Do I really own the code?'}</h3>
+                                    <p className="text-muted-foreground leading-relaxed">
+                                        {lang === 'az' ? 'Bəli. Ödəniş etdikdən sonra kodu yükləyə bilərsiniz. Heç bir asılılıq yoxdur, istənilən yerdə yerləşdirin.' : 'Yes. 100%. Once you pay, you receive a ZIP file with the React and HTML source code. You can host it on Vercel, Netlify, or your own server.'}
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex gap-4">
-                                <div className="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/20 flex items-center justify-center text-amber-600 shrink-0">
-                                    <Shield className="w-5 h-5" />
+                            <div className="flex gap-5">
+                                <div className="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-600 shrink-0">
+                                    <Shield className="w-6 h-6" />
                                 </div>
-                                <div>
-                                    <h3 className="font-bold mb-2">{lang === 'az' ? 'Təhlükəsizlik?' : 'Is payment secure?'}</h3>
-                                    <p className="text-sm text-muted-foreground leading-relaxed">
-                                        {lang === 'az' ? 'Biz bank səviyyəsində təhlükəsizlikdən istifadə edirik. Məlumatlarınız şifrələnir və qorunur.' : 'We use bank-level SSL encryption. Your payment details are processed securely through trusted providers.'}
+                                <div className="space-y-2">
+                                    <h3 className="font-bold text-lg">{lang === 'az' ? 'Təhlükəsizlik?' : 'Is payment secure?'}</h3>
+                                    <p className="text-muted-foreground leading-relaxed">
+                                        {lang === 'az' ? 'Biz bank səviyyəsində təhlükəsizlikdən istifadə edirik. Məlumatlarınız şifrələnir və qorunur.' : 'We use Stripe and modern encryption standards. Your credit card data never touches our servers directly.'}
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex gap-4">
-                                <div className="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/20 flex items-center justify-center text-purple-600 shrink-0">
-                                    <Zap className="w-5 h-5" />
+                            <div className="flex gap-5">
+                                <div className="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center text-purple-600 shrink-0">
+                                    <Zap className="w-6 h-6" />
                                 </div>
-                                <div>
-                                    <h3 className="font-bold mb-2">{lang === 'az' ? 'Dəyişikliklər edə bilərəm?' : 'Can I edit later?'}</h3>
-                                    <p className="text-sm text-muted-foreground leading-relaxed">
-                                        {lang === 'az' ? 'Bəli. Ödənişsiz dəyişikliklər edə və yenidən yükləyə bilərsiniz.' : 'Yes. You can come back, use our AI to make edits, and re-download the updated code anytime for free.'}
+                                <div className="space-y-2">
+                                    <h3 className="font-bold text-lg">{lang === 'az' ? 'Dəyişikliklər edə bilərəm?' : 'Can I edit the site later?'}</h3>
+                                    <p className="text-muted-foreground leading-relaxed">
+                                        {lang === 'az' ? 'Bəli. Ödənişsiz dəyişikliklər edə və yenidən yükləyə bilərsiniz.' : 'Yes. You can use our AI editor to specific changes, regenerate, and re-download the updated code anytime without paying again for the same project.'}
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex gap-4">
-                                <div className="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/20 flex items-center justify-center text-green-600 shrink-0">
-                                    <Smartphone className="w-5 h-5" />
+                            <div className="flex gap-5">
+                                <div className="w-12 h-12 rounded-2xl bg-green-500/10 flex items-center justify-center text-green-600 shrink-0">
+                                    <Smartphone className="w-6 h-6" />
                                 </div>
-                                <div>
-                                    <h3 className="font-bold mb-2">{lang === 'az' ? 'Saytlar mobildir?' : 'Are sites mobile ready?'}</h3>
-                                    <p className="text-sm text-muted-foreground leading-relaxed">
-                                        {lang === 'az' ? '100%. Bütün saytlar responsivdir və mobil cihazlar üçün optimallaşdırılıb.' : '100%. All generated websites are fully responsive and optimized for mobile, tablet, and desktop.'}
+                                <div className="space-y-2">
+                                    <h3 className="font-bold text-lg">{lang === 'az' ? 'Saytlar mobildir?' : 'Is it mobile responsive?'}</h3>
+                                    <p className="text-muted-foreground leading-relaxed">
+                                        {lang === 'az' ? '100%. Bütün saytlar responsivdir və mobil cihazlar üçün optimallaşdırılıb.' : 'Absolutely. Every site is built with Tailwind CSS mobile-first classes, ensuring perfect rendering on phones, tablets, and desktops.'}
                                     </p>
                                 </div>
                             </div>
