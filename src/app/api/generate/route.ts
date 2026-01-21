@@ -89,9 +89,10 @@ export async function POST(request: Request) {
         - **Colors**: Use \`bg-primary\`, \`text-primary-foreground\` etc. variables found in shadcn/ui where possible, or stick to sophisticated palettes (slate/emerald/indigo).
         - **Animations**: Use \`data-aos="fade-up"\` for scroll animations.
     
-    6.  **Component Structure (\`App\`)**:
-        - Return a SINGLE component \`function App() { ... }\`.
-        - Inside, you can define sub-components (Navbar, Hero, Footer) as separate functions BEFORE \`App\`.
+    6.  **Component Structure (Self-Contained)**:
+        - The output must be **completely self-contained**.
+        - Define \`function Navbar() {...}\`, \`function Hero() {...}\`, \`function Footer() {...}\` **BEFORE** \`function App() {...}\`.
+        - Do NOT assume any components are imported. You must build them from scratch using Tailwind and Lucide icons.
         - **Navigation**: Use state for routing. 
           \`const [currentPage, setCurrentPage] = useState('home');\`
           **CRITICAL**: Keep state keys in ENGLISH lowercase ('home', 'features', 'pricing') even if the UI text is translated.

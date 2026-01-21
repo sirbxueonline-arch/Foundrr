@@ -93,11 +93,19 @@ export async function GET(request: Request) {
 'use client'
 
 import React, { useState, useEffect, useRef } from 'react'
-import { 
+import * as LucideIcons from 'lucide-react'
+// ...
+const { 
+    // Common
     Camera, Moon, Sun, Menu, X, ArrowRight, Check, Star, 
     ChevronRight, Play, Globe, Shield, Zap, Layout, 
-    BarChart, Users, Mail, Phone, MapPin 
-} from 'lucide-react'
+    BarChart, Users, Mail, Phone, MapPin,
+    // Socials & Tech
+    Facebook, Twitter, Instagram, Linkedin, Github, Youtube, Chrome, Slack, Figma,
+    Code, Terminal, Cpu, Database, Cloud, Server, AlertCircle, Info,
+    // Fallbacks
+    BarChart2, LayoutDashboard
+} = LucideIcons as any;
 
 // You might need to install: npm install lucide-react framer-motion aos
 

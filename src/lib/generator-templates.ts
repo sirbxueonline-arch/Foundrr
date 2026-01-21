@@ -1314,6 +1314,9 @@ export const TEMPLATES = {
             }
         });
 
+        // Expose lucide globally in this scope so 'lucide.Icon' works
+        const lucide = safeLucide;
+
         const { 
             Camera, Moon, Sun, Menu, X, ArrowRight, Check, Star, 
             ChevronRight, Play, Globe, Shield, Zap, 
