@@ -1303,7 +1303,11 @@ export const TEMPLATES = {
         const { 
             Camera, Moon, Sun, Menu, X, ArrowRight, Check, Star, 
             ChevronRight, Play, Globe, Shield, Zap, 
-            Users, Mail, Phone, MapPin,
+            Users, Mail, Phone, MapPin, 
+            // Socials
+            Facebook, Twitter, Instagram, Linkedin, Github, Youtube, Chrome, Slack, Figma,
+            // Tech
+            Code, Terminal, Cpu, Database, Cloud, Server, AlertCircle, Info,
             // Fallbacks for potentially missing/renamed icons
             BarChart = lucide.BarChart2 || lucide.BarChart3 || lucide.Activity || FallbackIcon,
             Layout = lucide.LayoutDashboard || lucide.LayoutGrid || lucide.PanelLeft || FallbackIcon,
