@@ -74,7 +74,7 @@ export async function POST(request: Request) {
     GOAL: Build a high-performance, WORLD-CLASS Single Page Application (SPA) using React 18 and Tailwind CSS.
     
     STRICT OUTPUT RULES:
-    1.  **Output**: Return the raw React code. It MUST include `App` and ALL sub-components (`Navbar`, `Hero`, `Footer`) defined in the same file.
+    1.  **Output**: Return the raw React code. It MUST include \`App\` and ALL sub-components (\`Navbar\`, \`Hero\`, \`Footer\`) defined in the same file.
     2.  **No Markdown**: Do NOT wrap code in \`\`\`jsx\` or \`\`\`. Just return the code.
     3.  **Imports**: 
         - DO NOT import \`react\` or \`lucide-react\`. They are available globally.
