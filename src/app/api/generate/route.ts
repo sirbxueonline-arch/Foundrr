@@ -180,6 +180,64 @@ export async function POST(request: Request) {
               // Else: we assume the whole content is code (risky but fallback)
           }
 
+          // SELF-HEALING: Inject missing components if AI forgot them
+          // We assume 'function Name' or 'const Name' patterns
+          const missingNavbar = !cleanContent.match(/(function|const)\s+Navbar/);
+          const missingHero = !cleanContent.match(/(function|const)\s+Hero/);
+          const missingFooter = !cleanContent.match(/(function|const)\s+Footer/);
+
+          if (missingNavbar) {
+             console.log("Injecting missing Navbar...");
+             cleanContent = `
+             function Navbar({ page, setPage }) {
+                return (
+                   <nav className="flex justify-between items-center p-6 border-b bg-background/80 backdrop-blur-md sticky top-0 z-50">
+                      <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-600">Site Brand</h1>
+                      <div className="flex gap-6">
+                         <button onClick={() => setPage('home')} className="hover:text-primary transition-colors font-medium">Home</button>
+                         <button onClick={() => setPage('features')} className="hover:text-primary transition-colors font-medium">Features</button>
+                         <button onClick={() => setPage('pricing')} className="hover:text-primary transition-colors font-medium">Pricing</button>
+                      </div>
+                   </nav>
+                );
+             }
+             ` + cleanContent;
+          }
+
+          if (missingHero) {
+             console.log("Injecting missing Hero...");
+             cleanContent = `
+             function Hero() {
+                return (
+                   <div className="py-24 px-6 text-center space-y-6">
+                       <h1 className="text-5xl font-extrabold tracking-tight lg:text-6xl">Welcome to the Future</h1>
+                       <p className="text-xl text-muted-foreground max-w-2xl mx-auto">This is a generated placeholder because the AI missed the Hero component.</p>
+                       <button className="px-8 py-4 bg-primary text-primary-foreground rounded-full font-bold text-lg hover:opacity-90 transition-all">Get Started</button>
+                   </div>
+                );
+             }
+             ` + cleanContent;
+          }
+
+          if (missingFooter) {
+             console.log("Injecting missing Footer...");
+             cleanContent = cleanContent + `
+             function Footer() {
+                return (
+                   <footer className="py-12 px-6 border-t mt-20 bg-muted/20">
+                      <div className="max-w-6xl mx-auto flex justify-between items-center">
+                         <p className="text-muted-foreground text-sm">© ${new Date().getFullYear()} Brand Inc. All rights reserved.</p>
+                         <div className="flex gap-4">
+                            <Twitter className="w-5 h-5 text-muted-foreground hover:text-foreground cursor-pointer" />
+                            <Github className="w-5 h-5 text-muted-foreground hover:text-foreground cursor-pointer" />
+                         </div>
+                      </div>
+                   </footer>
+                );
+             }
+             `;
+          }
+
           // 4. Send Code
           controller.enqueue(encoder.encode(cleanContent))
 
