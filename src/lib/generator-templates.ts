@@ -1270,12 +1270,12 @@ export const TEMPLATES = {
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <!-- React & Babel -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js" crossorigin="anonymous"></script>
     
-    <!-- Lucide Icons (UMD Build strictly for browser) -->
-    <script src="https://unpkg.com/lucide@0.263.1/dist/umd/lucide.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@0.263.1/dist/umd/lucide.min.js" crossorigin="anonymous"></script>
 </head>
 <body class="font-sans antialiased">
     <div id="root"></div>
@@ -1296,13 +1296,18 @@ export const TEMPLATES = {
 
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
+        const lucide = window.lucide; 
         
-        // Lucide icons are exposed globally as 'lucide' object in UMD build
+        // Safely access global lucide object
         const { 
             Camera, Moon, Sun, Menu, X, ArrowRight, Check, Star, 
             ChevronRight, Play, Globe, Shield, Zap, Layout, 
             BarChart, Users, Mail, Phone, MapPin 
         } = lucide || {}; 
+        
+        if (!window.lucide) {
+            console.warn('Lucide icons failed to load. Icons will be missing.');
+        } 
 
         // Error Boundary
         class ErrorBoundary extends React.Component {
