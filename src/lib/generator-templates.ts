@@ -103,6 +103,185 @@ export const TEMPLATES = {
     </section>
   `,
 
+    HERO_ARCHITECT: `
+    <section id="home" class="page-section relative h-screen flex flex-col justify-center bg-stone-50 dark:bg-zinc-950 border-b border-stone-200 dark:border-zinc-800 overflow-hidden">
+       <!-- Subtle texture -->
+       <div class="absolute inset-0 opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/concrete-wall.png')] pointer-events-none mix-blend-multiply dark:mix-blend-overlay"></div>
+       
+       <div class="container mx-auto px-6 md:px-12 relative z-10">
+         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
+             <div class="lg:col-span-8">
+                 <h1 class="text-6xl md:text-8xl lg:text-[7rem] font-serif leading-[0.9] text-stone-900 dark:text-stone-100 mb-8 tracking-tight" data-aos="fade-up">
+                    Structure <br/>
+                    <span class="italic text-stone-500">& Serenity.</span>
+                 </h1>
+                 <div class="h-px w-24 bg-stone-900 dark:bg-stone-100 mb-8" data-aos="fade-right" data-aos-delay="200"></div>
+                 <p class="text-xl md:text-2xl text-stone-600 dark:text-stone-400 max-w-2xl leading-relaxed font-light" data-aos="fade-up" data-aos-delay="300">
+                    We design spaces that breathe. Merging sustainable innovation with timeless aesthetic principles.
+                 </p>
+             </div>
+             <div class="lg:col-span-4 flex flex-col items-start lg:items-end justify-end pb-2 gap-6" data-aos="fade-up" data-aos-delay="500">
+                <button onclick="navigateTo('projects')" class="group flex items-center gap-4 text-lg font-medium text-stone-900 dark:text-stone-100 hover:text-stone-600 dark:hover:text-stone-300 transition-colors">
+                    Explore Our Work
+                    <span class="w-12 h-px bg-current transition-all group-hover:w-20"></span>
+                </button>
+                <button onclick="navigateTo('contact')" class="group flex items-center gap-4 text-lg font-medium text-stone-900 dark:text-stone-100 hover:text-stone-600 dark:hover:text-stone-300 transition-colors">
+                    Get in Touch
+                    <span class="w-12 h-px bg-current transition-all group-hover:w-20"></span>
+                </button>
+             </div>
+         </div>
+       </div>
+       
+       <!-- Hero Image Strip -->
+       <div class="absolute bottom-0 right-0 w-full lg:w-2/3 h-1/3 lg:h-full lg:w-1/3 border-t lg:border-t-0 lg:border-l border-stone-200 dark:border-zinc-800 -z-0 opacity-20 lg:opacity-100">
+           <img src="/api/images/proxy?query=architectural detail concrete glass minimalist" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000" />
+       </div>
+    </section>
+    `,
+
+    STATS_MINIMAL: `
+    <section class="page-section py-20 bg-white dark:bg-zinc-900 border-b border-stone-100 dark:border-zinc-800">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-12 text-center md:text-left">
+                <div data-aos="fade-up" data-aos-delay="0">
+                    <div class="text-4xl md:text-6xl font-serif text-stone-900 dark:text-white mb-2">150+</div>
+                    <div class="text-xs font-bold tracking-widest uppercase text-stone-500">Projects Completed</div>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="100">
+                    <div class="text-4xl md:text-6xl font-serif text-stone-900 dark:text-white mb-2">12</div>
+                    <div class="text-xs font-bold tracking-widest uppercase text-stone-500">Design Awards</div>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="200">
+                    <div class="text-4xl md:text-6xl font-serif text-stone-900 dark:text-white mb-2">24</div>
+                    <div class="text-xs font-bold tracking-widest uppercase text-stone-500">Years Experience</div>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="300">
+                    <div class="text-4xl md:text-6xl font-serif text-stone-900 dark:text-white mb-2">100%</div>
+                    <div class="text-xs font-bold tracking-widest uppercase text-stone-500">Sustainable</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    `,
+
+    SERVICES_MINIMAL: `
+    <section id="services" class="page-section py-32 bg-stone-50 dark:bg-black">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-24 border-b border-stone-200 dark:border-zinc-800 pb-8">
+                <div class="max-w-xl">
+                    <h2 class="text-sm font-bold tracking-widest uppercase text-stone-500 mb-4" data-aos="fade-up">Our Expertise</h2>
+                    <h3 class="text-3xl md:text-5xl font-serif text-stone-900 dark:text-white leading-tight" data-aos="fade-up" data-aos-delay="100">Comprehensive design services for modern living.</h3>
+                </div>
+                <div class="hidden md:block mb-2" data-aos="fade-left">
+                    <i class="fas fa-asterisk text-4xl text-stone-300 dark:text-zinc-700 animate-spin-slow"></i>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="group p-8 border border-stone-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-stone-900 dark:hover:border-stone-100 transition-colors duration-500" data-aos="fade-up" data-aos-delay="0">
+                    <div class="w-12 h-12 bg-stone-100 dark:bg-zinc-800 mb-8 flex items-center justify-center text-stone-900 dark:text-white">
+                        <i class="fas fa-ruler-combined text-xl"></i>
+                    </div>
+                    <h4 class="text-2xl font-serif text-stone-900 dark:text-white mb-4">Urban Planning</h4>
+                    <p class="text-stone-600 dark:text-stone-400 leading-relaxed mb-8">Strategic development of community spaces that prioritize walkability, green zones, and social interaction.</p>
+                    <a href="#" class="text-sm font-bold uppercase tracking-widest border-b border-stone-300 pb-1 hover:border-stone-900 transition-all">Learn More</a>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="group p-8 border border-stone-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-stone-900 dark:hover:border-stone-100 transition-colors duration-500" data-aos="fade-up" data-aos-delay="100">
+                   <div class="w-12 h-12 bg-stone-100 dark:bg-zinc-800 mb-8 flex items-center justify-center text-stone-900 dark:text-white">
+                        <i class="fas fa-leaf text-xl"></i>
+                    </div>
+                    <h4 class="text-2xl font-serif text-stone-900 dark:text-white mb-4">Sustainable Design</h4>
+                    <p class="text-stone-600 dark:text-stone-400 leading-relaxed mb-8">Eco-forward blueprints utilizing passive solar, recycled materials, and energy-efficient systems.</p>
+                    <a href="#" class="text-sm font-bold uppercase tracking-widest border-b border-stone-300 pb-1 hover:border-stone-900 transition-all">Learn More</a>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="group p-8 border border-stone-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-stone-900 dark:hover:border-stone-100 transition-colors duration-500" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-12 h-12 bg-stone-100 dark:bg-zinc-800 mb-8 flex items-center justify-center text-stone-900 dark:text-white">
+                        <i class="fas fa-layer-group text-xl"></i>
+                    </div>
+                    <h4 class="text-2xl font-serif text-stone-900 dark:text-white mb-4">Interior Architecture</h4>
+                    <p class="text-stone-600 dark:text-stone-400 leading-relaxed mb-8">Seamless integration of exterior structure and interior flow for unified, functional living environments.</p>
+                    <a href="#" class="text-sm font-bold uppercase tracking-widest border-b border-stone-300 pb-1 hover:border-stone-900 transition-all">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    `,
+
+    PROJECTS_GALLERY_MINIMAL: `
+    <section id="work" class="page-section py-32 bg-stone-900 dark:bg-black text-white">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="flex justify-between items-baseline mb-20">
+                <h2 class="text-4xl md:text-6xl font-serif" data-aos="fade-up">Selected Works</h2>
+                <a href="#" class="hidden md:inline-block text-stone-400 hover:text-white transition-colors border-b border-stone-700 pb-1">View Full Archive</a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                <!-- Item 1 -->
+                <div class="group cursor-pointer" data-aos="fade-up" onclick="alert('Viewing Project')">
+                    <div class="aspect-[4/3] overflow-hidden bg-stone-800 mb-6 grayscale group-hover:grayscale-0 transition-all duration-700">
+                        <img src="/api/images/proxy?query=modern concrete house forest" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000" />
+                    </div>
+                    <div class="flex justify-between items-start border-t border-stone-700 pt-6">
+                        <div>
+                            <h3 class="text-2xl font-serif mb-1 group-hover:text-stone-300 transition-colors">The Highland Lofts</h3>
+                            <p class="text-stone-500 text-sm">Residential Complex</p>
+                        </div>
+                        <span class="text-stone-500 group-hover:translate-x-2 transition-transform">2024</span>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="group cursor-pointer md:mt-16" data-aos="fade-up" data-aos-delay="100" onclick="alert('Viewing Project')">
+                    <div class="aspect-[4/3] overflow-hidden bg-stone-800 mb-6 grayscale group-hover:grayscale-0 transition-all duration-700">
+                        <img src="/api/images/proxy?query=public library architecture glass" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000" />
+                    </div>
+                    <div class="flex justify-between items-start border-t border-stone-700 pt-6">
+                        <div>
+                            <h3 class="text-2xl font-serif mb-1 group-hover:text-stone-300 transition-colors">Meridian Library</h3>
+                            <p class="text-stone-500 text-sm">Civic Institution</p>
+                        </div>
+                        <span class="text-stone-500 group-hover:translate-x-2 transition-transform">2023</span>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="group cursor-pointer" data-aos="fade-up" onclick="alert('Viewing Project')">
+                    <div class="aspect-[4/3] overflow-hidden bg-stone-800 mb-6 grayscale group-hover:grayscale-0 transition-all duration-700">
+                        <img src="/api/images/proxy?query=modern office skyscraper" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000" />
+                    </div>
+                    <div class="flex justify-between items-start border-t border-stone-700 pt-6">
+                        <div>
+                            <h3 class="text-2xl font-serif mb-1 group-hover:text-stone-300 transition-colors">Axis Tower</h3>
+                            <p class="text-stone-500 text-sm">Commercial Office</p>
+                        </div>
+                         <span class="text-stone-500 group-hover:translate-x-2 transition-transform">2023</span>
+                    </div>
+                </div>
+
+                <!-- Item 4 -->
+                 <div class="group cursor-pointer md:mt-16" data-aos="fade-up" data-aos-delay="100" onclick="alert('Viewing Project')">
+                    <div class="aspect-[4/3] overflow-hidden bg-stone-800 mb-6 grayscale group-hover:grayscale-0 transition-all duration-700">
+                        <img src="/api/images/proxy?query=park pavilion wood architecture" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000" />
+                    </div>
+                    <div class="flex justify-between items-start border-t border-stone-700 pt-6">
+                        <div>
+                            <h3 class="text-2xl font-serif mb-1 group-hover:text-stone-300 transition-colors">Greenway Pavilion</h3>
+                            <p class="text-stone-500 text-sm">Public Park Structure</p>
+                        </div>
+                         <span class="text-stone-500 group-hover:translate-x-2 transition-transform">2022</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    `,
+
 
     HERO_DARK: `
     <section id="home" class="page-section relative pt-32 pb-20 overflow-hidden bg-zinc-950 text-white min-h-screen flex flex-col justify-center">

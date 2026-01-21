@@ -146,20 +146,26 @@ export async function POST(request: Request) {
          ${TEMPLATES.HERO_RETRO}
        - If style is 'luxury' -> Use HERO_LUXURY
          ${TEMPLATES.HERO_LUXURY}
+       - If prompt includes 'architecture', 'interior', 'construction', or style is 'minimal' -> Use HERO_ARCHITECT
+         ${TEMPLATES.HERO_ARCHITECT}
        - Else (Default) -> Use HERO_MODERN
          ${TEMPLATES.HERO_MODERN}
     
     3. **Content Sections** (Pick relevant ones based on prompt):
-       - If showing work/images -> Include GALLERY:
+       - If showing work/images -> Include GALLERY or PROJECTS_GALLERY_MINIMAL (for architecture):
          ${TEMPLATES.GALLERY}
+         ${TEMPLATES.PROJECTS_GALLERY_MINIMAL}
        - If building trust -> Include TESTIMONIALS:
          ${TEMPLATES.TESTIMONIALS}
        - If requested 'FAQ' -> FAQ:
          ${TEMPLATES.FAQ}
        - If requested 'Team' -> TEAM:
          ${TEMPLATES.TEAM}
+       - If prompt includes 'architecture' or 'design' -> Include STATS_MINIMAL:
+         ${TEMPLATES.STATS_MINIMAL}
+
        
-       ${pages.includes('Features') ? `- Features Section: ${TEMPLATES.BENTO_GRID}` : ''}
+       ${pages.includes('Features') ? `- Features/Services Section: ${TEMPLATES.BENTO_GRID} OR ${TEMPLATES.SERVICES_MINIMAL} (Use SERVICES_MINIMAL for architecture/clean brands)` : ''}
        ${pages.includes('Pricing') ? `- Pricing Section: ${TEMPLATES.PRICING}` : ''}
        ${pages.includes('Contact') ? `- Contact Section: ${TEMPLATES.CONTACT}` : ''}
 
