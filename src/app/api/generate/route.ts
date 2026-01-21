@@ -91,10 +91,12 @@ export async function POST(request: Request) {
     
     6.  **Component Structure (\`App\`)**:
         - Return a SINGLE component \`function App() { ... }\`.
-        - Inside, you can define sub-components (Navbar, Hero, Footer) as separate functions BEFORE \`App\`, or keep it monolithic if simple.
+        - Inside, you can define sub-components (Navbar, Hero, Footer) as separate functions BEFORE \`App\`.
         - **Navigation**: Use state for routing. 
-          \`const [page, setPage] = useState('home');\`
-          Conditional rendering: \`{page === 'home' && <Hero />}\`
+          \`const [currentPage, setCurrentPage] = useState('home');\`
+          **CRITICAL**: Keep state keys in ENGLISH lowercase ('home', 'features', 'pricing') even if the UI text is translated.
+          Example: \`<button onClick={() => setCurrentPage('features')}>Xüsusiyyətlər</button>\`
+          Conditional rendering: \`{currentPage === 'home' && <Hero />}\`
     
     7.  **Content Requirements**:
         - **Navbar**: Functional, responsive (use state for mobile menu).
@@ -134,18 +136,22 @@ export async function POST(request: Request) {
 
           const rawContent = completion.choices[0]?.message?.content || ''
           
-          // 3. Clean Code (Remove Markdown)
-          // Matches ```jsx ... ``` or ``` ... ```
-          let cleanContent = rawContent
-            .replace(/^```(jsx|tsx|javascript|js)?/gm, '') // Remove start fences
-            .replace(/```$/gm, '') // Remove end fences
-            .trim()
+          let cleanContent = rawContent.trim();
 
-          // Fallback: If AI returns "Here is the code: ...", try to extract just the function
-          if (!cleanContent.includes('function App')) {
-             // Try to find the function block
-             const match = cleanContent.match(/function App\s*\(\)\s*{[\s\S]*}/);
-             if (match) cleanContent = match[0];
+          // Strategy 1: Extract from Markdown Code Block
+          // Matches ```jsx ... ``` or just ``` ... ```
+          const codeBlockMatch = cleanContent.match(/```(?:jsx|tsx|javascript|js)?\s*([\s\S]*?)\s*```/);
+          if (codeBlockMatch && codeBlockMatch[1]) {
+              cleanContent = codeBlockMatch[1].trim();
+          } else {
+              // Strategy 2: No code blocks? Try to just find the component
+              // If the AI just dumped the code without fences (rare but possible)
+              // or if we need to trim "Here is code:" prefix from a non-fenced response
+              const appMatch = cleanContent.match(/function App\s*\(\)\s*{[\s\S]*}/);
+              if (appMatch) {
+                  cleanContent = appMatch[0];
+              }
+              // Else: we assume the whole content is code (risky but fallback)
           }
 
           // 4. Send Code
