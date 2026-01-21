@@ -1296,10 +1296,24 @@ export const TEMPLATES = {
 
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
-        const lucide = window.lucide || {};
-        const FallbackIcon = () => null;
-        
-        // Safely access global lucide object
+        const FallbackIcon = (props) => (
+             <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                 <rect width="18" height="18" x="3" y="3" rx="2" ry="2" style={{opacity: 0.2}} />
+                 <path d="M12 8v8" />
+                 <path d="M8 12h8" />
+             </svg>
+        );
+
+        // Proxy to handle missing icons gracefully
+        const safeLucide = new Proxy(window.lucide || {}, {
+            get: (target, prop) => {
+                // If exists, return it
+                if (prop in target) return target[prop];
+                // Else return fallback for any requested icon name
+                return FallbackIcon;
+            }
+        });
+
         const { 
             Camera, Moon, Sun, Menu, X, ArrowRight, Check, Star, 
             ChevronRight, Play, Globe, Shield, Zap, 
@@ -1308,10 +1322,9 @@ export const TEMPLATES = {
             Facebook, Twitter, Instagram, Linkedin, Github, Youtube, Chrome, Slack, Figma,
             // Tech
             Code, Terminal, Cpu, Database, Cloud, Server, AlertCircle, Info,
-            // Fallbacks for potentially missing/renamed icons
-            BarChart = lucide.BarChart2 || lucide.BarChart3 || lucide.Activity || FallbackIcon,
-            Layout = lucide.LayoutDashboard || lucide.LayoutGrid || lucide.PanelLeft || FallbackIcon,
-        } = lucide; 
+            // Fallbacks
+            BarChart, Layout
+        } = safeLucide; 
 
         // Error Boundary
         class ErrorBoundary extends React.Component {
