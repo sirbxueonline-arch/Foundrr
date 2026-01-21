@@ -75,7 +75,7 @@ export async function POST(request: Request) {
     
     STRICT OUTPUT RULES:
     1.  **Output**: Return the raw React code. It MUST include \`App\` and ALL sub-components (\`Navbar\`, \`Hero\`, \`Footer\`) defined in the same file.
-    2.  **No Markdown**: Do NOT wrap code in \`\`\`jsx\` or \`\`\`. Just return the code.
+    2.  **Markdown**: YOU MUST wrap the code in \`\`\`jsx\` and \`\`\` fences. This is CRITICAL for parsing.
     3.  **Imports**: 
         - DO NOT import \`react\` or \`lucide-react\`. They are available globally.
         - Use \`const { useState, useEffect } = React;\` if needed (but I have already destructured them in the shell, so you can just use \`useState\`).
