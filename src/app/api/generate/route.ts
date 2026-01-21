@@ -74,8 +74,8 @@ export async function POST(request: Request) {
     GOAL: Build a high-performance, WORLD-CLASS Single Page Application (SPA) using React 18 and Tailwind CSS.
     
     STRICT OUTPUT RULES:
-    1.  **Output**: Return ONLY the raw React code for a single functional component named \`App\`.
-    2.  **No Markdown**: Do NOT wrap coverage in \`\`\`jsx\` or \`\`\`. Just return the code.
+    1.  **Output**: Return the raw React code. It MUST include `App` and ALL sub-components (`Navbar`, `Hero`, `Footer`) defined in the same file.
+    2.  **No Markdown**: Do NOT wrap code in \`\`\`jsx\` or \`\`\`. Just return the code.
     3.  **Imports**: 
         - DO NOT import \`react\` or \`lucide-react\`. They are available globally.
         - Use \`const { useState, useEffect } = React;\` if needed (but I have already destructured them in the shell, so you can just use \`useState\`).
