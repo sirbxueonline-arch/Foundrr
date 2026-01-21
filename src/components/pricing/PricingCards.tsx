@@ -4,7 +4,6 @@ import React from 'react'
 import Link from 'next/link'
 import { Check, X, Loader2 } from 'lucide-react'
 import { useLanguage } from '@/contexts/LanguageContext'
-import { APP_CONFIG, getTotalPrice } from '@/lib/constants'
 
 export function PricingCards() {
     const { t, lang } = useLanguage()
@@ -58,17 +57,17 @@ export function PricingCards() {
                                 <div className="mt-6 mb-4 space-y-2 bg-muted/40 p-4 rounded-xl border border-border/50 text-sm">
                                     <div className="flex justify-between text-muted-foreground">
                                         <span>{lang === 'az' ? 'Saytın Qiyməti' : 'Website Price'}</span>
-                                        <span>{APP_CONFIG.PRICING.WEBSITE_PRICE}</span>
+                                        <span>75.99</span>
                                     </div>
                                     <div className="flex justify-between text-muted-foreground">
                                         <span>{lang === 'az' ? 'Xidmət Haqqı' : 'Service Fee'}</span>
-                                        <span>{APP_CONFIG.PRICING.SERVICE_FEE.toFixed(2)}</span>
+                                        <span>0.00</span>
                                     </div>
                                     <div className="h-px w-full bg-border/50 my-1" />
                                     <div className="flex justify-between items-baseline font-bold text-lg text-foreground">
                                         <span>{lang === 'az' ? 'Cəmi' : 'Total'}</span>
                                         <span className="flex items-baseline gap-1">
-                                            {getTotalPrice()} <span className="text-sm font-normal text-muted-foreground">{APP_CONFIG.PRICING.CURRENCY}</span>
+                                            75.99 <span className="text-sm font-normal text-muted-foreground">USD</span>
                                         </span>
                                     </div>
                                 </div>
@@ -126,7 +125,7 @@ export function PricingCards() {
                                 {lang === 'az' ? 'Ödəniş Sistemləri' : 'Payment Frameworks'}
                             </li>
                         </ul>
-                        <a href={`mailto:${APP_CONFIG.COMPANY.EMAIL}`} className="block w-full py-3 rounded-xl border border-indigo-500/20 bg-indigo-50 text-indigo-600 dark:bg-indigo-950 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 text-center font-bold transition-colors">
+                        <a href="mailto:contact@foundrr.com" className="block w-full py-3 rounded-xl border border-indigo-500/20 bg-indigo-50 text-indigo-600 dark:bg-indigo-950 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 text-center font-bold transition-colors">
                             {lang === 'az' ? 'Bizimlə Əlaqə' : 'Contact Us'}
                         </a>
                     </div>

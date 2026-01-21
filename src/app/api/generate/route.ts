@@ -2,8 +2,7 @@ import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 import OpenAI from 'openai'
-import { TEMPLATES, generateNavbarHTML, generateFooterHTML } from '@/lib/generator-templates'
-import { APP_CONFIG } from '@/lib/constants'
+import { TEMPLATES } from '@/lib/generator-templates'
 
 // Initialize lazily
 export async function POST(request: Request) {
@@ -57,6 +56,14 @@ export async function POST(request: Request) {
     if (pages.includes('Blog')) standardLinks.push('Blog')
     if (pages.includes('Contact')) standardLinks.push('Contact')
 
+    const navLinksHtml = standardLinks.filter(l => l !== 'Home').map(link => 
+      `<button onclick="navigateTo('${link.toLowerCase()}')" class="px-5 py-2 rounded-full text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white hover:shadow-sm transition-all">${link}</button>`
+    ).join('\n')
+
+    const mobileNavLinksHtml = standardLinks.filter(l => l !== 'Home').map(link => 
+      `<button onclick="navigateTo('${link.toLowerCase()}'); toggleMobileMenu()" class="text-left font-semibold py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 dark:text-white">${link}</button>`
+    ).join('\n')
+
     // Detect if this is an architecture/minimal site
     const isArchitectural = prompt.toLowerCase().includes('architecture') || 
                            prompt.toLowerCase().includes('interior') || 
@@ -64,193 +71,259 @@ export async function POST(request: Request) {
                            style === 'minimal' || 
                            style === 'elegant';
 
-    // Use Helpers
-    const navbarTemplate = generateNavbarHTML(standardLinks, isArchitectural)
-    const footerTemplate = generateFooterHTML(pages)
+    // Generate Navbar Links (Minimal variant has different classes)
+    const navLinksHtmlMinimal = standardLinks.filter(l => l !== 'Home').map(link => 
+      `<button onclick="navigateTo('${link.toLowerCase()}')" class="hover:text-stone-900 dark:hover:text-white transition-colors">${link}</button>`
+    ).join('\n')
+
+    // Generate Footer Links (Product Column)
+    const productFooterLinks = []
+    if (pages.includes('Features')) productFooterLinks.push('Features')
+    if (pages.includes('Pricing')) productFooterLinks.push('Pricing')
+    
+    const footerProductHtml = productFooterLinks.map(link => 
+        `<li><button onclick="navigateTo('${link.toLowerCase()}')" class="hover:text-black">${link}</button></li>`
+    ).join('\n')
+
+    // Generate Footer Links (Company Column)
+    const companyFooterLinks = []
+    if (pages.includes('About')) companyFooterLinks.push('About')
+    if (pages.includes('Blog')) companyFooterLinks.push('Blog')
+    if (pages.includes('Contact')) companyFooterLinks.push('Contact')
+
+    const footerCompanyHtml = companyFooterLinks.map(link => 
+        `<li><button onclick="navigateTo('${link.toLowerCase()}')" class="hover:text-black">${link}</button></li>`
+    ).join('\n')
+
+    // Prepare Navbar & Footer Template with injected links
+    const navbarTemplate = (isArchitectural ? TEMPLATES.NAVBAR_MINIMAL : TEMPLATES.NAVBAR)
+      .replace('{{NAV_LINKS}}', isArchitectural ? navLinksHtmlMinimal : navLinksHtml)
+      .replace('{{MOBILE_NAV_LINKS}}', mobileNavLinksHtml)
+
+    const footerTemplate = TEMPLATES.FOOTER
+      .replace('{{FOOTER_PRODUCT_LINKS}}', footerProductHtml)
+      .replace('{{FOOTER_COMPANY_LINKS}}', footerCompanyHtml)
 
     const systemPrompt = `
-    You are an expert React/Tailwind Architect.
+    You are an expert Frontend Architect and UI/UX Designer.
     
-    GOAL: Build a high-performance, WORLD-CLASS Single Page Application (SPA) using React 18 and Tailwind CSS.
+    GOAL: Build a high-performance, WORLD-CLASS Single Page Application (SPA) using Tailwind CSS.
     
-    STRICT OUTPUT RULES:
-    1.  **Output**: Return the raw React code. It MUST include \`App\` and ALL sub-components (\`Navbar\`, \`Hero\`, \`Footer\`) defined in the same file.
-    2.  **Markdown**: YOU MUST wrap the code in \`\`\`jsx\` and \`\`\` fences. This is CRITICAL for parsing.
-    3.  **Imports**: 
-        - DO NOT import \`react\` or \`lucide-react\`. They are available globally.
-        - Use \`const { useState, useEffect } = React;\` if needed (but I have already destructured them in the shell, so you can just use \`useState\`).
-        - Use icons directly: \`<Camera />\`, \`<Menu />\`. I have destructured common Lucide icons in the shell.
-    
-    4.  **Language**: All visible text MUST be in ${lang === 'az' ? 'Azerbaijani (Azərbaycan dili)' : 'English'}.
-    
-    5.  **Design System**:
-        - Use Tailwind CSS for all styling.
-        - Use \`lucide\` icons for UI elements.
-        - **Colors**: Use \`bg-primary\`, \`text-primary-foreground\` etc. variables found in shadcn/ui where possible, or stick to sophisticated palettes (slate/emerald/indigo).
-        - **Animations**: Use \`data-aos="fade-up"\` for scroll animations.
-    
-    6.  **Component Structure (Self-Contained)**:
-        - The output must be **completely self-contained**.
-        - Define \`function Navbar() {...}\`, \`function Hero() {...}\`, \`function Footer() {...}\` **BEFORE** \`function App() {...}\`.
-        - Do NOT assume any components are imported. You must build them from scratch using Tailwind and Lucide icons.
-        - **Navigation**: Use state for routing. 
-          \`const [currentPage, setCurrentPage] = useState('home');\`
-          **CRITICAL**: Keep state keys in ENGLISH lowercase ('home', 'features', 'pricing') even if the UI text is translated.
-          Example: \`<button onClick={() => setCurrentPage('features')}>Xüsusiyyətlər</button>\`
-          Conditional rendering: \`{currentPage === 'home' && <Hero />}\`
-    
-    7.  **Content Requirements**:
-        - **Navbar**: Functional, responsive (use state for mobile menu).
-        - **Hero**: Impressive, high-conversion.
-        - **Features**: Grid layout.
-        - **Pricing**: Pricing cards (Price: ${APP_CONFIG.PRICING.WEBSITE_PRICE}).
-        - **Footer**: standard links.
-    
-    8.  **Images**: Use \`/api/images/proxy?query=KEYWORD\`.
-    
-    9.  **Persona**: Adopt the persona: ${style}.
-    
-    **EXPECTED OUTPUT STRUCTURE (EXAMPLE):**
-    
-    function Navbar({ page, setPage }) {
-      return <nav>...</nav>;
-    }
-    
-    function Hero() {
-      return <div className="p-10">Hero Content</div>;
-    }
-    
-    function Footer() {
-      return <footer>...</footer>;
-    }
-    
-    function App() {
-      const [currentPage, setCurrentPage] = useState('home');
-      return (
-        <div className="min-h-screen bg-background text-foreground">
-           <Navbar page={currentPage} setPage={setCurrentPage} />
-           {currentPage === 'home' && <Hero />}
-           <Footer />
-        </div>
-      );
-    }
+    STRICT RULES:
+    1.  **Output**: Return ONLY the raw HTML code. Do not wrap in markdown \`\`\`.
+    2.  **Tech Stack**: HTML5, Tailwind CSS (CDN), FontAwesome (CDN), Google Fonts, AOS (Animate On Scroll).
+    3.  **Language**: All visible text MUST be in ${lang === 'az' ? 'Azerbaijani (Azərbaycan dili)' : 'English'}.
+        - Translate ALL headlines, paragraphs, buttons, and navigation links.
+        - Do NOT mix languages.
 
-    GENERATE THE REACT CODE FOR \`App\` NOW.
+    4.  **SEO (CRITICAL)**: You MUST include the following in the <head>:
+        - <title>Catchy Title | Brand</title>
+        - <meta name="description" content="Engaging 160 char description...">
+    5.  **Images**: Use \`/api/images/proxy?query=KEYWORD\` for ALL images. Choose highly relevant, specific keywords.
+        - NEVER use generic keywords like "business" or "office". Use "minimalist scandinavian office" or "modern SaaS dashboard".
+    6.  **Design System & Aesthetics**:
+        - **Visuals**: Use glassmorphism (bg-white/90 backdrop-blur-md), subtle borders (border-white/10), and deep shadows (shadow-2xl).
+        - **Colors**: If no primaryColor is given, CHOOSE one based on psychology:
+            - Fintech/Trust -> Slate/Emerald
+            - Creative/SaaS -> Indigo/Violet
+            - Health/Nature -> Teal/Sage
+            - Luxury -> Black/Gold or Zinc/Stone
+        - **Typography**: Use 'Outfit' for modern headings, 'Playfair Display' for luxury/elegant headings. 'Inter' for all body text.
+        - **Spacing**: Use "Breathable" layout. Minimum py-24 or py-32 for sections. NEVER crowd elements.
+        - **Animations**: heavily utilize AOS (data-aos="fade-up") with staggered delays (data-aos-delay="100", "200").
+
+    7. **Copywriting (The "Apple" Standard)**:
+        - **Unfair Advantage**: Focus on the specific *value* the user gets. Don't list features; list *superpowers*.
+        - **No Fluff**: Delete words like "cutting-edge", "seamless", "robust", "synergy".
+        - **Active Voice**: "Build faster" > "Allows you to build faster".
+        - **Specifics**: "10x faster rendering" > "High performance".
+        - **Headlines**: Must be punchy, short (2-5 words), and emotional.
+    
+    8. **Content Completeness**:
+        - **NEGATIVE CONSTRAINTS**: DO NOT use: "Unlock", "Unleash", "Elevate", "Supercharge", "Game-changer", "Revolutionize", "Destiny", "Embark", "Realm", "Tapestry".
+        - **NO PLACEHOLDERS**: NEVER use "Lorem Ipsum", "Feature 1", "John Doe". Generate realistic names/titles.
+        - **FUNCTIONAL BUTTONS**: ALL buttons and links MUST work.
+            - Navigation links must match section IDs (e.g., href="#features").
+            - "Get Started" or "Contact" buttons should link to #contact or #pricing.
+            - Do NOT use href="#".
+        - **FUNCTIONAL BUTTONS**: ALL buttons and links MUST work.
+            - Navigation links must match section IDs (e.g., href="#features").
+            - "Get Started" or "Contact" buttons should link to #contact or #pricing.
+            - Do NOT use href="#".
+        - **BRANDING**: The site is generated by "Foundrr Group". DO NOT add any other "Made by" credits in the footer.
+        - **STRICT QUALITY**: No broken layouts. No missing images. No lorem ipsum.
+        - **TONE**: Adopt a specific persona based on the prompt. If it's a law firm, be "Confident & authoritative". If it's a creative agency, be "Bold & Avant-garde".
+
+    COMPONENT SELECTION:
+    Analyze the user's prompt "${prompt}" and choose the best sections.
+    
+    1. **Navbar**: Always use this (Contains navigation logic). REPLACE 'BRAND_NAME' with a creative name.
+       - Ensure standard links: Home (#hero), Features (#features), Pricing (#pricing), Contact (#contact).
+    ${navbarTemplate}
+    
+    2. **Hero Section** (Pick ONE based on prompt type):
+       - If SaaS/Startup/Business -> Use HERO_SAAS
+         ${TEMPLATES.HERO_SAAS}
+       - If Portfolio/Creative/Art or user asks for "Creative" -> Use HERO_CREATIVE
+         ${TEMPLATES.HERO_CREATIVE}
+       - If style is 'dark' or user asks for "Dark Mode" -> Use HERO_DARK
+         ${TEMPLATES.HERO_DARK}
+       - If style is 'neobrutal' -> Use HERO_NEOBRUTAL
+         ${TEMPLATES.HERO_NEOBRUTAL}
+       - If style is 'retro' -> Use HERO_RETRO
+         ${TEMPLATES.HERO_RETRO}
+       - If style is 'luxury' -> Use HERO_LUXURY
+         ${TEMPLATES.HERO_LUXURY}
+       - If prompt includes 'architecture', 'interior', 'construction', or style is 'minimal' -> Use HERO_ARCHITECT
+         ${TEMPLATES.HERO_ARCHITECT}
+       - Else (Default) -> Use HERO_MODERN
+         ${TEMPLATES.HERO_MODERN}
+    
+    3. **Content Sections** (Pick relevant ones based on prompt):
+       - If showing work/images -> Include GALLERY or PROJECTS_GALLERY_MINIMAL (for architecture):
+         ${TEMPLATES.GALLERY}
+         ${TEMPLATES.PROJECTS_GALLERY_MINIMAL}
+       - If building trust -> Include TESTIMONIALS:
+         ${TEMPLATES.TESTIMONIALS}
+       - If requested 'FAQ' -> FAQ:
+         ${TEMPLATES.FAQ}
+       - If requested 'Team' -> TEAM:
+         ${TEMPLATES.TEAM}
+       - If prompt includes 'architecture' or 'design' -> Include STATS_MINIMAL:
+         ${TEMPLATES.STATS_MINIMAL}
+
+       
+       ${pages.includes('Features') ? `- Features/Services Section: ${TEMPLATES.BENTO_GRID} OR ${TEMPLATES.SERVICES_MINIMAL} (Use SERVICES_MINIMAL for architecture/clean brands)` : ''}
+       ${pages.includes('Pricing') ? `- Pricing Section: ${TEMPLATES.PRICING}` : ''}
+       ${pages.includes('Contact') ? `- Contact Section: ${TEMPLATES.CONTACT}` : ''}
+
+
+    4. **Extra Pages** (YOU MUST INCLUDE THESE AS HIDDEN SECTIONS):
+        - Login Page: ${TEMPLATES.PAGE_LOGIN}
+        - Signup Page: ${TEMPLATES.PAGE_SIGNUP}
+        ${pages.includes('About') ? `- About Page: ${TEMPLATES.PAGE_ABOUT}` : ''}
+        ${pages.includes('Blog') ? `- Blog Page: ${TEMPLATES.PAGE_BLOG}` : ''}
+    
+    5. **Footer**: Always use this:
+    ${footerTemplate}
+    
+    6. **Router Script**: REQUIRED for navigation:
+    ${TEMPLATES.JS_ROUTER}
+    
+    INSTRUCTIONS:
+    - **Assemble**: Put all the selected sections into the \`body\`.
+    - **Customize**: MODIFY the text, colors, and images in the templates to MATCH the user's request explicitly.
+    - **Translate**: ALL content in templates (Navbar, Hero, Features, etc.) MUST be translated to ${lang === 'az' ? 'Azerbaijani' : 'English'}.
+    - **Styles**: 
+      - If the user asks for "Dark Mode" or style='dark', add \`bg-slate-950 text-white\` to the body and ensure all components adapt (use dark: classes).
+    
+    STRUCTURE:
+    <!DOCTYPE html>
+    <html lang="${lang}" class="${style === 'dark' ? 'dark' : ''}">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>${prompt}</title>
+      <script src="https://cdn.tailwindcss.com"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+      <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+      <script>
+        tailwind.config = {
+          darkMode: 'class',
+          theme: {
+            extend: {
+                fontFamily: {
+                sans: ['Inter', 'sans-serif'],
+                heading: ['Outfit', 'sans-serif'],
+                serif: ['Playfair Display', 'serif'],
+                mono: ['Space Grotesk', 'monospace'],
+              },
+                colors: {
+                primary: '${primaryColor ? primaryColor : style === 'vibrant' ? '#4f46e5' : style === 'corporate' ? '#0f172a' : '#18181b'}',
+              },
+              animation: {
+                'fade-in-down': 'fadeInDown 0.5s ease-out',
+                'float': 'float 6s ease-in-out infinite',
+                'gradient': 'gradient 8s ease infinite',
+              },
+              keyframes: {
+                fadeInDown: {
+                  '0%': { opacity: '0', transform: 'translateY(-10px)' },
+                  '100%': { opacity: '1', transform: 'translateY(0)' },
+                },
+                float: {
+                    '0%, 100%': { transform: 'translateY(0)' },
+                    '50%': { transform: 'translateY(-20px)' },
+                },
+                gradient: {
+                    '0%, 100%': { 'background-size': '200% 200%', 'background-position': 'left center' },
+                    '50%': { 'background-size': '200% 200%', 'background-position': 'right center' },
+                },
+              }
+            }
+          }
+        }
+      </script>
+      <style>
+        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.05); }
+        html.dark .glass { background: rgba(15, 23, 42, 0.7); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        html { scroll-behavior: smooth; }
+        .page-section { transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; }
+        .hidden { display: none !important; }
+      </style>
+    </head>
+    <body class="font-sans antialiased text-slate-900 bg-white dark:bg-slate-950 dark:text-white selection:bg-indigo-500 selection:text-white overflow-x-hidden">
+    
+    <!-- GENERATED SECTIONS GO HERE -->
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init({
+        duration: 800,
+        once: true,
+        offset: 50,
+        easing: 'ease-out-cubic',
+      });
+    </script>
+    </body>
+    </html>
     `
 
     const encoder = new TextEncoder()
     const stream = new ReadableStream({
       async start(controller) {
         try {
-          // Prepare Shell Parts
-          const parts = TEMPLATES.REACT_SHELL.split('{{REACT_CODE}}')
-          const shellStart = parts[0]
-          const shellEnd = parts[1] || ''
-
-          // 1. Send Shell Start
-          controller.enqueue(encoder.encode(shellStart))
-
-          // 2. Fetch Full Completion (Buffered)
           const completion = await openai.chat.completions.create({
-            model: 'gpt-4o',
+            model: 'gpt-4o-mini',
             messages: [
               { role: 'system', content: systemPrompt },
               { role: 'user', content: `Build a website for: ${prompt}. Style: ${style}.` },
             ],
-            stream: false, // Turn off streaming to ensure we get full code to clean
+            stream: true,
           })
 
-          const rawContent = completion.choices[0]?.message?.content || ''
-          
-          let cleanContent = rawContent.trim();
+          let fullHtml = ''
 
-          // Strategy 1: Extract from Markdown Code Block
-          // Matches ```jsx ... ``` or just ``` ... ```
-          const codeBlockMatch = cleanContent.match(/```(?:jsx|tsx|javascript|js)?\s*([\s\S]*?)\s*```/);
-          if (codeBlockMatch && codeBlockMatch[1]) {
-              cleanContent = codeBlockMatch[1].trim();
-          } else {
-              // Strategy 2: No code blocks? Try to just find the component
-              // If the AI just dumped the code without fences (rare but possible)
-              // or if we need to trim "Here is code:" prefix from a non-fenced response
-              const appMatch = cleanContent.match(/function App\s*\(\)\s*{[\s\S]*}/);
-              if (appMatch) {
-                  cleanContent = appMatch[0];
-              }
-              // Else: we assume the whole content is code (risky but fallback)
+          for await (const chunk of completion) {
+            const content = chunk.choices[0]?.delta?.content || ''
+            if (content) {
+              fullHtml += content
+              // Stream to client
+              controller.enqueue(encoder.encode(content))
+            }
           }
 
-          // SELF-HEALING: Inject missing components if AI forgot them
-          // We assume 'function Name' or 'const Name' patterns
-          const missingNavbar = !cleanContent.match(/(function|const)\s+Navbar/);
-          const missingHero = !cleanContent.match(/(function|const)\s+Hero/);
-          const missingFooter = !cleanContent.match(/(function|const)\s+Footer/);
-
-          if (missingNavbar) {
-             console.log("Injecting missing Navbar...");
-             cleanContent = `
-             function Navbar({ page, setPage }) {
-                return (
-                   <nav className="flex justify-between items-center p-6 border-b bg-background/80 backdrop-blur-md sticky top-0 z-50">
-                      <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-600">Site Brand</h1>
-                      <div className="flex gap-6">
-                         <button onClick={() => setPage('home')} className="hover:text-primary transition-colors font-medium">Home</button>
-                         <button onClick={() => setPage('features')} className="hover:text-primary transition-colors font-medium">Features</button>
-                         <button onClick={() => setPage('pricing')} className="hover:text-primary transition-colors font-medium">Pricing</button>
-                      </div>
-                   </nav>
-                );
-             }
-             ` + cleanContent;
-          }
-
-          if (missingHero) {
-             console.log("Injecting missing Hero...");
-             cleanContent = `
-             function Hero() {
-                return (
-                   <div className="py-24 px-6 text-center space-y-6">
-                       <h1 className="text-5xl font-extrabold tracking-tight lg:text-6xl">Welcome to the Future</h1>
-                       <p className="text-xl text-muted-foreground max-w-2xl mx-auto">This is a generated placeholder because the AI missed the Hero component.</p>
-                       <button className="px-8 py-4 bg-primary text-primary-foreground rounded-full font-bold text-lg hover:opacity-90 transition-all">Get Started</button>
-                   </div>
-                );
-             }
-             ` + cleanContent;
-          }
-
-          if (missingFooter) {
-             console.log("Injecting missing Footer...");
-             cleanContent = cleanContent + `
-             function Footer() {
-                return (
-                   <footer className="py-12 px-6 border-t mt-20 bg-muted/20">
-                      <div className="max-w-6xl mx-auto flex justify-between items-center">
-                         <p className="text-muted-foreground text-sm">© ${new Date().getFullYear()} Brand Inc. All rights reserved.</p>
-                         <div className="flex gap-4">
-                            <Twitter className="w-5 h-5 text-muted-foreground hover:text-foreground cursor-pointer" />
-                            <Github className="w-5 h-5 text-muted-foreground hover:text-foreground cursor-pointer" />
-                         </div>
-                      </div>
-                   </footer>
-                );
-             }
-             `;
-          }
-
-          // 4. Send Code
-          controller.enqueue(encoder.encode(cleanContent))
-
-          // 5. Send Shell End
-          controller.enqueue(encoder.encode(shellEnd))
-
-          // CLEANUP & SAVE
-          const finalHtml = shellStart + cleanContent + shellEnd
+          // CLEANUP & SAVE (After stream finishes)
+          // We need to clean markdown if present (though system prompt says no)
+          // CLEANUP & SAVE (After stream finishes)
+          // We need to clean markdown if present (though system prompt says no)
+          const cleanHtml = fullHtml.replace(/```html/g, '').replace(/```/g, '').trim()
 
           // Save to Storage
           await supabase.storage
             .from('websites')
-            .upload(fileName, finalHtml, {
+            .upload(fileName, cleanHtml, {
               contentType: 'text/html',
               upsert: true,
             })
@@ -261,12 +334,13 @@ export async function POST(request: Request) {
             user_id: user.id,
             html_path: fileName,
             paid: false,
-            price: APP_CONFIG.PRICING.WEBSITE_PRICE,
+            price: 75.99, // Force explicit price
             name: prompt.substring(0, 30) || 'Untitled Project',
             created_at: new Date().toISOString(),
           })
 
-          // Send a special "end of stream" marker
+          // Send a special "end of stream" marker with the site ID so client knows where to redirect
+          const metaInfo = JSON.stringify({ siteId })
           controller.enqueue(encoder.encode(`\n<!-- SITE_ID:${siteId} -->`))
 
           controller.close()

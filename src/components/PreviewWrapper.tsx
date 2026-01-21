@@ -543,13 +543,11 @@ export default function PreviewWrapper({ siteId, isPaid }: PreviewWrapperProps) 
               </button>
 
               <a
-                href={`/api/download?siteId=${siteId}`}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={`/api/download/${siteId}`}
                 className="inline-flex h-8 items-center justify-center rounded-full bg-primary px-4 text-xs font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
               >
                 <Download className="mr-1.5 h-3.5 w-3.5" />
-                {t?.preview?.download || "Download ZIP"}
+                {t?.preview?.download || "Download"}
               </a>
             </div>
           )}
