@@ -39,6 +39,42 @@ export const TEMPLATES = {
     </nav>
   `,
 
+    NAVBAR_MINIMAL: `
+    <nav class="fixed top-0 w-full z-50 transition-all duration-300 border-b border-stone-200 dark:border-zinc-800" id="navbar">
+      <div class="absolute inset-0 bg-stone-50/90 dark:bg-zinc-950/90 backdrop-blur-md -z-10"></div>
+      <div class="container mx-auto px-6 md:px-12 h-20 flex items-center justify-between">
+        <div class="flex items-center gap-3 cursor-pointer group" onclick="navigateTo('home')">
+           <span class="text-xl font-serif font-bold tracking-tight text-stone-900 dark:text-white uppercase">BRAND_NAME</span>
+        </div>
+        
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide text-stone-600 dark:text-stone-400">
+           <button onclick="navigateTo('home')" class="hover:text-stone-900 dark:hover:text-white transition-colors">Home</button>
+          {{NAV_LINKS}}
+        </div>
+        
+        <div class="flex items-center gap-4">
+            <button onclick="navigateTo('contact')" class="px-6 py-3 bg-stone-900 dark:bg-white text-white dark:text-stone-900 text-xs font-bold uppercase tracking-widest hover:bg-stone-700 dark:hover:bg-stone-200 transition-colors">
+                Inquire
+            </button>
+            
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-2xl text-stone-900 dark:text-white focus:outline-none" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+      </div>
+      
+      <!-- Mobile Menu Overlay -->
+      <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-stone-50 dark:bg-zinc-950 border-b border-stone-200 dark:border-zinc-800 p-6 flex flex-col gap-4 shadow-xl md:hidden transition-all duration-300 origin-top transform animate-fade-in-down">
+          <button onclick="navigateTo('home'); toggleMobileMenu()" class="text-left font-serif font-medium py-3 px-4 text-stone-900 dark:text-white">Home</button>
+          {{MOBILE_NAV_LINKS}}
+          <div class="h-px bg-stone-200 dark:bg-zinc-800 my-2"></div>
+          <button onclick="navigateTo('contact'); toggleMobileMenu()" class="text-center font-bold py-3 px-4 bg-stone-900 dark:bg-white text-white dark:text-stone-900 uppercase tracking-widest text-xs">Inquire</button>
+      </div>
+    </nav>
+    `,
+
     HERO_MODERN: `
     <section id="home" class="page-section relative pt-32 pb-24 lg:pt-48 lg:pb-32 overflow-hidden bg-white dark:bg-slate-950 transition-colors duration-500">
        <!-- Dynamic Background -->

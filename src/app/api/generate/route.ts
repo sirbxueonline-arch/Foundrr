@@ -61,7 +61,19 @@ export async function POST(request: Request) {
     ).join('\n')
 
     const mobileNavLinksHtml = standardLinks.filter(l => l !== 'Home').map(link => 
-      `<button onclick="navigateTo('${link.toLowerCase()}'); toggleMobileMenu()" class="text-left font-semibold py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">${link}</button>`
+      `<button onclick="navigateTo('${link.toLowerCase()}'); toggleMobileMenu()" class="text-left font-semibold py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 dark:text-white">${link}</button>`
+    ).join('\n')
+
+    // Detect if this is an architecture/minimal site
+    const isArchitectural = prompt.toLowerCase().includes('architecture') || 
+                           prompt.toLowerCase().includes('interior') || 
+                           prompt.toLowerCase().includes('construction') ||
+                           style === 'minimal' || 
+                           style === 'elegant';
+
+    // Generate Navbar Links (Minimal variant has different classes)
+    const navLinksHtmlMinimal = standardLinks.filter(l => l !== 'Home').map(link => 
+      `<button onclick="navigateTo('${link.toLowerCase()}')" class="hover:text-stone-900 dark:hover:text-white transition-colors">${link}</button>`
     ).join('\n')
 
     // Generate Footer Links (Product Column)
@@ -84,8 +96,8 @@ export async function POST(request: Request) {
     ).join('\n')
 
     // Prepare Navbar & Footer Template with injected links
-    const navbarTemplate = TEMPLATES.NAVBAR
-      .replace('{{NAV_LINKS}}', navLinksHtml)
+    const navbarTemplate = (isArchitectural ? TEMPLATES.NAVBAR_MINIMAL : TEMPLATES.NAVBAR)
+      .replace('{{NAV_LINKS}}', isArchitectural ? navLinksHtmlMinimal : navLinksHtml)
       .replace('{{MOBILE_NAV_LINKS}}', mobileNavLinksHtml)
 
     const footerTemplate = TEMPLATES.FOOTER
