@@ -138,9 +138,9 @@ export async function POST(request: Request) {
             -   Rounded-full is preferred for modern look.
             -   **Hover effects**: Scale (1.05) + Shadow.
         -   **Animations**: USE SUBTLE ANIMATIONS.
-            -   Use \\`animate-fade-in-up\\` for cards and sections.
-            -   Use \\`animate-zoom-in\\` for images.
-            -   Do not over-animate. Stagger animations with \\`animation-delay\\`.
+            -   Use \`animate-fade-in-up\` for cards and sections.
+            -   Use \`animate-zoom-in\` for images.
+            -   Do not over-animate. Stagger animations with \`animation-delay\`.
     
     7. **Copywriting (The "Apple" Standard)**:
         -   **Rule #1**: NO MARKETING FLUFF.
