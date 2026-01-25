@@ -1,3 +1,5 @@
+'use client'
+
 import { useClerk } from '@clerk/nextjs'
 
 import Link from 'next/link'
