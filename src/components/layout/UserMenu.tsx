@@ -53,7 +53,7 @@ export function UserMenu({ email }: { email: string }) {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem
-          onClick={() => signOut({ redirectUrl: '/' })}
+          onClick={async () => await signOut({ redirectUrl: '/' })}
           className="cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50"
         >
           <LogOut className="mr-2 h-4 w-4" />
