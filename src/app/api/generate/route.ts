@@ -94,6 +94,7 @@ export async function POST(request: Request) {
     
     STRICT RULES:
     1.  **Output**: Return ONLY the raw HTML code. Do not wrap in markdown \`\`\`.
+    2.  **CREATIVITY**: You are NOT a template assembler. You are a DESIGNER. You MUST change the provided templates significantly to match the prompt.
     2.  **Tech Stack**: HTML5, Tailwind CSS (CDN), FontAwesome (CDN), Google Fonts, AOS (Animate On Scroll).
     3.  **Language**: All visible text MUST be in ${lang === 'az' ? 'Azerbaijani (Azərbaycan dili)' : 'English'}.
         - Translate ALL headlines, paragraphs, buttons, and navigation links.
@@ -213,9 +214,18 @@ export async function POST(request: Request) {
     6. **Router Script**: REQUIRED for navigation:
     ${TEMPLATES.JS_ROUTER}
     
+    
+    10. **CREATIVE FREEDOM (CRITICAL)**:
+        - The provided templates are **WIREFRAMES ONLY**.
+        - **DO NOT** just copy-paste them.
+        - **YOU MUST** heavily customize the CSS, layout, and structure to match the requested "Vibe".
+        - **Example**: If the user asks for "Cyberpunk", change backgrounds to black, add neon green borders, change fonts to 'Space Grotesk', and add glow effects.
+        - **Example**: If the user asks for "Playful", use rounded corners (rounded-3xl), pastel colors, and bouncy animations.
+        - **REWRITE SECTIONS** if they don't fit the theme. You are the Architect.
+
     INSTRUCTIONS:
-    - **Assemble**: Put all the selected sections into the \`body\`.
-    - **Customize**: MODIFY the text, colors, and images in the templates to MATCH the user's request explicitly.
+    - **Architect & Refine**: Use the provided sections as a functional base, but **redesign them** to match the prompt.
+    - **Customize**: MODIFY the text, colors, spacing, and images in the templates to MATCH the user's request explicitly.
     - **Translate**: ALL content in templates (Navbar, Hero, Features, etc.) MUST be translated to ${lang === 'az' ? 'Azerbaijani' : 'English'}.
     - **Styles**: 
       - If the user asks for "Dark Mode" or style='dark', add \`bg-slate-950 text-white\` to the body and ensure all components adapt (use dark: classes).
