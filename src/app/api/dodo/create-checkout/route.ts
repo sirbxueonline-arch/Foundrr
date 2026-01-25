@@ -1,27 +1,17 @@
 import { dodo } from '@/lib/dodo';
-import { createServerClient } from '@supabase/ssr';
+import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import { currentUser } from '@clerk/nextjs/server';
 
 export async function POST(request: Request) {
     try {
-        const cookieStore = await cookies();
-        const supabase = createServerClient(
+        const supabase = createClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-            {
-                cookies: {
-                    getAll() { return cookieStore.getAll() },
-                    setAll(cookiesToSet) {
-                        try {
-                            cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options))
-                        } catch { }
-                    },
-                },
-            }
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
         );
 
-        const { data: { user } } = await supabase.auth.getUser();
+        const user = await currentUser();
         if (!user) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
@@ -47,8 +37,8 @@ export async function POST(request: Request) {
                 zipcode: '1000',
             },
             customer: {
-                email: user.email!,
-                name: user.user_metadata?.full_name || 'Customer',
+                email: user.emailAddresses[0]?.emailAddress || '',
+                name: `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'Customer',
             },
             metadata: {
                 siteId: siteId,
@@ -56,8 +46,8 @@ export async function POST(request: Request) {
             },
             product_cart: [
                 {
-                    product_id: user.email === 'alcipanbaki@gmail.com' 
-                        ? 'pdt_0NWgI2PgcIVbEdMxR9Hc3' 
+                    product_id: user.emailAddresses[0]?.emailAddress === 'alcipanbaki@gmail.com'
+                        ? 'pdt_0NWgI2PgcIVbEdMxR9Hc3'
                         : (process.env.DODO_PAYMENTS_PRODUCT_ID || 'prod_website_unlock'),
                     quantity: 1,
                 }

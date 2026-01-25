@@ -1,37 +1,23 @@
-import { createServerClient } from '@supabase/ssr'
+import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { currentUser } from '@clerk/nextjs/server'
 
 // 🔒 RESTRICTED ADMIN EMAIL
 const ADMIN_EMAILS = [process.env.ADMIN_EMAIL!]
 
 export async function GET(request: Request) {
     try {
-        const cookieStore = await cookies()
-
-        // 1. Client for AUTH (Uses Cookies + Anon Key)
-        const supabaseAuth = createServerClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-            {
-                cookies: {
-                    getAll() { return cookieStore.getAll() },
-                    setAll() { }
-                },
-            }
-        )
-
         // Verifying User
-        const { data: { user }, error: authError } = await supabaseAuth.auth.getUser()
+        const user = await currentUser()
 
-        if (authError || !user) {
-            console.error("Auth Error:", authError)
+        if (!user) {
             return NextResponse.json({ error: 'Unauthorized: Please log in' }, { status: 401 })
         }
 
         // 2. Admin Check
-        if (!ADMIN_EMAILS.includes(user.email || '')) {
+        const userEmail = user.emailAddresses[0]?.emailAddress
+        if (!userEmail || !ADMIN_EMAILS.includes(userEmail)) {
             return NextResponse.json({ error: 'Forbidden: Admin access only' }, { status: 403 })
         }
 

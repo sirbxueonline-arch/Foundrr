@@ -1,6 +1,7 @@
-import { createServerClient } from '@supabase/ssr'
+import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
+import { auth } from '@clerk/nextjs/server'
 
 export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
   // Extract ID from URL since context params might not work well in route.ts depending on folder structure
@@ -9,20 +10,9 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
 
   const { id } = await context.params
 
-  const cookieStore = await cookies()
-  const supabase = createServerClient(
+  const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() { return cookieStore.getAll() },
-        setAll(cookiesToSet) {
-          try {
-            cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options))
-          } catch { }
-        },
-      },
-    }
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   )
 
   // 1. Get record to find path
@@ -87,8 +77,8 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
   // Actually, for the Preview API, if `page.tsx` (the shell) does the check, the iframe content might still be accessible if guessed?
   // Secure approach: Check ownership here too.
 
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) {
+  const { userId } = await auth()
+  if (!userId) {
     // If not logged in, maybe allow if it's just a raw preview? 
     // But "Users can access only their own sites" is strong language.
     // I'll return 401.
@@ -101,7 +91,7 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
     .eq('id', id)
     .single()
 
-  if (ownership?.user_id !== user.id) {
+  if (ownership?.user_id !== userId) {
     return new NextResponse('Forbidden', { status: 403 })
   }
 
@@ -158,11 +148,11 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
       });
     </script>
   `;
-  
-  const { visualEditorScript } = require('@/lib/visual-editor-script'); 
+
+  const { visualEditorScript } = require('@/lib/visual-editor-script');
   // Note: Using require or import above. Since this is a route handler file, 
   // let's stick to the import we added in the previous step but fix the usage.
-  
+
   const combinedScript = editorScript + (visualEditorScript || '');
 
   // Inject before closing body tag

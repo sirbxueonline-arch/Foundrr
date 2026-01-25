@@ -1,7 +1,8 @@
-import { createServerClient } from '@supabase/ssr'
+import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 import OpenAI from 'openai'
+import { auth } from '@clerk/nextjs/server'
 
 // Initialize lazily to avoid build errors
 export async function POST(request: Request) {
@@ -9,32 +10,15 @@ export async function POST(request: Request) {
         apiKey: process.env.OPENAI_API_KEY,
     })
     try {
-        const cookieStore = await cookies()
-        const supabase = createServerClient(
+        const supabase = createClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-            {
-                cookies: {
-                    getAll() {
-                        return cookieStore.getAll()
-                    },
-                    setAll(cookiesToSet) {
-                        try {
-                            cookiesToSet.forEach(({ name, value, options }) =>
-                                cookieStore.set(name, value, options)
-                            )
-                        } catch { }
-                    },
-                },
-            }
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
         )
 
         // Auth check
-        const {
-            data: { user },
-        } = await supabase.auth.getUser()
+        const { userId } = await auth()
 
-        if (!user) {
+        if (!userId) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
 
@@ -61,7 +45,7 @@ export async function POST(request: Request) {
 
         // 2. Upload to Supabase Storage
         const buffer = Buffer.from(b64, 'base64')
-        const fileName = `${user.id}/${Date.now()}_generated.png`
+        const fileName = `${userId}/${Date.now()}_generated.png`
 
         const { data: uploadData, error: uploadError } = await supabase.storage
             .from('websites')

@@ -16,6 +16,7 @@ export const metadata: Metadata = {
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { Analytics } from "@vercel/analytics/react";
 import Script from "next/script";
+import { ClerkProvider } from "@clerk/nextjs";
 
 export default function RootLayout({
   children,
@@ -23,28 +24,30 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="az" className="antialiased">
-      <body className={cn("min-h-screen bg-background font-sans text-foreground", inter.className)}>
-        <LanguageProvider>
-          <div className="relative flex min-h-screen flex-col">
-            <main className="flex-1">{children}</main>
-          </div>
-          <Analytics />
-        </LanguageProvider>
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=AW-17879734187"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
+    <ClerkProvider>
+      <html lang="az" className="antialiased">
+        <body className={cn("min-h-screen bg-background font-sans text-foreground", inter.className)}>
+          <LanguageProvider>
+            <div className="relative flex min-h-screen flex-col">
+              <main className="flex-1">{children}</main>
+            </div>
+            <Analytics />
+          </LanguageProvider>
+          <Script
+            src="https://www.googletagmanager.com/gtag/js?id=AW-17879734187"
+            strategy="afterInteractive"
+          />
+          <Script id="google-analytics" strategy="afterInteractive">
+            {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
 
             gtag('config', 'AW-17879734187');
           `}
-        </Script>
-      </body>
-    </html>
+          </Script>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

@@ -1,8 +1,9 @@
-import { createServerClient } from '@supabase/ssr'
+import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 import OpenAI from 'openai'
 import { TEMPLATES } from '@/lib/generator-templates'
+import { auth } from '@clerk/nextjs/server'
 
 // Initialize lazily
 export async function POST(request: Request) {
@@ -10,33 +11,17 @@ export async function POST(request: Request) {
     apiKey: process.env.OPENAI_API_KEY,
   })
   try {
-    const cookieStore = await cookies()
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return cookieStore.getAll()
-          },
-          setAll(cookiesToSet) {
-            try {
-              cookiesToSet.forEach(({ name, value, options }) =>
-                cookieStore.set(name, value, options)
-              )
-            } catch { }
-          },
-        },
-      }
-    )
+    const { userId } = await auth();
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-
-    if (!user) {
+    if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
+
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+
 
     const { prompt, style = 'minimal', lang = 'en', primaryColor = '', pages = [] } = await request.json()
 
@@ -46,7 +31,7 @@ export async function POST(request: Request) {
 
     // Generate a secure ID immediately
     const siteId = Math.random().toString(36).substring(2, 9)
-    const fileName = `${user.id}/${siteId}/index.html`
+    const fileName = `${userId}/${siteId}/index.html`
 
     // Generate Navbar Links
     const standardLinks = ['Home'] // Home is always there
@@ -55,23 +40,23 @@ export async function POST(request: Request) {
     if (pages.includes('About')) standardLinks.push('About')
     if (pages.includes('Blog')) standardLinks.push('Blog')
 
-    const navLinksHtml = standardLinks.filter(l => l !== 'Home').map(link => 
+    const navLinksHtml = standardLinks.filter(l => l !== 'Home').map(link =>
       `<button onclick="navigateTo('${link.toLowerCase()}')" class="px-5 py-2 rounded-full text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white hover:shadow-sm transition-all">${link}</button>`
     ).join('\n')
 
-    const mobileNavLinksHtml = standardLinks.filter(l => l !== 'Home').map(link => 
+    const mobileNavLinksHtml = standardLinks.filter(l => l !== 'Home').map(link =>
       `<button onclick="navigateTo('${link.toLowerCase()}'); toggleMobileMenu()" class="text-left font-semibold py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 dark:text-white">${link}</button>`
     ).join('\n')
 
     // Detect if this is an architecture/minimal site
-    const isArchitectural = prompt.toLowerCase().includes('architecture') || 
-                           prompt.toLowerCase().includes('interior') || 
-                           prompt.toLowerCase().includes('construction') ||
-                           style === 'minimal' || 
-                           style === 'elegant';
+    const isArchitectural = prompt.toLowerCase().includes('architecture') ||
+      prompt.toLowerCase().includes('interior') ||
+      prompt.toLowerCase().includes('construction') ||
+      style === 'minimal' ||
+      style === 'elegant';
 
     // Generate Navbar Links (Minimal variant has different classes)
-    const navLinksHtmlMinimal = standardLinks.filter(l => l !== 'Home').map(link => 
+    const navLinksHtmlMinimal = standardLinks.filter(l => l !== 'Home').map(link =>
       `<button onclick="navigateTo('${link.toLowerCase()}')" class="text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white transition-colors font-medium">${link}</button>`
     ).join('\n')
 
@@ -79,9 +64,9 @@ export async function POST(request: Request) {
     const productFooterLinks = []
     if (pages.includes('Features')) productFooterLinks.push('Features')
     if (pages.includes('Pricing')) productFooterLinks.push('Pricing')
-    
-    const footerProductHtml = productFooterLinks.map(link => 
-        `<li><button onclick="navigateTo('${link.toLowerCase()}')" class="hover:text-black">${link}</button></li>`
+
+    const footerProductHtml = productFooterLinks.map(link =>
+      `<li><button onclick="navigateTo('${link.toLowerCase()}')" class="hover:text-black">${link}</button></li>`
     ).join('\n')
 
     // Generate Footer Links (Company Column)
@@ -89,8 +74,8 @@ export async function POST(request: Request) {
     if (pages.includes('About')) companyFooterLinks.push('About')
     if (pages.includes('Blog')) companyFooterLinks.push('Blog')
 
-    const footerCompanyHtml = companyFooterLinks.map(link => 
-        `<li><button onclick="navigateTo('${link.toLowerCase()}')" class="hover:text-black">${link}</button></li>`
+    const footerCompanyHtml = companyFooterLinks.map(link =>
+      `<li><button onclick="navigateTo('${link.toLowerCase()}')" class="hover:text-black">${link}</button></li>`
     ).join('\n')
 
     // Prepare Navbar & Footer Template with injected links
@@ -358,7 +343,7 @@ export async function POST(request: Request) {
           // Save to DB
           await supabase.from('websites').insert({
             id: siteId,
-            user_id: user.id,
+            user_id: userId,
             html_path: fileName,
             paid: false,
             price: 75.99, // Force explicit price

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
-import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
+import { currentUser } from '@clerk/nextjs/server'
 
 export const dynamic = 'force-dynamic'
 
@@ -13,23 +13,8 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
     const { id } = await context.params
 
     // Check for authenticated user to apply discount
-    const cookieStore = await cookies()
-    const authSupabase = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-        {
-            cookies: {
-                getAll() { return cookieStore.getAll() },
-                setAll(cookiesToSet) {
-                    try {
-                        cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options))
-                    } catch { }
-                },
-            },
-        }
-    )
-    const { data: { user } } = await authSupabase.auth.getUser()
-    
+    const user = await currentUser()
+
     // Fetch site data including payment status
     const { data: site, error } = await supabase
         .from('websites')
@@ -38,9 +23,9 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
         .single()
 
     let finalPrice = site?.price || 75.99;
-    
+
     // Apply 95% discount for specific user
-    if (user?.email === 'alcipanbaki@gmail.com') {
+    if (user?.emailAddresses[0]?.emailAddress === 'alcipanbaki@gmail.com') {
         finalPrice = 3.80; // Hardcoded discounted price ~5% of 75.99
     }
 

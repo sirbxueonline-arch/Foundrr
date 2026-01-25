@@ -1,7 +1,8 @@
 
-import { createServerClient } from '@supabase/ssr'
+import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
+import { auth } from '@clerk/nextjs/server'
 
 export async function DELETE(
   request: Request,
@@ -9,27 +10,16 @@ export async function DELETE(
 ) {
   try {
     const { id } = await context.params
-    const cookieStore = await cookies()
-    
+
     // Create Supabase client
-    const supabase = createServerClient(
+    const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() { return cookieStore.getAll() },
-          setAll(cookiesToSet) {
-              try {
-                cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options))
-              } catch {}
-          },
-        },
-      }
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     )
 
     // 1. Auth Check
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
+    const { userId } = await auth();
+    if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -44,24 +34,23 @@ export async function DELETE(
       return NextResponse.json({ error: 'Site not found' }, { status: 404 })
     }
 
-    if (site.user_id !== user.id) {
+    if (site.user_id !== userId) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
     // 3. Delete from Database first (Cascading logic or just cleanup)
     // Actually, usually safer to delete storage first or transactionally.
     // We'll try deleting storage first.
-    
+
     // Use Service Role for Storage Deletion if standard policy is finicky, 
     // BUT we fixed policies earlier. Let's try standard client first.
     // If it fails, we might need service role, but properly configured RLS should work.
     // Given previous issues, let's just use the Admin Client for the critical delete operation to be 100% sure.
     // Re-using the pattern from the Edit API for reliability.
-    
-    const adminSupabase = createServerClient(
+
+    const adminSupabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
-      { cookies: { getAll() { return [] }, setAll() {} } }
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
     )
 
     const { error: storageError } = await adminSupabase.storage

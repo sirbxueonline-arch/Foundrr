@@ -1,8 +1,9 @@
 
-import { createServerClient } from '@supabase/ssr'
+import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 import OpenAI from 'openai'
+import { auth } from '@clerk/nextjs/server'
 
 // Initialize lazily to avoid build-time errors if env var is missing
 export async function POST(request: Request) {
@@ -10,25 +11,14 @@ export async function POST(request: Request) {
     apiKey: process.env.OPENAI_API_KEY,
   })
   try {
-    const cookieStore = await cookies()
-    const supabase = createServerClient(
+    const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() { return cookieStore.getAll() },
-          setAll(cookiesToSet) {
-            try {
-              cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options))
-            } catch { }
-          },
-        },
-      }
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     )
 
     // 1. Auth & Ownership Check
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
+    const { userId } = await auth()
+    if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -45,7 +35,7 @@ export async function POST(request: Request) {
       .eq('id', siteId)
       .single()
 
-    if (!site || site.user_id !== user.id) {
+    if (!site || site.user_id !== userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
     }
 
@@ -88,15 +78,9 @@ User Request: "${prompt}"
 
     // 3. Update Storage
     // Use Service Role to bypass RLS policies for reliable editing
-    const adminSupabase = createServerClient(
+    const adminSupabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
-      {
-        cookies: {
-          getAll() { return [] },
-          setAll() { }
-        }
-      }
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
     )
 
     const { error: uploadError } = await adminSupabase.storage

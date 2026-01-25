@@ -1,28 +1,18 @@
-import { createServerClient } from '@supabase/ssr'
+import { createClient } from '@supabase/supabase-js'
 import { resolveImageQuery } from '@/lib/image-resolver'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
+import { auth } from '@clerk/nextjs/server'
 
 export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params
-  const cookieStore = await cookies()
-  const supabase = createServerClient(
+  const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() { return cookieStore.getAll() },
-        setAll(cookiesToSet) {
-          try {
-            cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options))
-          } catch { }
-        },
-      },
-    }
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   )
 
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) {
+  const { userId } = await auth()
+  if (!userId) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 
@@ -37,7 +27,7 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
     return new NextResponse('Site not found', { status: 404 })
   }
 
-  if (site.user_id !== user.id) {
+  if (site.user_id !== userId) {
     return new NextResponse('Forbidden', { status: 403 })
   }
 

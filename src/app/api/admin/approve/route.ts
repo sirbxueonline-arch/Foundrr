@@ -1,31 +1,17 @@
-import { createServerClient } from '@supabase/ssr'
+import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { currentUser } from '@clerk/nextjs/server'
 
 export async function POST(request: Request) {
     try {
-        const cookieStore = await cookies()
-
-        // 1. Auth Client (Anon + Cookies)
-        const supabaseAuth = createServerClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-            {
-                cookies: {
-                    getAll() { return cookieStore.getAll() },
-                    setAll() { }
-                },
-            }
-        )
-
-        // Auth Check
-        const { data: { user } } = await supabaseAuth.auth.getUser()
+        const user = await currentUser()
         if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
         // 2. Admin Check
         const ADMIN_EMAILS = [process.env.ADMIN_EMAIL!]
-        if (!ADMIN_EMAILS.includes(user.email || '')) {
+        const userEmail = user.emailAddresses[0]?.emailAddress
+        if (!userEmail || !ADMIN_EMAILS.includes(userEmail)) {
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
         }
 
