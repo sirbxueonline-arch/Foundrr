@@ -11,10 +11,25 @@ async function verifyInsert() {
     const id = 'test_' + Math.random().toString(36).substring(7);
     console.log(`Attempting to insert test site: ${id}`);
 
+    // Test Storage Upload
+    const { error: storageError } = await supabase.storage
+        .from('websites')
+        .upload(`${id}/index.html`, '<html>Test</html>', {
+            contentType: 'text/html',
+            upsert: true,
+        });
+
+    if (storageError) {
+        console.error('Storage upload failed:', storageError);
+        return; // Stop if storage fails, as specific error is needed
+    } else {
+        console.log('Storage upload successful!');
+    }
+
     const { data, error } = await supabase.from('websites').insert({
         id: id,
-        user_id: 'test_user', // This might fail if foreign key constraint exists, but error message will tell us
-        html_path: 'test.html',
+        user_id: '00000000-0000-0000-0000-000000000000', // Using valid UUID to query schema constraint
+        html_path: `${id}/index.html`,
         paid: false,
         price: 49.99, // Testing this column
         name: 'Test Site',
@@ -27,6 +42,7 @@ async function verifyInsert() {
         console.log('Insert successful!');
         // Cleanup
         await supabase.from('websites').delete().eq('id', id);
+        await supabase.storage.from('websites').remove([`${id}/index.html`]);
     }
 }
 

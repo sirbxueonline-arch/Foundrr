@@ -13,7 +13,7 @@ async function checkSite() {
     const { data: site, error } = await supabase
         .from('websites')
         .select('*')
-        .eq('id', '68xioei')
+        .eq('id', 'sr3k633')
         .single();
 
     if (error) {
