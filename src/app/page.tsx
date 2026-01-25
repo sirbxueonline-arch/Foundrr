@@ -13,10 +13,6 @@ export const metadata: Metadata = {
 export default async function Home() {
   const user = await currentUser()
 
-  if (user) {
-    redirect('/generate')
-  }
-
   // Note: We are passing the user object to the client component.
   // We need to map Clerk user to the expected shape if LandingContent relies on specific fields,
   // or update LandingContent. For now, we pass null as user is null here.
