@@ -23,7 +23,37 @@ export async function POST(request: Request) {
     )
 
 
-    const { prompt, style = 'minimal', lang = 'en', primaryColor = '', pages = [] } = await request.json()
+    const { prompt, style = 'minimal', lang = 'en', primaryColor = '', pages = [], creativity = 'standard' } = await request.json()
+
+    // ... (keep validation logic)
+
+    // DYNAMIC INSTRUCTION GENERATOR
+    let systemInstruction = ''
+    if (creativity === 'standard') {
+      systemInstruction = "Follow the templates strictly. Use them as a solid foundation. Ensure high reliability and standard layout structures."
+    } else if (creativity === 'creative' || creativity === 'high') {
+      systemInstruction = `
+              CRITICAL INSTRUCTION: 
+              Refuse to perform a standard template assembly. 
+              You MUST "Remix" the layout structure. 
+              - Use unique padding (e.g. py-32 instead of py-20).
+              - Change the typography hierarchy completely.
+              - Use different border-radius for cards (e.g. if template is rounded-xl, use rounded-none or rounded-3xl).
+              - If the style is "${style}", go ALL IN on that aesthetic. 
+              - Use the provided code reference ONLY as a safety fallback for syntax. 
+         `
+    } else if (creativity === 'chaos') {
+      systemInstruction = `
+              CRITICAL INSTRUCTION: CHAOS MODE ACTIVATED.
+              - INGORE STANDARD GRIDS. Use uneven grid columns (col-span-7 vs col-span-5).
+              - USE MASSIVE TYPOGRAPHY (text-9xl).
+              - USE NEON COLORS and extreme contrast.
+              - Make it look like an AWARD-WINNING EXPERIMENTAL site. 
+              - BREAK THE RULES.
+         `
+    }
+
+
 
     if (!prompt) {
       return NextResponse.json({ error: 'Missing prompt' }, { status: 400 })
@@ -326,17 +356,11 @@ export async function POST(request: Request) {
             messages: [
               { role: 'system', content: systemPrompt },
               {
-                role: 'user', content: `Build a high-end website for: ${prompt}. Style: ${style}. 
+                role: 'user', content: `Build a high-end website for: ${prompt}. Style: ${style}. Creativity Level: ${creativity}.
               
-              CRITICAL INSTRUCTION: 
-              Refuse to perform a standard template assembly. 
-              You MUST "Remix" the layout structure. 
-              - Use unique padding (e.g. py-32 instead of py-20).
-              - Change the typography hierarchy completely.
-              - Use different border-radius for cards (e.g. if template is rounded-xl, use rounded-none or rounded-3xl).
-              - If the style is "${style}", go ALL IN on that aesthetic. 
-              - Use the provided code reference ONLY as a safety fallback for syntax. 
-              - MAKE IT LOOK CUSTOM.` },
+              ${systemInstruction}
+              
+              MAKE IT LOOK CUSTOM.` },
             ],
             stream: true,
           })

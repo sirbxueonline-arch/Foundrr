@@ -66,14 +66,14 @@ export function ProjectCard({ site }: { site: Site }) {
         {/* Preview / Thumbnail Area */}
         <div className="aspect-video w-full bg-muted/40 relative overflow-hidden flex items-center justify-center group-hover:bg-muted/60 transition-colors">
           {site.thumbnail_url ? (
-            <img 
-              src={site.thumbnail_url} 
-              alt={site.name || 'Project Preview'} 
+            <img
+              src={site.thumbnail_url}
+              alt={site.name || 'Project Preview'}
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
           ) : (
             <>
-             {/* Fallback to Iframe if no thumbnail exists yet */}
+              {/* Fallback to Iframe if no thumbnail exists yet */}
               <iframe
                 src={`/api/preview/${site.id}`}
                 className="absolute inset-0 w-[400%] h-[400%] scale-[0.25] origin-top-left border-0 pointer-events-none select-none opacity-50 group-hover:opacity-100 transition-opacity"
@@ -128,7 +128,7 @@ export function ProjectCard({ site }: { site: Site }) {
         <div className="absolute top-2 right-2 z-10">
           <button
             onClick={toggleMenu}
-            className="p-1.5 rounded-full bg-white/80 hover:bg-white shadow-sm border opacity-0 group-hover:opacity-100 focus:opacity-100 transition-all"
+            className="p-1.5 rounded-full bg-white/80 hover:bg-white shadow-sm border opacity-100 transition-all"
             title="More options"
           >
             <MoreVertical className="w-4 h-4 text-gray-700" />

@@ -17,11 +17,13 @@ export default function GeneratePage() {
     style: string;
     primaryColor: string;
     pages: string[];
+    creativity?: string;
   }>({
     prompt: '',
     style: 'minimal',
     primaryColor: '#000000',
-    pages: []
+    pages: [],
+    creativity: 'standard'
   })
 
   // State for streaming
@@ -260,6 +262,35 @@ export default function GeneratePage() {
                 </div>
               </div>
 
+              {/* Innovation Level */}
+              <div className="space-y-4">
+                <span className="text-sm font-semibold text-black px-1 flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-purple-500" />
+                  Innovation Level
+                </span>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 bg-secondary/30 p-1.5 rounded-2xl">
+                  {[
+                    { id: 'standard', label: 'Balanced', icon: '⚖️' },
+                    { id: 'creative', label: 'Creative', icon: '🎨' },
+                    { id: 'high', label: 'High', icon: '🚀' },
+                    { id: 'chaos', label: 'Chaos', icon: '🔥' }
+                  ].map((level) => (
+                    <button
+                      key={level.id}
+                      type="button"
+                      onClick={() => setFormData(prev => ({ ...prev, creativity: level.id }))}
+                      className={`relative flex items-center justify-center gap-2 py-3 px-2 rounded-xl text-sm font-bold transition-all duration-300 ${(formData.creativity || 'standard') === level.id
+                        ? 'bg-white shadow-md text-black ring-1 ring-black/5 scale-[1.02]'
+                        : 'text-muted-foreground hover:bg-white/50 hover:text-black'
+                        }`}
+                    >
+                      <span className="text-base">{level.icon}</span>
+                      {level.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               {/* Style Selection - V2 Cards */}
               <div className="space-y-4">
                 <span className="text-sm font-semibold text-black px-1 flex items-center gap-2">
@@ -342,29 +373,27 @@ export default function GeneratePage() {
                             : [...current, item.id];
                           setFormData(prev => ({ ...prev, pages: newPages }));
                         }}
-                        className={`group relative p-3 rounded-xl border transition-all duration-300 hover:shadow-sm flex flex-col items-center justify-center gap-2 ${
-                          (formData.pages || []).includes(item.id)
-                            ? 'bg-gradient-to-br from-black to-slate-800 text-white border-transparent ring-2 ring-black ring-offset-1 dark:from-white dark:to-slate-200 dark:text-black dark:ring-white scale-[1.02]'
-                            : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
-                        }`}
+                        className={`group relative p-3 rounded-xl border transition-all duration-300 hover:shadow-sm flex flex-col items-center justify-center gap-2 ${(formData.pages || []).includes(item.id)
+                          ? 'bg-gradient-to-br from-black to-slate-800 text-white border-transparent ring-2 ring-black ring-offset-1 dark:from-white dark:to-slate-200 dark:text-black dark:ring-white scale-[1.02]'
+                          : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                          }`}
                       >
-                         <div className={`p-2 rounded-lg transition-colors ${
-                              (formData.pages || []).includes(item.id) ? 'bg-white/20' : 'bg-slate-100 group-hover:bg-slate-200'
-                           }`}>
-                              {item.id === 'About' && <div className="w-4 h-4 rounded-full border-2 border-current opacity-80" />}
-                              {item.id === 'Pricing' && <div className="w-4 h-4 rounded border-2 border-current opacity-80" />}
-                              {item.id === 'Blog' && <div className="w-4 h-4 border-b-2 border-current opacity-80" />}
-                              {item.id === 'Features' && <div className="w-4 h-4 rotate-45 border-2 border-current opacity-80" />}
-                         </div>
-                         <span className={`text-xs font-bold ${(formData.pages || []).includes(item.id) ? 'text-white dark:text-black' : 'text-slate-700'}`}>
-                            {item.label}
-                         </span>
-                         
-                         {(formData.pages || []).includes(item.id) && (
-                            <div className="absolute top-1.5 right-1.5">
-                              <CheckCircle2 className="w-3 h-3 text-white dark:text-black" />
-                            </div>
-                         )}
+                        <div className={`p-2 rounded-lg transition-colors ${(formData.pages || []).includes(item.id) ? 'bg-white/20' : 'bg-slate-100 group-hover:bg-slate-200'
+                          }`}>
+                          {item.id === 'About' && <div className="w-4 h-4 rounded-full border-2 border-current opacity-80" />}
+                          {item.id === 'Pricing' && <div className="w-4 h-4 rounded border-2 border-current opacity-80" />}
+                          {item.id === 'Blog' && <div className="w-4 h-4 border-b-2 border-current opacity-80" />}
+                          {item.id === 'Features' && <div className="w-4 h-4 rotate-45 border-2 border-current opacity-80" />}
+                        </div>
+                        <span className={`text-xs font-bold ${(formData.pages || []).includes(item.id) ? 'text-white dark:text-black' : 'text-slate-700'}`}>
+                          {item.label}
+                        </span>
+
+                        {(formData.pages || []).includes(item.id) && (
+                          <div className="absolute top-1.5 right-1.5">
+                            <CheckCircle2 className="w-3 h-3 text-white dark:text-black" />
+                          </div>
+                        )}
                       </button>
                     ))}
                   </div>
@@ -473,76 +502,75 @@ export default function GeneratePage() {
                 <div className="flex-1 bg-zinc-900/50 rounded-xl border border-white/10 shadow-xl overflow-hidden relative flex flex-col">
                   {/* Toolbar */}
                   <div className="h-12 border-b border-white/5 bg-zinc-900/80 px-4 flex items-center justify-between backdrop-blur-sm shrink-0">
-                     <div className="flex items-center gap-2">
-                        <div className="flex gap-1.5">
-                           <div className="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/50"></div>
-                           <div className="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/50"></div>
-                           <div className="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/50"></div>
-                        </div>
-                     </div>
-                     
-                     <div className="flex items-center gap-1 bg-zinc-950/50 rounded-lg p-1 border border-white/5">
-                        <button 
-                           onClick={() => setViewMode('desktop')}
-                           className={`p-1.5 rounded-md transition-all ${viewMode === 'desktop' ? 'bg-zinc-800 text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
-                           title="Desktop View"
-                        >
-                           <LayoutTemplate className="w-4 h-4" />
-                        </button>
-                        <button 
-                           onClick={() => setViewMode('mobile')}
-                           className={`p-1.5 rounded-md transition-all ${viewMode === 'mobile' ? 'bg-zinc-800 text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
-                            title="Mobile View"
-                        >
-                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-smartphone"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
-                        </button>
-                     </div>
+                    <div className="flex items-center gap-2">
+                      <div className="flex gap-1.5">
+                        <div className="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/50"></div>
+                        <div className="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/50"></div>
+                        <div className="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/50"></div>
+                      </div>
+                    </div>
 
-                     <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-                        <span className="text-[10px] uppercase tracking-wider font-bold text-zinc-500">Live</span>
-                     </div>
+                    <div className="flex items-center gap-1 bg-zinc-950/50 rounded-lg p-1 border border-white/5">
+                      <button
+                        onClick={() => setViewMode('desktop')}
+                        className={`p-1.5 rounded-md transition-all ${viewMode === 'desktop' ? 'bg-zinc-800 text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
+                        title="Desktop View"
+                      >
+                        <LayoutTemplate className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => setViewMode('mobile')}
+                        className={`p-1.5 rounded-md transition-all ${viewMode === 'mobile' ? 'bg-zinc-800 text-white shadow-sm' : 'text-zinc-500 hover:text-zinc-300'}`}
+                        title="Mobile View"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-smartphone"><rect width="14" height="20" x="5" y="2" rx="2" ry="2" /><path d="M12 18h.01" /></svg>
+                      </button>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                      <span className="text-[10px] uppercase tracking-wider font-bold text-zinc-500">Live</span>
+                    </div>
                   </div>
 
                   {/* Iframe Container - Centered and constrained if mobile */}
                   <div className={`flex-1 w-full bg-zinc-950/30 overflow-hidden flex items-center justify-center transition-all duration-500 ${viewMode === 'mobile' ? 'p-8' : ''}`}>
-                    <div className={`relative transition-all duration-500 ease-in-out bg-white shadow-2xl ${
-                        viewMode === 'mobile' 
-                           ? 'w-[375px] h-[667px] rounded-[2rem] border-[8px] border-zinc-900 overflow-hidden ring-1 ring-white/10' 
-                           : 'w-full h-full rounded-none border-0'
-                     }`}>
-                        {previewHtml ? (
-                           <iframe
-                           srcDoc={previewHtml}
-                           className="w-full h-full border-0 bg-white"
-                           title="Live Preview"
-                           />
-                        ) : (
-                           <div className="w-full h-full bg-white flex flex-col overflow-hidden">
-                              {/* Skeleton Loader - Mimics Layout */}
-                              <div className="w-full h-16 bg-zinc-50 border-b border-zinc-100 flex items-center justify-between px-8 shrink-0 animate-pulse">
-                                 <div className="w-24 h-6 bg-zinc-200 rounded-md"></div>
-                                 <div className="flex gap-4">
-                                    <div className="w-20 h-4 bg-zinc-100 rounded-md"></div>
-                                    <div className="w-20 h-4 bg-zinc-100 rounded-md"></div>
-                                    <div className="w-24 h-8 bg-zinc-900/10 rounded-full"></div>
-                                 </div>
-                              </div>
-                              <div className="flex-1 p-12 flex flex-col items-center justify-center space-y-8 animate-pulse">
-                                 <div className="w-3/4 h-16 bg-zinc-100 rounded-xl"></div>
-                                 <div className="w-1/2 h-4 bg-zinc-50 rounded-lg"></div>
-                                 <div className="flex gap-4 mt-8">
-                                    <div className="w-32 h-12 bg-zinc-900/10 rounded-xl"></div>
-                                    <div className="w-32 h-12 bg-zinc-100 rounded-xl"></div>
-                                 </div>
-                                 {/* Loading Text */}
-                                 <div className="flex flex-col items-center gap-3 mt-12">
-                                     <Loader2 className="w-6 h-6 animate-spin text-zinc-400" />
-                                     <p className="text-xs font-mono text-zinc-400 uppercase tracking-widest">{t.generate.form.generating}</p>
-                                 </div>
-                              </div>
-                           </div>
-                        )}
+                    <div className={`relative transition-all duration-500 ease-in-out bg-white shadow-2xl ${viewMode === 'mobile'
+                      ? 'w-[375px] h-[667px] rounded-[2rem] border-[8px] border-zinc-900 overflow-hidden ring-1 ring-white/10'
+                      : 'w-full h-full rounded-none border-0'
+                      }`}>
+                      {previewHtml ? (
+                        <iframe
+                          srcDoc={previewHtml}
+                          className="w-full h-full border-0 bg-white"
+                          title="Live Preview"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-white flex flex-col overflow-hidden">
+                          {/* Skeleton Loader - Mimics Layout */}
+                          <div className="w-full h-16 bg-zinc-50 border-b border-zinc-100 flex items-center justify-between px-8 shrink-0 animate-pulse">
+                            <div className="w-24 h-6 bg-zinc-200 rounded-md"></div>
+                            <div className="flex gap-4">
+                              <div className="w-20 h-4 bg-zinc-100 rounded-md"></div>
+                              <div className="w-20 h-4 bg-zinc-100 rounded-md"></div>
+                              <div className="w-24 h-8 bg-zinc-900/10 rounded-full"></div>
+                            </div>
+                          </div>
+                          <div className="flex-1 p-12 flex flex-col items-center justify-center space-y-8 animate-pulse">
+                            <div className="w-3/4 h-16 bg-zinc-100 rounded-xl"></div>
+                            <div className="w-1/2 h-4 bg-zinc-50 rounded-lg"></div>
+                            <div className="flex gap-4 mt-8">
+                              <div className="w-32 h-12 bg-zinc-900/10 rounded-xl"></div>
+                              <div className="w-32 h-12 bg-zinc-100 rounded-xl"></div>
+                            </div>
+                            {/* Loading Text */}
+                            <div className="flex flex-col items-center gap-3 mt-12">
+                              <Loader2 className="w-6 h-6 animate-spin text-zinc-400" />
+                              <p className="text-xs font-mono text-zinc-400 uppercase tracking-widest">{t.generate.form.generating}</p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
