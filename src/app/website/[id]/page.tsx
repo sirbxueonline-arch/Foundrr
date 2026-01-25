@@ -1,27 +1,17 @@
-import { createServerClient } from '@supabase/ssr'
+import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import PreviewWrapper from '@/components/PreviewWrapper'
+import { currentUser } from '@clerk/nextjs/server'
 
 export default async function WebsitePreviewPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const cookieStore = await cookies()
-  const supabase = createServerClient(
+  const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() { return cookieStore.getAll() },
-        setAll(cookiesToSet) {
-            try {
-              cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options))
-            } catch {}
-        },
-      },
-    }
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   )
 
-  const { data: { user } } = await supabase.auth.getUser()
+  const user = await currentUser()
   if (!user) {
     redirect('/login')
   }
