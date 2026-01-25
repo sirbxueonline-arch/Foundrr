@@ -175,20 +175,20 @@ export function Hero({ lang, t }: { lang?: string; t?: any }) {
                         <div className="flex items-center justify-center h-full text-zinc-700">Waiting to start...</div>
                       ) : (
                         <div className="space-y-2">
-                          <div className="text-emerald-500/80">> Initializing neural engine...</div>
+                          <div className="text-emerald-500/80">&gt; Initializing neural engine...</div>
                           {(demoStep === 'analyzing' || demoStep === 'building' || demoStep === 'complete') && (
-                            <div className="text-blue-400/80">> Parsing prompt intent... Ok.</div>
+                            <div className="text-blue-400/80">&gt; Parsing prompt intent... Ok.</div>
                           )}
                           {(demoStep === 'building' || demoStep === 'complete') && (
                             <>
-                              <div className="text-amber-400/80">> Generating component structure...</div>
-                              <div className="text-zinc-500">> Added Hero.tsx</div>
-                              <div className="text-zinc-500">> Added Features.tsx</div>
-                              <div className="text-purple-400/80">> Applying distinctive visual style...</div>
+                              <div className="text-amber-400/80">&gt; Generating component structure...</div>
+                              <div className="text-zinc-500">&gt; Added Hero.tsx</div>
+                              <div className="text-zinc-500">&gt; Added Features.tsx</div>
+                              <div className="text-purple-400/80">&gt; Applying distinctive visual style...</div>
                             </>
                           )}
                           {demoStep === 'complete' && (
-                            <div className="text-emerald-500 font-bold">> Build successfully complated (0.4s)</div>
+                            <div className="text-emerald-500 font-bold">&gt; Build successfully complated (0.4s)</div>
                           )}
                           <div className="w-2 h-4 bg-primary animate-pulse mt-1" />
                         </div>
